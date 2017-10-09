@@ -2,9 +2,9 @@
 #include<Rinternals.h>
 
 extern"C"{
-  SEXP add ( SEXP a, SEXP b) {
+  SEXP add ( SEXP aa, SEXP b) {
     SEXP result = PROTECT ( allocVector ( REALSXP , 1));
-    REAL ( result )[0] = asReal (a) + asReal (b);
+    REAL ( result )[0] = asReal (aa) + asReal (b);
     UNPROTECT (1);
     return result ;
     }
