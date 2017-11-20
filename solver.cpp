@@ -1,6 +1,10 @@
 #include "solver.hpp"
+#include <Eigen/Core>
 #include <Eigen/Dense>
-#include <Eigen/LU>
+#include <Eigen/QR>
+// #include <Eigen/IterativeLinearSolvers>
+
+
 
 void Solver::setup(){
   if(Method == MethodType::DEFAULT){
@@ -9,21 +13,22 @@ void Solver::setup(){
     else
       Method = MethodType::DIRECT;
   }
-  if(Inv == F && MethodType::DIRECT) Solver = SolverOption::QR;
-  else Solver = SolverOption::LSCG;
+  if(Inv == IsInvertible::F && Method == MethodType::DIRECT) Option = SolverOption::QR;
+  else Option = SolverOption::LSCG;
 }
 
 //gestire errori
 VectorXd Solver::solve(const VectorXd & b){
-switch(Solver){
-  case QR: {
+  VectorXd Sol;
+switch(Option){
+  case SolverOption::QR: {
     ColPivHouseholderQR<MatrixXd> dec(A);
     Sol = dec.solve(b);
   }
-  case LSCG: {
-    LeastSquaresConjugateGradient<MatrixXd> lscg;
-    lscg.compute(A);
-    Sol = lscg.solve(b);
+  case SolverOption::LSCG: {
+    // LeastSquaresConjugateGradient<MatrixXd> lscg;
+    // lscg.compute(A);
+    // Sol = lscg.solve(b);
   }
 }
 };
