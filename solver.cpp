@@ -3,7 +3,7 @@
 #include <Eigen/Dense>
 #include <Eigen/QR>
 // #include <Eigen/IterativeLinearSolvers>
-
+using namespace Eigen;
 
 
 void Solver::setup(){
@@ -19,10 +19,10 @@ void Solver::setup(){
 
 //gestire errori
 VectorXd Solver::solve(const VectorXd & b){
-  VectorXd Sol;
 switch(Option){
   case SolverOption::QR: {
-    ColPivHouseholderQR<MatrixXd> dec(A);
+    ColPivHouseholderQR<MatrixXd> dec(A);   // È buona cosa creare il  solver dentro una funzione?
+                                            // terminata la funzione viene distrutto!
     Sol = dec.solve(b);
   }
   case SolverOption::LSCG: {
