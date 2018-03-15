@@ -115,7 +115,7 @@ public:
         std::cout << "c:" << '\n' << c << '\n';
     }
 
-    void print_all() {
+    void print_all() const {
         std::cout << "MATRIX C:" << '\n' << C << '\n';
         std::cout << "MATRIX M:" << '\n' << C << '\n';
         std::cout << "MATRIX D:" << '\n' << D << '\n';
