@@ -123,7 +123,21 @@ public:
         std::cout << "MATRIX W:" << '\n' << W << '\n';
     }
 
-    void solve() {};
+    void solve() {   /* NAIVE SOLVER */
+      SparseLU<SparseMatrix<double>>   solver;
+      // Compute the ordering permutation vector from the structural pattern of A
+      solver.analyzePattern(P);
+      // Compute the numerical factorization
+      solver.factorize(P);
+      //Use the factors to solve the linear system
+      c = solver.solve(p);
+      b = D*K*c;
+    };
+
+    void print_sol() {
+      std::cout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
+      std::cout << "B-SPLINE COEFFICIENTS b = CKc" << '\n' << b << '\n';
+    };
 };
 
 #endif //PROGETTO_DENSITY_ESTIMATION_HPP
