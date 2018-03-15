@@ -115,7 +115,7 @@ public:
         std::cout << "c:" << '\n' << c << '\n';
     }
 
-    void print_all() {
+    void print_all() const{
         std::cout << "MATRIX C:" << '\n' << C << '\n';
         std::cout << "MATRIX M:" << '\n' << C << '\n';
         std::cout << "MATRIX D:" << '\n' << D << '\n';
@@ -134,7 +134,7 @@ public:
       b = D*K*c;
     };
 
-    void print_sol() {
+    void print_sol() const{
       std::cout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
       std::cout << "B-SPLINE COEFFICIENTS b = CKc" << '\n' << b << '\n';
     };
