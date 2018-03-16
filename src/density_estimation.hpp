@@ -28,16 +28,26 @@ private:
 
 
     void fill_C(std::vector<double> const &cp, std::vector<double> const &knots) {
+std::cout<<"Fill C: start.. "<<std::endl;
+std::cout<<"vecctor cp:"<<std::endl;
+for(auto x:cp) std::cout<<x<<'\t'; std::cout<<std::endl;
+std::cout<<"vecctor knots:"<<std::endl;
         double t = 0;
         Eigen::ArrayXd N = Eigen::ArrayXd::Constant(G, 0.0);
-        for (unsigned int i = 0; i <= n; i++) {
+for(auto x:knots) std::cout<<x<<'\t'; std::cout<<std::endl;
+std::cout<<"G: "<<G <<" N"<<'\n'<<N<<std::endl;
+        for (unsigned int i = 0; i < n; i++) {
+std::cout<<"i.. "<<i<<std::endl;
             t = cp[i];
+std::cout<<"fs.. "<<std::endl;
             int fs = bspline::findspan(n, k, t, knots);
+std::cout<<"basisfun.. "<<std::endl;
             bspline::basisfun(fs, t, n, knots, N);
             for (unsigned int j = 0; j < G; j++) {
                 C(i, j) = N(j);
             }
         }
+std::cout<<"Fill C: ..end "<<std::endl;
     }
 
     void fill_M(std::vector<double> const &knots) {
@@ -68,7 +78,6 @@ private:
 
     void fill_D(std::vector<double> const &knots) {
         D.setZero();
-        std::vector<double> elements;
         for (size_t i = 0; i < G; i++) {
             D(i, i) = (k + 1) / (knots[i] - knots[i - k + 1]);
         }
@@ -115,11 +124,7 @@ public:
         std::cout << "c:" << '\n' << c << '\n';
     }
 
-<<<<<<< HEAD
     void print_all() const {
-=======
-    void print_all() const{
->>>>>>> master
         std::cout << "MATRIX C:" << '\n' << C << '\n';
         std::cout << "MATRIX M:" << '\n' << C << '\n';
         std::cout << "MATRIX D:" << '\n' << D << '\n';
