@@ -124,7 +124,7 @@ public:
     }
 
     void solve() {   /* NAIVE SOLVER */
-      SparseLU<SparseMatrix<double>>   solver;
+      Eigen::SparseLU<Eigen::SparseMatrix<double>>   solver;
       // Compute the ordering permutation vector from the structural pattern of A
       solver.analyzePattern(P);
       // Compute the numerical factorization
