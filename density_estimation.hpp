@@ -115,7 +115,11 @@ public:
         std::cout << "c:" << '\n' << c << '\n';
     }
 
+<<<<<<< HEAD
     void print_all() const {
+=======
+    void print_all() const{
+>>>>>>> master
         std::cout << "MATRIX C:" << '\n' << C << '\n';
         std::cout << "MATRIX M:" << '\n' << C << '\n';
         std::cout << "MATRIX D:" << '\n' << D << '\n';
@@ -123,7 +127,21 @@ public:
         std::cout << "MATRIX W:" << '\n' << W << '\n';
     }
 
-    void solve() {};
+    void solve() {   /* NAIVE SOLVER */
+      Eigen::SparseLU<Eigen::SparseMatrix<double>>   solver;
+      // Compute the ordering permutation vector from the structural pattern of A
+      solver.analyzePattern(P);
+      // Compute the numerical factorization
+      solver.factorize(P);
+      //Use the factors to solve the linear system
+      c = solver.solve(p);
+      b = D*K*c;
+    };
+
+    void print_sol() const{
+      std::cout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
+      std::cout << "B-SPLINE COEFFICIENTS b = CKc" << '\n' << b << '\n';
+    };
 };
 
 #endif //PROGETTO_DENSITY_ESTIMATION_HPP
