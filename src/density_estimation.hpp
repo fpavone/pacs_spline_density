@@ -118,9 +118,10 @@ public:
         P = (1 / alpha * (D * K).transpose() * M * (D * K) + (C * D * K).transpose() * W * C * D * K).sparseView();
         Eigen::VectorXd newcp(cp.size());
         for (int i = 0; i < cp.size() ; ++i) {
-            newcp << cp[i];
+            newcp[i] = cp[i];
         }
-        c = K.transpose() * D.transpose() * C.transpose() * W * newcp;
+        // prima era c =, penso che però sia p (Federico):
+        p = K.transpose() * D.transpose() * C.transpose() * W * newcp;
         std::cout << "c:" << '\n' << c << '\n';
     }
 
