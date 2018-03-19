@@ -1,24 +1,30 @@
 #include "bspline.hpp"
 #include <iostream>
 #include <cassert>
+
 using vect = std::vector<double>;
 
 int
-bspline::findspan (int n, int p, double t, const vect &U) {
+bspline::findspan (int n, int p, double t, const vect& U)
+{
 	int ret = 0;
-	if (t > U[U.size () - 1] || t < U[0]){
+	if (t > U[U.size () - 1] || t < U[0])
+	{
 		std::cerr << "Value " << t
 	            << " of t is outside the knot span by "
 	            << U[U.size () - 1] - t << "\n";
 	    exit(EXIT_FAILURE);
-	} else {
+	}
+	else 
+	{
 		while ((ret++ < n) && (U[ret] <= t)) { };
 	}
 	return (ret-1);
 };	//findspan
 
 void
-bspline::basisfun (int i, double t, int p, const vect &U, Eigen::ArrayXd &N){
+bspline::basisfun (int i, double t, int p, const vect& U, Eigen::ArrayXd& N)
+{
 	int j,r;
 	double saved, temp;
 
