@@ -20,6 +20,7 @@ private:
     Eigen::Matrix<double, G, G> D;
     Eigen::Matrix<double, G, G> K;
     Eigen::Matrix<double, n, n> W;
+    Eigen::SparseMatrix<double> S;
 
     Eigen::SparseMatrix<double> P; // matrix of the problem we have to solve GxG
     Eigen::VectorXd p; // known vector of the problem we have to solve G
@@ -100,6 +101,24 @@ private:
         }
     }
 
+    void fill_S(std::vector<double> const & knots) {
+      int l=2;
+      for (size_t it = l; it >= 1; it--){
+        Eigen::SparseMatrix<double> DL(G - it, G + 1 - it);
+        for (size_t i = 0; i < G - it ; i++) {
+          DL.insert(i,i) = -(k + 1 - it)/(knots[i+k+1-it] - knots[i]);
+          DL.insert(i,i+1) = (k + 1 - it)/(knots[i+k+1-it] - knots[i]);
+        }
+        std::cout << "DL it = " << it << '\n' << Eigen::MatrixXd(S) << std::endl;
+        if( it == l ) S = DL;
+        else{
+          S = S*DL;
+          S.resize(G - l, G + 1 - it);
+        }
+      }
+      std::cout << "Printing S:" << '\n' << Eigen::MatrixXd(S) << std::endl;
+    }
+
 
 public:
     Density(double opt_param, std::vector<double> const knots, std::vector<double> const cp,
@@ -124,6 +143,7 @@ public:
         p = K.transpose() * D.transpose() * C.transpose() * W * newcp;
         // as a consequence, i print p and not c (Gianluca)
         std::cout << "p:" << '\n' << p << '\n';
+        fill_S(knots);
     }
 
     void print_all() const {
