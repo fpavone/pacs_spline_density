@@ -31,6 +31,7 @@ private:
 
     std::vector<double> weights;
     std::vector<double> lambda;  // extended vector of knots - with extra ones
+                                // dimension: g + 2k + 2 = G + k + 1 ??
 
     void fill_C(const std::vector<double>& cp, const std::vector<double>& knots)
     {
@@ -84,31 +85,47 @@ private:
         }
     }
 
-    void fill_W(std::vector<double> const &weights) {
+    void fill_W(const std::vector<double> &weights)
+    {
         W.setZero();
         for (size_t i = 0; i < n; i++) {
             W(i, i) = weights[i];
         }
     }
 
-    void fill_S(std::vector<double> const & knots) {
+    void fill_S(const std::vector<double> & knots)
+    // Compute the S_l matrix for the penalization term
+    {
       int l=2;
-      for (size_t it = l; it >= 1; it--){
+      for (size_t j = l; it >= 1; j--){
         Eigen::SparseMatrix<double> DL(G - it, G + 1 - it);
-        for (size_t i = 0; i < G - it ; i++) {
-          DL.insert(i,i) = -(k + 1 - it)/(knots[i+k+1-it] - knots[i]);
-          DL.insert(i,i+1) = (k + 1 - it)/(knots[i+k+1-it] - knots[i]);
+        /*
+        There is a delay between the indexing of lambda in the reference paper
+        [J. Machalova et al] and the indexing in the code. Precisely:
+        index_code = index_ref + k
+        This is why the following loop start from j instead of j - k.
+        */
+        for (size_t i = j; i < G - 1 ; i++) {
+          DL.insert(i,i) = -(k + 1 - j)/(lambda[i+k+1-j] - lambda[i]);
+          DL.insert(i,i+1) = (k + 1 - j)/(lambda[i+k+1-j] - lambda[i]);
         }
-        std::cout << "DL it = " << it << '\n' << Eigen::MatrixXd(S) << std::endl;
+std::cout << "DL j = " << it << '\n' << Eigen::MatrixXd(S) << std::endl;
         if( it == l ) S = DL;
         else{
           S = S*DL;
           S.resize(G - l, G + 1 - it);
         }
       }
-      std::cout << "Printing S:" << '\n' << Eigen::MatrixXd(S) << std::endl;
+std::cout << "Printing S:" << '\n' << Eigen::MatrixXd(S) << std::endl;
     }
 
+    void set_lambda(const std::vector<double> & knots)
+    {
+      lambda = std::vector(G + k + 1, knots[0]);
+      lambda.insert(lambda.begin() + k + 1, knots.begin(), knots.end());
+      lambda.insert(lambda.end() - k - 1 , knots.back());
+std::cout << "lambda: " << '\n' << lambda << std::endl;
+    }
 
 public:
 
@@ -153,7 +170,8 @@ public:
       Density(knots, cp, opt_param);
     }
 
-    void print_all() const {
+    void print_all() const
+    {
         std::cout << "MATRIX C:" << '\n' << C << '\n';
         std::cout << "MATRIX M:" << '\n' << C << '\n';
         std::cout << "MATRIX D:" << '\n' << D << '\n';
@@ -161,7 +179,8 @@ public:
         std::cout << "MATRIX W:" << '\n' << W << '\n';
     }
 
-    void solve() {   /* NAIVE SOLVER */
+    void solve()
+    {   /* NAIVE SOLVER */
       Eigen::SparseLU<Eigen::SparseMatrix<double>>   solver;
       // Compute the ordering permutation vector from the structural pattern of A
       solver.analyzePattern(P);
@@ -172,7 +191,8 @@ public:
       b = D*K*c;
     };
 
-    void print_sol() const{
+    void print_sol() const
+    {
       std::cout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
       std::cout << "B-SPLINE COEFFICIENTS b = CKc" << '\n' << b << '\n';
     };
