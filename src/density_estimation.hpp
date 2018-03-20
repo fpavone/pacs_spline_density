@@ -15,8 +15,8 @@ private:
     unsigned int G;
 
     double alpha = 1.0;
-    double u, v;
-    double l; // order of derivative in penalization term
+    double u, v;  // [u,v] support of spline
+    double l;     // order of derivative in penalization term
 
     Eigen::Matrix<double, n, G> C;
     Eigen::Matrix<double, G, G> M;
@@ -76,12 +76,11 @@ private:
 
     void fill_DK(const std::vector<double>& knots)
     {
-        K.insert(0, 0) = (k+1)/(knots[] - knots[0 - k + 1]);
-        K.insert(0, G-1) = -(k+1)/(knots[i] - knots[i - k + 1]);
-        K(G - 1, G - 1) = 1;
-        for (size_t i = 0; i < G - 1; i++) {
-            K(i, i) = 1;
-            K(i + 1, i) = -1;
+        K.insert(0, 0) = (k+1)/(lambda[k+2] - knots[0]);
+        K.insert(0, G-1) = -(k+1)/(knots[k+2] - knots[0]);
+        for (std::size_t i = 1; i < G; i++) {
+            K.insert(i-1,i) = -1/(lambda[k+2+i] - knots[i]);
+            K.insert(i,i) = 1/(lambda[k+2+i] - knots[i]);
         }
     }
 
@@ -135,8 +134,7 @@ public:
       weigths.assign(n,1.0);
       fill_C(cp, knots);
       fill_M(knots);
-      fill_D(knots);
-      fill_K();
+      fill_DK(knots);
       fill_W(weights);
       P = (1 / alpha * (D * K).transpose() * M * (D * K) + (C * D * K).transpose() * W * C * D * K).sparseView();
       Eigen::VectorXd newcp(cp.size());
