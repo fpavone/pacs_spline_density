@@ -18,13 +18,13 @@ private:
     double u, v;  // [u,v] support of spline
     double l;     // order of derivative in penalization term
 
-    Eigen::Matrix<double, n, G> C;
-    Eigen::Matrix<double, G, G> M;
-    Eigen::Matrix<double, n, n> W;
+    Eigen::MatrixXd C;   // nxG
+    Eigen::MatrixXd M;    // GxG
+    Eigen::MatrixXd W;    // nxn
     Eigen::SparseMatrix<double> S;
 
-    Eigen::SparseMatrix<double> DK (G,G);
-    Eigen::SparseMatrix<double> P (G,G); // matrix of the problem we have to solve GxG
+    Eigen::SparseMatrix<double> DK; // GxG
+    Eigen::SparseMatrix<double> P; // matrix of the problem we have to solve GxG
     Eigen::VectorXd p; // known vector of the problem we have to solve G
     Eigen::VectorXd c; // c = P^(-)p G
     Eigen::VectorXd b; // B-spline coefficients G
@@ -33,7 +33,8 @@ private:
     std::vector<double> lambda;  // extended vector of knots - with extra ones
                                 // dimension: g + 2k + 2 = G + k + 1 ??
 
-    void fill_C(const std::vector<double>& cp, const std::vector<double>& knots)
+    void
+    fill_C(const std::vector<double>& cp, const std::vector<double>& knots)
     {
         double t = 0.0;
         Eigen::ArrayXd N = Eigen::ArrayXd::Constant(G, 0.0);
@@ -76,11 +77,11 @@ private:
 
     void fill_DK(const std::vector<double>& knots)
     {
-        K.insert(0, 0) = (k+1)/(lambda[k+2] - knots[0]);
-        K.insert(0, G-1) = -(k+1)/(knots[k+2] - knots[0]);
+        DK.insert(0, 0) = (k+1)/(lambda[k+2] - knots[0]);
+        DK.insert(0, G-1) = -(k+1)/(knots[k+2] - knots[0]);
         for (std::size_t i = 1; i < G; i++) {
-            K.insert(i-1,i) = -1/(lambda[k+2+i] - knots[i]);
-            K.insert(i,i) = 1/(lambda[k+2+i] - knots[i]);
+            DK.insert(i-1,i) = -1/(lambda[k+2+i] - knots[i]);
+            DK.insert(i,i) = 1/(lambda[k+2+i] - knots[i]);
         }
     }
 
@@ -123,57 +124,58 @@ std::cout << "Printing S:" << '\n' << Eigen::MatrixXd(S) << std::endl;
       lambda = std::vector(G + k + 1, knots[0]);
       lambda.insert(lambda.begin() + k + 1, knots.begin(), knots.end());
       lambda.insert(lambda.end() - k - 1 , knots.back());
-std::cout << "lambda: " << '\n' << lambda << std::endl;
+std::cout << "lambda: " << '\n';
+for (auto x: lambda) std::cout << x << " ";std::cout<< std::endl;
     }
 
 public:
 
-    Density(const std::vector<double>& knots, const std::vector<double>& cp, double kk):
+    Density(const std::vector<double>& knots, const std::vector<double>& cp, double kk, double g):
       k(kk), n(cp.size()), G(g+k+1), u(knots[0]), v(*knots.end())
     {
-      weigths.assign(n,1.0);
+      weights.assign(n,1.0);
       fill_C(cp, knots);
       fill_M(knots);
       fill_DK(knots);
       fill_W(weights);
-      P = (1 / alpha * (D * K).transpose() * M * (D * K) + (C * D * K).transpose() * W * C * D * K).sparseView();
+      P = (1 / alpha * (DK).transpose() * M * (DK) + (C * DK).transpose() * W * C * DK).sparseView();
       Eigen::VectorXd newcp(cp.size());
       for (int i = 0; i < cp.size() ; ++i) {
           newcp[i] = cp[i];
       }
       // prima era c =, penso che però sia p (Federico):
-      p = K.transpose() * D.transpose() * C.transpose() * W * newcp;
+      p = DK.transpose()* C.transpose() * W * newcp;
       // as a consequence, i print p and not c (Gianluca)
       std::cout << "p:" << '\n' << p << '\n';
     }
 
 
-    Density(const std::vector<double>& knots, const std::vector<double>& cp, double opt_param):
+    Density(const std::vector<double>& knots, const std::vector<double>& cp, double kk, double g, double opt_param):
       alpha(opt_param)
     {
-      Density(knots, cp);
+      Density(knots, cp, kk,g);
     }
 
-    Density(const std::vector<double>& knots, const std::vector<double>& cp, unsigned int ll):
+    Density(const std::vector<double>& knots, const std::vector<double>& cp, double kk, double g, unsigned int ll)
     {
       assert(ll<G);
       l = ll;
-      Density(knots, cp);
+      Density(knots, cp, kk, g);
     }
 
-    Density(const std::vector<double>& knots, const std::vector<double>& cp, double opt_param, unsigned int ll):
+    Density(const std::vector<double>& knots, const std::vector<double>& cp, double kk, double g, double opt_param, unsigned int ll):
+      alpha(opt_param)
     {
       assert(ll<G);
       l = ll;
-      Density(knots, cp, opt_param);
+      Density(knots, cp, kk, g);
     }
 
     void print_all() const
     {
         std::cout << "MATRIX C:" << '\n' << C << '\n';
-        std::cout << "MATRIX M:" << '\n' << C << '\n';
-        std::cout << "MATRIX D:" << '\n' << D << '\n';
-        std::cout << "MATRIX K:" << '\n' << K << '\n';
+        std::cout << "MATRIX M:" << '\n' << M << '\n';
+        std::cout << "MATRIX DK:" << '\n' << DK << '\n';
         std::cout << "MATRIX W:" << '\n' << W << '\n';
     }
 
@@ -186,7 +188,7 @@ public:
       solver.factorize(P);
       //Use the factors to solve the linear system
       c = solver.solve(p);
-      b = D*K*c;
+      b = DK*c;
     };
 
     void print_sol() const
