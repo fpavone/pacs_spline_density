@@ -28,7 +28,7 @@ Density::fill_M
     double x[n];
     double w[n];
     webbur::legendre_compute(n, x, w);
-    for (int l = 0; l < n; ++l) {
+    for (unsigned int l = 0; l < n; ++l) {
         x[l] = (v - u) / 2 * x[l] + (v + u) / 2;
         w[l] = (v - u) / 2 * w[l];
     }

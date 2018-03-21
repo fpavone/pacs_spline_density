@@ -67,7 +67,7 @@ std::cout << "fill_DK:" << '\n';
       fill_DK(knots);
       P = (1 / alpha * (DK).transpose() * M * (DK) + (C * DK).transpose() * weights.asDiagonal() * C * DK).sparseView();
       Eigen::VectorXd newycp(ycp.size());
-      for (int i = 0; i < ycp.size() ; ++i) {
+      for (unsigned int i = 0; i < ycp.size() ; ++i) {
           newycp[i] = ycp[i];
       }
       p = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
