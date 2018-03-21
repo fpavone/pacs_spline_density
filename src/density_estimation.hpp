@@ -7,6 +7,8 @@
 #include "bspline.hpp"
 #include "sandia_rules.hpp"
 
+// NOTE: maybe useful a diagonal matrix W instead of weights.asDiagonal
+
 class Density {
 
 private:
@@ -51,24 +53,24 @@ private:
 
 public:
 
-    Density(const std::vector<double>& knots, const std::vector<double>& cp, double kk, double g):
+    Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp, double kk, double g):
       k(kk), n(cp.size()), G(g+k+1), u(knots[0]), v(*knots.end())
     {
 std::cout << "fill_C:" << '\n';
       // weights.assign(n,1.0);
       weights = Eigen::VectorXd::Constant(n,1.0);
       set_lambda(knots);
-      fill_C(cp, knots);
+      fill_C(xcp, knots);
 std::cout << "fill_M:" << '\n';
       fill_M(knots);
 std::cout << "fill_DK:" << '\n';
       fill_DK(knots);
       P = (1 / alpha * (DK).transpose() * M * (DK) + (C * DK).transpose() * weights.asDiagonal() * C * DK).sparseView();
-      Eigen::VectorXd newcp(cp.size());
-      for (int i = 0; i < cp.size() ; ++i) {
-          newcp[i] = cp[i];
+      Eigen::VectorXd newycp(ycp.size());
+      for (int i = 0; i < ycp.size() ; ++i) {
+          newycp[i] = ycp[i];
       }
-      p = DK.transpose()* C.transpose() * weights.asDiagonal() * newcp;
+      p = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
 std::cout << "Constructor done - p:" << '\n' << p << '\n';
     }
 
