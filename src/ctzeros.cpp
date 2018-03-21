@@ -1,6 +1,6 @@
 #include <vector>
 #include "ctzeros.hpp"
 
-void coda::BayesMultiplicative::treat(){
-  
+void coda::BM::treat(){
+
 };

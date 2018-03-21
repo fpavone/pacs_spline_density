@@ -2,26 +2,6 @@
 #define  __COUNT_ZEROS_TREATMENT__
 
 #include <vector>
-//#include <numeric>
-
-// namespace help{
-//   double sum(const std::vector<double> & vect)
-//   {
-//     return
-//     std::accumulate<std::vector<double>::iterator, double>(vect.begin(),vect.end(),0.0);
-//   };
-//
-//   std::vector<double> divide(const std::vector<double> &vect, const double & k)
-//   {
-//     std::vector<double> result(vect.size());
-//     for(auto it = vect.begin(); it != vect.end(); it++)
-//     {
-//       result.push_back(*it/k);
-//     }
-//     return result;
-//   };
-// }
-
 
 namespace coda{
 
@@ -31,7 +11,7 @@ namespace coda{
     return tmp;
   };
 
-  class BayesMultiplicative{
+  class BM{
 
   private:
     const double & s; // Strength of prior information
@@ -41,10 +21,32 @@ namespace coda{
     std::vector<double> & r; // Output vector
 
   public:
+    // constructor: - riceve prior
+    //              - usa una delle prior di default
+    //              - fa scegliere al programma la prior --> SQ o Laplace
     BayesMultiplicative(const std::vector<double> & in, std::vector<double> & out)
        const double & strength = 1.0, const std::vector<double> & user_prior = uniform(in.size())):
       x(in), s(strength), r(out), prior(user_prior) {};
 
+    void treat();
+  };
+
+  class GBM{
+
+  private:
+    const double & s; // Strength of prior information
+    std::vector<double> & prior; // Dirichlet prior estimate
+
+    const std::vector<double> & x; // Normalized input vector
+    std::vector<double> & r; // Output vector
+
+  public:
+    // constructor: unica possibilità, la prior viene calcolata con crossvalidation
+    BayesMultiplicative(const std::vector<double> & in, std::vector<double> & out)
+       const double & strength = 1.0):
+      x(in), s(strength), r(out) {};
+
+    void set_prior();
     void treat();
   };
 }
