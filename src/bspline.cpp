@@ -15,7 +15,7 @@ bspline::findspan (int n, int p, double t, const vect& U)
 	            << U[U.size () - 1] - t << "\n";
 	    exit(EXIT_FAILURE);
 	}
-	else 
+	else
 	{
 		while ((ret++ < n) && (U[ret] <= t)) { };
 	}
@@ -42,6 +42,6 @@ bspline::basisfun (int i, double t, int p, const vect& U, Eigen::ArrayXd& N)
 	        N(r) = saved + right[r+1] * temp;
 	        saved = left[j-r] * temp;
 	    }
-	    N[j] = saved;
+	    N(j) = saved;
 	}
 };	//basisfun
