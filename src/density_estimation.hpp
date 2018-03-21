@@ -75,20 +75,23 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
     }
 
 
-    Density(const std::vector<double>& knots, const std::vector<double>& cp, double kk, double g, double opt_param):
+    Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
+      double kk, double g, double opt_param):
       alpha(opt_param)
     {
       Density(knots, cp, kk,g);
     }
 
-    Density(const std::vector<double>& knots, const std::vector<double>& cp, double kk, double g, unsigned int ll)
+    Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
+       double kk, double g, unsigned int ll)
     {
       assert(ll<G);
       l = ll;
       Density(knots, cp, kk, g);
     }
 
-    Density(const std::vector<double>& knots, const std::vector<double>& cp, double kk, double g, double opt_param, unsigned int ll):
+    Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
+       double kk, double g, double opt_param, unsigned int ll):
       alpha(opt_param)
     {
       assert(ll<G);
