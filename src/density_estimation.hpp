@@ -36,20 +36,21 @@ private:
     void
     fill_C(const std::vector<double>& cp, const std::vector<double>& knots)
     {
+        C.resize(n,G);
         double t = 0.0;
         Eigen::ArrayXd N = Eigen::ArrayXd::Constant(G, 0.0);
         for (unsigned int i = 0; i < n; i++) {
-            t = cp[i];
-            int fs = bspline::findspan(n, k, t, knots);
-            bspline::basisfun(fs, t, n, knots, N);
-            for (unsigned int j = 0; j < G; j++) {
-                C(i, j) = N(j);
-            }
+          t = cp[i];
+          int fs = bspline::findspan(n, k, t, knots);
+          bspline::basisfun(fs, t, n, knots, N);
+          C.row(i) = N;
         }
     }
 
     void fill_M(const std::vector<double>& knots)
     {
+        M.resize(G,G);
+
         M.setZero();
         Eigen::ArrayXd N = Eigen::ArrayXd::Constant(G, 0.0);
         double x[n];
@@ -77,16 +78,20 @@ private:
 
     void fill_DK(const std::vector<double>& knots)
     {
-        DK.insert(0, 0) = (k+1)/(lambda[k+2] - knots[0]);
-        DK.insert(0, G-1) = -(k+1)/(knots[k+2] - knots[0]);
-        for (std::size_t i = 1; i < G; i++) {
-            DK.insert(i-1,i) = -1/(lambda[k+2+i] - knots[i]);
-            DK.insert(i,i) = 1/(lambda[k+2+i] - knots[i]);
-        }
+      DK.resize(G,G);
+      DK.reserve(Eigen::VectorXi::Constant(G,2));
+      DK.insert(0, 0) = (k+1)/(lambda[k+2] - knots[0]);
+      DK.insert(0, G-1) = -(k+1)/(knots[k+2] - knots[0]);
+      for (std::size_t i = 1; i < G; i++) {
+          DK.insert(i,i-1) = -1/(lambda[k+2+i] - knots[i]);
+          DK.insert(i,i) = 1/(lambda[k+2+i] - knots[i]);
+      }
+      DK.makeCompressed();
     }
 
     void fill_W(const std::vector<double> &weights)
     {
+        W.resize(n,n);
         W.setZero();
         for (size_t i = 0; i < n; i++) {
             W(i, i) = weights[i];
@@ -121,7 +126,7 @@ std::cout << "Printing S:" << '\n' << Eigen::MatrixXd(S) << std::endl;
 
     void set_lambda(const std::vector<double> & knots)
     {
-      lambda = std::vector(G + k + 1, knots[0]);
+      lambda.assign(G + k + 1, knots[0]);
       lambda.insert(lambda.begin() + k + 1, knots.begin(), knots.end());
       lambda.insert(lambda.end() - k - 1 , knots.back());
 std::cout << "lambda: " << '\n';
@@ -133,20 +138,23 @@ public:
     Density(const std::vector<double>& knots, const std::vector<double>& cp, double kk, double g):
       k(kk), n(cp.size()), G(g+k+1), u(knots[0]), v(*knots.end())
     {
+std::cout << "fill_C:" << '\n';
       weights.assign(n,1.0);
+      set_lambda(knots);
       fill_C(cp, knots);
+std::cout << "fill_M:" << '\n';
       fill_M(knots);
+std::cout << "fill_DK:" << '\n';
       fill_DK(knots);
+std::cout << "fill_W:" << '\n';
       fill_W(weights);
       P = (1 / alpha * (DK).transpose() * M * (DK) + (C * DK).transpose() * W * C * DK).sparseView();
       Eigen::VectorXd newcp(cp.size());
       for (int i = 0; i < cp.size() ; ++i) {
           newcp[i] = cp[i];
       }
-      // prima era c =, penso che però sia p (Federico):
       p = DK.transpose()* C.transpose() * W * newcp;
-      // as a consequence, i print p and not c (Gianluca)
-      std::cout << "p:" << '\n' << p << '\n';
+std::cout << "Constructor done:" << '\n' << p << '\n';
     }
 
 
