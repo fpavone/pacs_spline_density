@@ -54,7 +54,7 @@ private:
 public:
 
     Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp, double kk, double g):
-      k(kk), n(cp.size()), G(g+k+1), u(knots[0]), v(*knots.end())
+      k(kk), n(xcp.size()), G(g+k+1), u(knots[0]), v(*knots.end())
     {
 std::cout << "fill_C:" << '\n';
       // weights.assign(n,1.0);
@@ -79,7 +79,7 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
       double kk, double g, double opt_param):
       alpha(opt_param)
     {
-      Density(knots, cp, kk,g);
+      Density(knots, xcp, ycp, kk,g);
     }
 
     Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
@@ -87,7 +87,7 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
     {
       assert(ll<G);
       l = ll;
-      Density(knots, cp, kk, g);
+      Density(knots, xcp, ycp, kk, g);
     }
 
     Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
@@ -96,7 +96,7 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
     {
       assert(ll<G);
       l = ll;
-      Density(knots, cp, kk, g);
+      Density(knots, xcp, ycp, kk, g);
     }
 
     void print_all() const
