@@ -100,9 +100,7 @@ void
 Density::set_lambda
 (const std::vector<double> & knots)
 {
-  lambda.assign(G + k + 1, knots[0]);
-  lambda.insert(lambda.begin() + k + 1, knots.begin(), knots.end());
-  lambda.insert(lambda.end() - k - 1 , knots.back());
-std::cout << "lambda: " << '\n';
-for (auto x: lambda) std::cout << x << " ";std::cout<< std::endl;
+  lambda.assign(k, knots[0]);
+  lambda.insert(lambda.begin() + k, knots.begin(), knots.end());
+  lambda.insert(lambda.end(), k ,knots.back());
 }
