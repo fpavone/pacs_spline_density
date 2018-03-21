@@ -66,18 +66,6 @@ Density::fill_DK
 }
 
 
-void
-Density::fill_W
-(const std::vector<double> &weights)
-{
-    W.resize(n,n);
-    W.setZero();
-    for (size_t i = 0; i < n; i++) {
-        W(i, i) = weights[i];
-    }
-}
-
-
 // Compute the S_l matrix for the penalization term
 // void
 // Density::fill_S
