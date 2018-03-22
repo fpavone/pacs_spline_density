@@ -15,11 +15,17 @@ namespace help{
 }
 
 
+
 namespace coda{
   /* Input vector must be not scaled!
     - D: dimension of the vector
     - n: total mass of the vector
     - s: strength of the prior information
+
+    Additionally to input vector, you may want to pass:
+    1) strength of the prior
+    2) strength + prior estimates
+    3) choose a method from PRIOR class (default is PRIOR::DEFAULT)
   */
   enum class PRIOR{PERKS,          // s = 1, t = 1/D
                    JEFFREYS,       // s = D/2, t = 1/D
@@ -32,7 +38,7 @@ namespace coda{
   BM(const std::vector<double> & in, const std::vector<double> & t, const double & s = 1.0);
 
   std::vector<double>
-  BM(const std::vector<double> & in, const double & s = 1.0);
+  BM(const std::vector<double> & in, const double & s);
 
   std::vector<double>
   BM(const std::vector<double> & in, coda::PRIOR p = coda::PRIOR::DEFAULT);
