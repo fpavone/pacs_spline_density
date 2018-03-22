@@ -1,56 +1,51 @@
 #ifndef __COUNT_ZEROS_TREATMENT__
-#define  __COUNT_ZEROS_TREATMENT__
+#define __COUNT_ZEROS_TREATMENT__
 
 #include <vector>
 
+namespace help{
+  std::vector<double>
+  divide(const std::vector<double> & vect, const double & D);
+
+  double
+  sum(const std::vector<double> & vect);
+
+  std::vector<double>
+  uniform(const unsigned int & n);
+}
+
+
 namespace coda{
+  /* Input vector must be not scaled!
+    - D: dimension of the vector
+    - n: total mass of the vector
+    - s: strength of the prior information
+  */
+  enum class PRIOR{PERKS,          // s = 1, t = 1/D
+                   JEFFREYS,       // s = D/2, t = 1/D
+                   BAYES_LAPLACE,  // s = D, t = 1/D
+                   SQ,             // s = sqrt(n), t = 1/D
+                   DEFAULT};       // if sqrt(n)> D --> SQ, otherwise BAYES_LAPLACE
 
-  std::vector<double> uniform(unsigned int n){
-    std::vector<double> tmp;
-    tmp.insert(tmp.begin(),n,1.0/(double)(n))
-    return tmp;
-  };
 
-  class BM{
+  std::vector<double>
+  BM(const std::vector<double> & in, const std::vector<double> & t, const double & s = 1.0);
 
-  private:
-    const double & s; // Strength of prior information
-    std::vector<double> & prior; // Dirichlet prior estimate
+  std::vector<double>
+  BM(const std::vector<double> & in, const double & s = 1.0);
 
-    const std::vector<double> & x; // Normalized input vector
-    std::vector<double> & r; // Output vector
+  std::vector<double>
+  BM(const std::vector<double> & in, coda::PRIOR p = coda::PRIOR::DEFAULT);
 
-  public:
-    // constructor: - riceve prior
-    //              - usa una delle prior di default
-    //              - fa scegliere al programma la prior --> SQ o Laplace
-    BayesMultiplicative(const std::vector<double> & in, std::vector<double> & out)
-       const double & strength = 1.0, const std::vector<double> & user_prior = uniform(in.size())):
-      x(in), s(strength), r(out), prior(user_prior) {};
+  // GBM: prior information computed by cross-validation
+  // void
+  // GBM(const std::vector<double> & in, std::vector<double> & out, const double & s = 1.0)
+  // {
+  //
+  // };
 
-    void treat();
-  };
-
-  class GBM{
-
-  private:
-    const double & s; // Strength of prior information
-    std::vector<double> & prior; // Dirichlet prior estimate
-
-    const std::vector<double> & x; // Normalized input vector
-    std::vector<double> & r; // Output vector
-
-  public:
-    // constructor: unica possibilità, la prior viene calcolata con crossvalidation
-    BayesMultiplicative(const std::vector<double> & in, std::vector<double> & out)
-       const double & strength = 1.0):
-      x(in), s(strength), r(out) {};
-
-    void set_prior();
-    void treat();
-  };
 }
 
 
 
-#endif __COUNT_ZEROS_TREATMENT__
+#endif
