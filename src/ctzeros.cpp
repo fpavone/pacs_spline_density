@@ -4,6 +4,10 @@
 #include <numeric>
 #include "ctzeros.hpp"
 
+using dataframe = std::vector<std::vector<double>>;
+
+/****** help namespace definitions *******/
+
 std::vector<double>
 help::divide(const std::vector<double> & vect, const double & D)
 {
@@ -25,7 +29,16 @@ help::uniform(const unsigned int & n){
   return tmp;
 };
 
+double
+help::geom_mean(const std::vector<double> & vect)
+{
+  double out = 1;
+  for(auto it:vect) out=out*it;
+  return sqrt(out);
+}
 
+
+/****** coda namespace definitions *******/
 
 std::vector<double>
 coda::BM(const std::vector<double> & in, const std::vector<double> & t, const double & s)
@@ -39,7 +52,8 @@ coda::BM(const std::vector<double> & in, const std::vector<double> & t, const do
 
   double t_tot = 0;
 
-  for(std::size_t i = 0; i < in.size(); i++){   //computing term of the summation
+  for(std::size_t i = 0; i < in.size(); i++)
+  {   //computing term of the summation
     assert(in[i]>=0 && " Error (BM): input must be >=0..");
     assert(t[i]>=0 && " Error (BM): input must be >=0..");
 
@@ -48,9 +62,10 @@ coda::BM(const std::vector<double> & in, const std::vector<double> & t, const do
     t_tot += t[i];
   }
 
-  // assert()  controllare che t_tot sia "uguale" a 1
+  // assert()  NOTE: need to check that t_tot is "equal" to 1
 
-  for(std::size_t i = 0; i < in.size(); i++){  //applying BM method
+  for(std::size_t i = 0; i < in.size(); i++)
+  {  //applying BM method
     if(in[i] == 0)
         out.push_back(t[i]*s/(n + s));
     else
@@ -70,7 +85,8 @@ coda::BM(const std::vector<double> & in, const double & s)
 std::vector<double>
 coda::BM(const std::vector<double> & in, coda::PRIOR p)
 {
-  if(p == coda::PRIOR::DEFAULT){
+  if(p == coda::PRIOR::DEFAULT)
+  {
     if( help::sum(in) > (double) (in.size()*in.size()) )  // n > D^2
         p = coda::PRIOR::SQ;
     else
@@ -101,4 +117,48 @@ coda::BM(const std::vector<double> & in, coda::PRIOR p)
       return coda::BM(in, s);
     }
   }
+};
+
+dataframe
+coda::BM(const dataframe & in, const dataframe & t, std::vector<double> s)
+{
+  const std::size_t N = in.size();
+  const std::size_t D = in[0].size();
+
+  dataframe out(N, vector<double>(D,0.0));
+
+  for(std::size_t i = 0; i < N; i++)
+  {
+    out[i] = coda::BM(in[i],t[i],s[i]);
+  }
+};
+
+dataframe
+coda::GBM(const dataframe & in)  // "in" is NxM
+{
+  const std::size_t N = in.size();
+  const std::size_t D = in[0].size();
+
+  dataframe alpha(N, vector<double>(D,0.0)); // 0 initialization
+  dataframe t(N, vector<double>(D,0.0));
+
+  std::vector<double> strength(N,0.0);
+
+  for(std::size_t i = 0; i < N; i++)
+  {
+    for(std::size_t j = 0; j < D; j++)
+    {
+      for(std::size_t k = 0; k < N; j++){
+        if(k != i) alpha[i][j] += in[k][j];
+      }
+    }
+  }
+
+  for(std::size_t i = 0; i < N; i++)
+  {
+    t[i] = help::divide(alpha[i],sum(alpha[i]));
+    strength[i] = help::geom_mean(t[i]);
+  }
+
+  return coda::BM(in,t,strength);
 };

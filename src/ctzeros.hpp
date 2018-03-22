@@ -3,6 +3,8 @@
 
 #include <vector>
 
+using dataframe = std::vector<std::vector<double>>;
+
 namespace help{
   std::vector<double>
   divide(const std::vector<double> & vect, const double & D);
@@ -12,12 +14,17 @@ namespace help{
 
   std::vector<double>
   uniform(const unsigned int & n);
+
+  double
+  geom_mean(const std::vector<double> & vect);
 }
 
 
 
 namespace coda{
-  /* Input vector must be not scaled!
+  /*
+  BM function:
+    Input vector must be not scaled!
     - D: dimension of the vector
     - n: total mass of the vector
     - s: strength of the prior information
@@ -26,6 +33,13 @@ namespace coda{
     1) strength of the prior
     2) strength + prior estimates
     3) choose a method from PRIOR class (default is PRIOR::DEFAULT)
+
+    example: BM(input, coda::PRIOR::BAYES::LAPLACE;
+
+    Reference: "Bayesian-multiplicative treatment of count zeros in compositional data sets"
+    Authors: Josep-Antoni Martín-Fernández, Karel Hron, Matthias Templ,
+              Peter Filzmoser and Javier Palarea-Albaladejo
+    Periodical: Statistical Modelling 2015; 15(2): 134–158
   */
   enum class PRIOR{PERKS,          // s = 1, t = 1/D
                    JEFFREYS,       // s = D/2, t = 1/D
@@ -43,13 +57,26 @@ namespace coda{
   std::vector<double>
   BM(const std::vector<double> & in, coda::PRIOR p = coda::PRIOR::DEFAULT);
 
-  // GBM: prior information computed by cross-validation
-  // void
-  // GBM(const std::vector<double> & in, std::vector<double> & out, const double & s = 1.0)
-  // {
-  //
-  // };
+  dataframe
+  BM(const dataframe & in, const dataframe & t, const vector<double> s);
 
+  /*
+  GBM function:
+    Prior estimate are computed through leave-one-out cross-validation.
+    You need to pass a vector of vector of samples.
+    Every sample is supposed to have the same dimension.
+
+    Strength is computed as 1/g, where g is the geometric mean of the LOO estimates
+
+
+    Reference: "Bayesian-multiplicative treatment of count zeros in compositional data sets"
+    Authors: Josep-Antoni Martín-Fernández, Karel Hron, Matthias Templ,
+              Peter Filzmoser and Javier Palarea-Albaladejo
+    Periodical: Statistical Modelling 2015; 15(2): 134–158
+  */
+
+  dataframe
+  GBM(const dataframe & in);
 }
 
 
