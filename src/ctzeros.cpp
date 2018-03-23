@@ -1,4 +1,5 @@
 #include <vector>
+#include <iostream>
 #include <cassert>
 #include <cmath>
 #include <numeric>
@@ -14,6 +15,7 @@ help::divide(const std::vector<double> & vect, const double & D)
   assert(D>0 && " Error: dividing by zero..");
   std::vector<double> out;
   for(auto it:vect) out.push_back(it/D);
+  return out;
 };
 
 double
@@ -32,18 +34,21 @@ help::uniform(const unsigned int & n){
 double
 help::geom_mean(const std::vector<double> & vect)
 {
-  double out = 1;
-  for(auto it:vect) out=out*it;
-  return sqrt(out);
+  double out = 1.0;
+  for(auto it:vect){
+    out=out*it;
+  }
+  return pow(out, 1.0/vect.size());;
 }
 
 
 /****** coda namespace definitions *******/
 
 std::vector<double>
-coda::BM(const std::vector<double> & in, const std::vector<double> & t, const double & s)
+coda::BM(const std::vector<double> & in, const std::vector<double> & t,
+  const double & s, const bool & is_strength_inverse)
 {
-  assert(s>0 && " Error (BM): strength must be >0..");
+  assert(s>=0 && " Error (BM): strength must be >=0..");
   assert(in.size()==t.size() && " Error(BM): different sizes of input..");
 
   std::vector<double> out;
@@ -63,13 +68,20 @@ coda::BM(const std::vector<double> & in, const std::vector<double> & t, const do
   }
 
   // assert()  NOTE: need to check that t_tot is "equal" to 1
-
   for(std::size_t i = 0; i < in.size(); i++)
   {  //applying BM method
     if(in[i] == 0)
-        out.push_back(t[i]*s/(n + s));
+    {
+      if(is_strength_inverse == false) out.push_back(t[i]*s/(n + s));
+      else out.push_back(t[i]/(s*n + 1));
+    }
+
     else
-        out.push_back(in[i]*(1 - s*tmp/(n+s))/n);
+    {
+      if(is_strength_inverse == false) out.push_back(in[i]*(1 - s*tmp/(n+s))/n);
+      else out.push_back(in[i]*(1 - tmp/(s*n+1))/n);
+    }
+
   }
   return out;
 };
@@ -120,17 +132,18 @@ coda::BM(const std::vector<double> & in, coda::PRIOR p)
 };
 
 dataframe
-coda::BM(const dataframe & in, const dataframe & t, std::vector<double> s)
+coda::BM(const dataframe & in, const dataframe & t, const std::vector<double> & s, const bool & is_strength_inverse)
 {
   const std::size_t N = in.size();
   const std::size_t D = in[0].size();
 
-  dataframe out(N, vector<double>(D,0.0));
+  dataframe out(N, std::vector<double>(D,0.0));
 
   for(std::size_t i = 0; i < N; i++)
   {
-    out[i] = coda::BM(in[i],t[i],s[i]);
+    out[i] = coda::BM(in[i],t[i],s[i],is_strength_inverse);
   }
+  return out;
 };
 
 dataframe
@@ -139,8 +152,8 @@ coda::GBM(const dataframe & in)  // "in" is NxM
   const std::size_t N = in.size();
   const std::size_t D = in[0].size();
 
-  dataframe alpha(N, vector<double>(D,0.0)); // 0 initialization
-  dataframe t(N, vector<double>(D,0.0));
+  dataframe alpha(N, std::vector<double>(D,0.0)); // 0 initialization
+  dataframe t(N, std::vector<double>(D,0.0));
 
   std::vector<double> strength(N,0.0);
 
@@ -148,7 +161,7 @@ coda::GBM(const dataframe & in)  // "in" is NxM
   {
     for(std::size_t j = 0; j < D; j++)
     {
-      for(std::size_t k = 0; k < N; j++){
+      for(std::size_t k = 0; k < N; k++){
         if(k != i) alpha[i][j] += in[k][j];
       }
     }
@@ -156,9 +169,9 @@ coda::GBM(const dataframe & in)  // "in" is NxM
 
   for(std::size_t i = 0; i < N; i++)
   {
-    t[i] = help::divide(alpha[i],sum(alpha[i]));
+    t[i] = help::divide(alpha[i],help::sum(alpha[i]));
     strength[i] = help::geom_mean(t[i]);
   }
 
-  return coda::BM(in,t,strength);
+  return coda::BM(in,t,strength, true);
 };

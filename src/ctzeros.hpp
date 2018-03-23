@@ -49,7 +49,8 @@ namespace coda{
 
 
   std::vector<double>
-  BM(const std::vector<double> & in, const std::vector<double> & t, const double & s = 1.0);
+  BM(const std::vector<double> & in, const std::vector<double> & t,
+    const double & s = 1.0, const bool & is_strength_inverse = false);
 
   std::vector<double>
   BM(const std::vector<double> & in, const double & s);
@@ -58,7 +59,7 @@ namespace coda{
   BM(const std::vector<double> & in, coda::PRIOR p = coda::PRIOR::DEFAULT);
 
   dataframe
-  BM(const dataframe & in, const dataframe & t, const vector<double> s);
+  BM(const dataframe & in, const dataframe & t, const std::vector<double> & s, const bool & is_strength_inverse = false);
 
   /*
   GBM function:
