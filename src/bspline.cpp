@@ -5,8 +5,9 @@
 using vect = std::vector<double>;
 
 int
-bspline::findspan (int n, int p, double t, const vect& U)
+bspline::findspan (int p, double t, const vect& U)
 {
+	n = U.size();
 	int ret = 0;
 	if (t > U[U.size () - 1] || t < U[0])
 	{
@@ -32,16 +33,20 @@ bspline::basisfun (int i, double t, int p, const vect& U, Eigen::ArrayXd& N)
 	double left[p+1];
 	double right[p+1];
 
-	N(0) = 1.0;
+	vect  P(p+1);
+	P[0] = 1.0;
 	for (j = 1; j <= p; j++) {
-	    left[j]  = t - U[i+1-j];
-	    right[j] = U[i+j] - t;
-	    saved = 0.0;
-	    for (r = 0; r < j; r++) {
-	        temp = N(r) / (right[r+1] + left[j-r]);
-	        N(r) = saved + right[r+1] * temp;
-	        saved = left[j-r] * temp;
-	    }
-	    N(j) = saved;
+		left[j]  = t - U[i+1-j];
+		right[j] = U[i+j] - t;
+		saved = 0.0;
+		for (r = 0; r < j; r++) {
+			temp = P[r] / (right[r+1] + left[j-r]);
+			P[r] = saved + right[r+1] * temp;
+			saved = left[j-r] * temp;
+		}
+		P[j] = saved;
+	}
+	for (int k = 0; k <= p ; ++k) {
+		N[i-p+k]=P[k];
 	}
 };	//basisfun
