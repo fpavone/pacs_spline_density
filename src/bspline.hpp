@@ -10,7 +10,7 @@ namespace bspline{
     t Parametric point
     U Knot sequence  int
     */
-  void
+  int
   findspan (int p, double t, const vect &U);
     /*
     i (Input) Knot span (from findspan())
@@ -20,7 +20,7 @@ namespace bspline{
     N (Output) Vector of the functions of the basis (p+1 dimensional)
     */
   void
-  basisfun (int i, double t, int p, const vect &U, Eigen::ArrayXd &N);
+  basisfun (unsigned int i, double t, int p, const vect &U, Eigen::ArrayXd &N);
 }
 
 #endif

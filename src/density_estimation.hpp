@@ -59,8 +59,7 @@ public:
 std::cout << "fill_C:" << '\n';
       // weights.assign(n,1.0);
       weights = Eigen::VectorXd::Constant(n,1.0);
-      set_lambda(knots);
-      fill_C(xcp, knots);
+      set_lambda(lambda);
 std::cout << "fill_M:" << '\n';
       fill_M(knots);
 std::cout << "fill_DK:" << '\n';
