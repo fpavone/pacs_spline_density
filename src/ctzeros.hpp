@@ -59,6 +59,9 @@ namespace coda{
   BM(const std::vector<double> & in, coda::PRIOR p = coda::PRIOR::DEFAULT);
 
   dataframe
+  BM(const dataframe & in, coda::PRIOR p = coda::PRIOR::DEFAULT);
+
+  dataframe
   BM(const dataframe & in, const dataframe & t, const std::vector<double> & s, const bool & is_strength_inverse = false);
 
   /*
