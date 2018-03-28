@@ -10,7 +10,7 @@ namespace bspline{
     t Parametric point
     U Knot sequence  int
     */
-  int
+  unsigned int
   findspan (int p, double t, const vect &U);
     /*
     i (Input) Knot span (from findspan())

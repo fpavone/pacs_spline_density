@@ -4,11 +4,11 @@
 
 using vect = std::vector<double>;
 
-int
+unsigned int
 bspline::findspan (int p, double t, const vect& U)
 {
-	n = U.size();
-	int ret = 0;
+	unsigned int n = U.size();
+	unsigned int ret = 0;
 	if (t > U[U.size () - 1] || t < U[0])
 	{
 		std::cerr << "Value " << t
@@ -24,9 +24,9 @@ bspline::findspan (int p, double t, const vect& U)
 };	//findspan
 
 void
-bspline::basisfun (int i, double t, int p, const vect& U, Eigen::ArrayXd& N)
+bspline::basisfun (unsigned int i, double t, int p, const vect& U, Eigen::ArrayXd& N)
 {
-	int j,r;
+	unsigned int j,r;
 	double saved, temp;
 
 	// work space
@@ -46,7 +46,7 @@ bspline::basisfun (int i, double t, int p, const vect& U, Eigen::ArrayXd& N)
 		}
 		P[j] = saved;
 	}
-	for (int k = 0; k <= p ; ++k) {
+	for (unsigned int k = 0; k <= p ; ++k) {
 		N[i-p+k]=P[k];
 	}
 };	//basisfun
