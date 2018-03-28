@@ -37,7 +37,7 @@ Density::fill_M
     for (unsigned int i = 0; i < n; ++i) {
         N.setZero();
         t = x[i];
-        fs = bspline::findspan(n, k, t, knots);
+        fs = bspline::findspan(k, t, knots);
         bspline::basisfun(fs, t, n, knots, N);
         for (unsigned int j = 0; j < G; ++j) {
             for (int y = 0; y < G; ++y) {
