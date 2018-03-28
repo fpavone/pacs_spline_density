@@ -132,6 +132,21 @@ coda::BM(const std::vector<double> & in, coda::PRIOR p)
 };
 
 dataframe
+coda::BM(const dataframe & in, coda::PRIOR p){
+  const std::size_t N = in.size();
+  const std::size_t D = in[0].size();
+
+  dataframe out(N, std::vector<double>(D,0.0));
+
+  for(std::size_t i=0; i < in.size(); i++)
+  {
+    out[i] = BM(in[i], p);
+  }
+
+  return out;
+};
+
+dataframe
 coda::BM(const dataframe & in, const dataframe & t, const std::vector<double> & s, const bool & is_strength_inverse)
 {
   const std::size_t N = in.size();
