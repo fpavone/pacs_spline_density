@@ -62,9 +62,9 @@ std::cout << "fill_C:" << '\n';
       set_lambda(knots);
       fill_C(xcp, lambda);
 std::cout << "fill_M:" << '\n';
-      fill_M(knots);
+      fill_M(lambda);
 std::cout << "fill_DK:" << '\n';
-      fill_DK(knots);
+      fill_DK(lambda);
       P = (1 / alpha * (DK).transpose() * M * (DK) + (C * DK).transpose() * weights.asDiagonal() * C * DK).sparseView();
       Eigen::VectorXd newycp(ycp.size());
       for (unsigned int i = 0; i < ycp.size() ; ++i) {
