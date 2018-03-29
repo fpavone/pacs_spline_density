@@ -20,5 +20,6 @@ int main() {
     MyDensity.print_all();
     MyDensity.solve();
     MyDensity.print_sol();
+
     return 0;
 }
