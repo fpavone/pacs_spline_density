@@ -10,7 +10,7 @@
 // NOTE: maybe useful a diagonal matrix W instead of weights.asDiagonal
 
 class Density {
-
+// G = G + k + 1
 private:
     unsigned int k;   // Spline degree
     unsigned int n;   // Number of control points
@@ -56,15 +56,18 @@ public:
     Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp, double kk, double g):
       k(kk), n(xcp.size()), G(g+k+1), u(knots[0]), v(*knots.end())
     {
-std::cout << "fill_C:" << '\n';
+std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
       weights = Eigen::VectorXd::Constant(n,1.0);
       set_lambda(knots);
       fill_C(xcp, lambda);
-std::cout << "fill_M:" << '\n';
+std::cout << C << std::endl;
+std::cout << "fill_M.." << '\n';
       fill_M(lambda);
-std::cout << "fill_DK:" << '\n';
+std::cout << M << std::endl;
+std::cout << "fill_DK.." << '\n';
       fill_DK(lambda);
+std::cout << Eigen::MatrixXd(DK) << '\n';
       P = (1 / alpha * (DK).transpose() * M * (DK) + (C * DK).transpose() * weights.asDiagonal() * C * DK).sparseView();
       Eigen::VectorXd newycp(ycp.size());
       for (unsigned int i = 0; i < ycp.size() ; ++i) {
@@ -101,10 +104,11 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
 
     void print_all() const
     {
-        std::cout << "MATRIX C:" << '\n' << C << '\n';
-        std::cout << "MATRIX M:" << '\n' << M << '\n';
-        std::cout << "MATRIX DK:" << '\n' << DK << '\n';
-        std::cout << "MATRIX W:" << '\n' << Eigen::MatrixXd(weights.asDiagonal()) << '\n';
+        std::cout << "MATRIX C:" << '\n' << C << std::endl;
+        std::cout << C.size() << std::endl;
+        std::cout << "MATRIX M:" << '\n' << M << std::endl;
+        std::cout << "MATRIX DK:" << '\n' << Eigen::MatrixXd(DK) << std::endl;
+        std::cout << "MATRIX W:" << '\n' << Eigen::MatrixXd(weights.asDiagonal()) << std::endl;
     }
 
     void solve()
