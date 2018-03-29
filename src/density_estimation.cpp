@@ -13,7 +13,7 @@ Density::fill_C
       N = Eigen::ArrayXd::Constant(G, 0.0);
       t = cp[i];
       int fs = bspline::findspan(k, t, knots);
-        std::cout<< i << ": "<<fs<<std::endl;
+std::cout<< i << ": "<<fs<<std::endl;
       bspline::basisfun(fs, t, k, knots, N);
       C.row(i) = N;
     }
@@ -40,7 +40,7 @@ Density::fill_M
         N.setZero();
         t = x[i];
         fs = bspline::findspan(k, t, knots);
-        bspline::basisfun(fs, t, n, knots, N);
+        bspline::basisfun(fs, t, k, knots, N);
         for (unsigned int j = 0; j < G; ++j) {
             for (int y = 0; y < G; ++y) {
                 M(j, y) += w[i] * N(j) * N(y);
