@@ -54,7 +54,7 @@ private:
 public:
 
     Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp, double kk, double g):
-      k(kk), n(xcp.size()), G(g+k+1), u(knots[0]), v(*knots.end())
+      k(kk), n(xcp.size()), G(g+k+1), u(knots[0]), v(*(knots.end()-1))
     {
 std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);

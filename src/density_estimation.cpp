@@ -22,8 +22,8 @@ void
 Density::fill_M
 (const std::vector<double>& knots)
 {
-    M.resize(G,G);
 
+    M.resize(G,G);
     M.setZero();
     Eigen::ArrayXd N = Eigen::ArrayXd::Constant(G, 0.0);
     double x[n];
@@ -33,6 +33,7 @@ Density::fill_M
         x[l] = (v - u) / 2 * x[l] + (v + u) / 2;
         w[l] = (v - u) / 2 * w[l];
     }
+
     int fs;
     double t;
     for (unsigned int i = 0; i < n; ++i) {
