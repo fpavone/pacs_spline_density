@@ -16,9 +16,9 @@ private:
     unsigned int n;   // Number of control points
     unsigned int G;   // Number of knots including additional ones
 
-    double alpha;  // penalization parameter
     double u, v;    // [u,v] support of spline
-    double l;       // order of derivative in penalization term
+    unsigned int l;       // order of derivative in penalization term
+    double alpha;  // penalization parameter
 
     Eigen::MatrixXd C;   // Collocation matrix - nxG
     Eigen::MatrixXd M;   // GxG

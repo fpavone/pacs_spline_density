@@ -73,8 +73,7 @@ void
 Density::fill_S
 ()
 {
-  int l=2;
-  for (size_t j = l; j >= 1; j--)
+  for (std::size_t j = l; j >= 1; j--)
   {
     Eigen::SparseMatrix<double> DL(G - j, G + 1 - j);
     /*
@@ -83,21 +82,19 @@ Density::fill_S
     index_code = index_ref + k
     This is why the following loop start from j instead of j - k.
     */
-    for (size_t i = 0; i < (G - j) ; i++)
+    for (std::size_t i = j; i <= (G - 1) ; i++)
     {
-      DL.insert(i,i) = -(k + 1 - j)/(lambda[i+2*k+1-j] - lambda[i+k]);
-      DL.insert(i,i+1) = (k + 1 - j)/(lambda[i+2*k+1-j] - lambda[i+k]);
+      DL.insert(i-j,i-j) = -(double)(k + 1 - j)/(lambda[i+k+1-j] - lambda[i]);
+      DL.insert(i-j,i-j+1) = (double)(k + 1 - j)/(lambda[i+k+1-j] - lambda[i]);
     }
-std::cout << "DL j = " << j << '\n' << Eigen::MatrixXd(DL) << std::endl;
     if( j == l )
     {
-      S = DL;
       S.resize(G - l, G + 1 - l);
+      S = DL;
     }
     else
     {
       S = S*DL;
-      S.resize(G - l, G + 1 - j);
     }
   }
 }
