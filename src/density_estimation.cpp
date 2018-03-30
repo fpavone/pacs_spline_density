@@ -54,7 +54,7 @@ Density::fill_M
 
 void
 Density::fill_DK
-(const std::vector<double>& knots)
+()
 {
   DK.resize(G,G);
 //  DK.reserve(Eigen::VectorXi::Constant(G,2));
@@ -69,32 +69,38 @@ Density::fill_DK
 
 
 // Compute the S_l matrix for the penalization term
-// void
-// Density::fill_S
-// (const std::vector<double> & knots)
-// {
-//   int l=2;
-//   for (size_t j = l; it >= 1; j--){
-//     Eigen::SparseMatrix<double> DL(G - it, G + 1 - it);
-//     /*
-//     There is a delay between the indexing of lambda in the reference paper
-//     [J. Machalova et al] and the indexing in the code. Precisely:
-//     index_code = index_ref + k
-//     This is why the following loop start from j instead of j - k.
-//     */
-//     for (size_t i = j; i < G - 1 ; i++) {
-//       DL.insert(i,i) = -(k + 1 - j)/(lambda[i+k+1-j] - lambda[i]);
-//       DL.insert(i,i+1) = (k + 1 - j)/(lambda[i+k+1-j] - lambda[i]);
-//     }
-// std::cout << "DL j = " << it << '\n' << Eigen::MatrixXd(S) << std::endl;
-//     if( it == l ) S = DL;
-//     else{
-//       S = S*DL;
-//       S.resize(G - l, G + 1 - it);
-//     }
-//   }
-// std::cout << "Printing S:" << '\n' << Eigen::MatrixXd(S) << std::endl;
-// }
+void
+Density::fill_S
+()
+{
+  int l=2;
+  for (size_t j = l; j >= 1; j--)
+  {
+    Eigen::SparseMatrix<double> DL(G - j, G + 1 - j);
+    /*
+    There is a delay between the indexing of lambda in the reference paper
+    [J. Machalova et al] and the indexing in the code. Precisely:
+    index_code = index_ref + k
+    This is why the following loop start from j instead of j - k.
+    */
+    for (size_t i = 0; i < (G - j) ; i++)
+    {
+      DL.insert(i,i) = -(k + 1 - j)/(lambda[i+2*k+1-j] - lambda[i+k]);
+      DL.insert(i,i+1) = (k + 1 - j)/(lambda[i+2*k+1-j] - lambda[i+k]);
+    }
+std::cout << "DL j = " << j << '\n' << Eigen::MatrixXd(DL) << std::endl;
+    if( j == l )
+    {
+      S = DL;
+      S.resize(G - l, G + 1 - l);
+    }
+    else
+    {
+      S = S*DL;
+      S.resize(G - l, G + 1 - j);
+    }
+  }
+}
 
 
 

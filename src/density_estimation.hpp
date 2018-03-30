@@ -16,7 +16,7 @@ private:
     unsigned int n;   // Number of control points
     unsigned int G;   // Number of knots including additional ones
 
-    double alpha = 1.0;  // penalization parameter
+    double alpha;  // penalization parameter
     double u, v;    // [u,v] support of spline
     double l;       // order of derivative in penalization term
 
@@ -39,22 +39,24 @@ private:
       (const std::vector<double>& cp, const std::vector<double>& knots);
 
     void fill_M
-      (const std::vector<double>& knots);
+      (const std::vector<double>& knots); // it uses lambda
+      // NOTE: better to void fill_M() and use lambda member as in fill_DK?
 
     void fill_DK
-      (const std::vector<double>& knots);
+      (); // it uses lambda
 
     // Compute the S_l matrix for the penalization term
     void fill_S
-      (const std::vector<double>& knots);
+      (); // it uses lambda
 
     void set_lambda
       (const std::vector<double>& knots);
 
 public:
 
-    Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp, double kk, double g):
-      k(kk), n(xcp.size()), G(g+k+1), u(knots[0]), v(*(knots.end()-1))
+    Density(const std::vector<double>& knots, const std::vector<double>& xcp,
+      const std::vector<double>& ycp, double kk, double g, unsigned int ll, double opt_param = 1.0):
+      k(kk), n(xcp.size()), G(g+k+1), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param)
     {
 std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
@@ -66,8 +68,11 @@ std::cout << "fill_M.." << '\n';
       fill_M(lambda);
 std::cout << M << std::endl;
 std::cout << "fill_DK.." << '\n';
-      fill_DK(lambda);
+      fill_DK();
 std::cout << Eigen::MatrixXd(DK) << '\n';
+std::cout << "fill_S.." << '\n';
+      fill_S();
+std::cout << Eigen::MatrixXd(S) << '\n';
       P = (1 / alpha * (DK).transpose() * M * (DK) + (C * DK).transpose() * weights.asDiagonal() * C * DK).sparseView();
       Eigen::VectorXd newycp(ycp.size());
       for (unsigned int i = 0; i < ycp.size() ; ++i) {
@@ -77,35 +82,34 @@ std::cout << Eigen::MatrixXd(DK) << '\n';
 std::cout << "Constructor done - p:" << '\n' << p << '\n';
     }
 
-
-    Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
-      double kk, double g, double opt_param):
-      alpha(opt_param)
-    {
-      Density(knots, xcp, ycp, kk,g);
-    }
-
-    Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
-       double kk, double g, unsigned int ll)
-    {
-      // assert(ll<G);
-      l = ll;
-      Density(knots, xcp, ycp, kk, g);
-    }
-
-    Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
-       double kk, double g, double opt_param, unsigned int ll):
-      alpha(opt_param)
-    {
-      // assert(ll<G);
-      l = ll;
-      Density(knots, xcp, ycp, kk, g);
-    }
+    // Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
+    //   double kk, double g, double opt_param):
+    //   alpha(opt_param)
+    // {
+    //   Density(knots, xcp, ycp, kk,g);
+    // }
+    //
+    // Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
+    //    double kk, double g, unsigned int ll)
+    // {
+    //   // assert(ll<G);
+    //   l = ll;
+    //   Density(knots, xcp, ycp, kk, g);
+    // }
+    //
+    // Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
+    //    double kk, double g, double opt_param, unsigned int ll):
+    //   alpha(opt_param)
+    // {
+    //   // assert(ll<G);
+    //   l = ll;
+    //   Density(knots, xcp, ycp, kk, g);
+    // }
 
     void print_all() const
     {
         std::cout << "MATRIX C:" << '\n' << C << std::endl;
-        std::cout << C.size() << std::endl;
+        std::cout << lambda[0] << std::endl;
         std::cout << "MATRIX M:" << '\n' << M << std::endl;
         std::cout << "MATRIX DK:" << '\n' << Eigen::MatrixXd(DK) << std::endl;
         std::cout << "MATRIX W:" << '\n' << Eigen::MatrixXd(weights.asDiagonal()) << std::endl;

@@ -17,7 +17,7 @@ int main() {
     // const int G = g + k + 1;
 
     Density MyDensity(knots, xcp, ycp, k, g, l);
-    MyDensity.print_all();
+    // MyDensity.print_all();
     MyDensity.solve();
     MyDensity.print_sol();
 
