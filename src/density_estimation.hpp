@@ -36,10 +36,10 @@ private:
                                  // dimension: g + 2k + 2 = G + k + 1
 
     void fill_C
-      (const std::vector<double>& cp, const std::vector<double>& knots);
+      (const std::vector<double>& cp);
 
     void fill_M
-      (const std::vector<double>& knots); // it uses lambda
+      (); // it uses lambda
       // NOTE: better to void fill_M() and use lambda member as in fill_DK?
 
     void fill_DK
@@ -62,10 +62,10 @@ std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
       weights = Eigen::VectorXd::Constant(n,1.0);
       set_lambda(knots);
-      fill_C(xcp, lambda);
+      fill_C(xcp);
 std::cout << C << std::endl;
 std::cout << "fill_M.." << '\n';
-      fill_M(lambda);
+      fill_M();
 std::cout << M << std::endl;
 std::cout << "fill_DK.." << '\n';
       fill_DK();

@@ -4,23 +4,21 @@
 
 void
 Density::fill_C
-(const std::vector<double>& cp, const std::vector<double>& knots)
+(const std::vector<double>& cp)
 {
     C.resize(n,G);
-    double t = 0.0;
     Eigen::ArrayXd N;
     for (unsigned int i = 0; i < n; i++) {
       N = Eigen::ArrayXd::Constant(G, 0.0);
-      t = cp[i];
-      int fs = bspline::findspan(k, t, knots);
-      bspline::basisfun(fs, t, k, knots, N);
+      int fs = bspline::findspan(k, cp[i], lambda);
+      bspline::basisfun(fs, cp[i], k, lambda, N);
       C.row(i) = N;
     }
 }
 
 void
 Density::fill_M
-(const std::vector<double>& knots)
+()
 {
 
     M.resize(G,G);
@@ -35,12 +33,10 @@ Density::fill_M
     }
 
     int fs;
-    double t;
     for (unsigned int i = 0; i < n; ++i) {
         N.setZero();
-        t = x[i];
-        fs = bspline::findspan(k, t, knots);
-        bspline::basisfun(fs, t, k, knots, N);
+        fs = bspline::findspan(k, x[i], lambda);
+        bspline::basisfun(fs, x[i], k, lambda, N);
         for (unsigned int j = 0; j < G; ++j) {
             for (int y = 0; y < G; ++y) {
                 M(j, y) += w[i] * N(j) * N(y);
