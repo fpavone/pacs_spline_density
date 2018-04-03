@@ -54,11 +54,11 @@ Density::fill_DK
 {
   DK.resize(G,G);
 //  DK.reserve(Eigen::VectorXi::Constant(G,2));
-  DK.insert(0, 0) = (k+1)/(lambda[k+1] - lambda[0]); // DK.insert(0, 0) = (k+1)/(lambda[k+2] - knots[0]);
-  DK.insert(0, G-1) = -(k+1)/(lambda[G + k] - lambda[G-1]); // DK.insert(0, G-1) = -(k+1)/(knots[k+1] - knots[0]);
+  DK.insert(0, 0) = (double)(k+1)/(lambda[k+1] - lambda[0]); // DK.insert(0, 0) = (k+1)/(lambda[k+2] - knots[0]);
+  DK.insert(0, G-1) = -(double)(k+1)/(lambda[G + k] - lambda[G-1]); // DK.insert(0, G-1) = -(k+1)/(knots[k+1] - knots[0]);
   for (std::size_t i = 1; i < G; i++) {
-      DK.insert(i,i-1) = -(k+1)/(lambda[k+1+i] - lambda[i]);  // DK.insert(i,i-1) = -1/(lambda[k+2+i] - knots[i]);
-      DK.insert(i,i) = (k+1)/(lambda[k+1+i] - lambda[i]); // DK.insert(i,i) = 1/(lambda[k+2+i] - knots[i]);
+      DK.insert(i,i-1) = -(double)(k+1)/(lambda[k+1+i] - lambda[i]);  // DK.insert(i,i-1) = -1/(lambda[k+2+i] - knots[i]);
+      DK.insert(i,i) = (double)(k+1)/(lambda[k+1+i] - lambda[i]); // DK.insert(i,i) = 1/(lambda[k+2+i] - knots[i]);
   }
   DK.makeCompressed();
 }
