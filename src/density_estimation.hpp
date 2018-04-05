@@ -110,7 +110,6 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
     void print_all() const
     {
         std::cout << "MATRIX C:" << '\n' << C << std::endl;
-        std::cout << lambda[0] << std::endl;
         std::cout << "MATRIX M:" << '\n' << M << std::endl;
         std::cout << "MATRIX DK:" << '\n' << Eigen::MatrixXd(DK) << std::endl;
         std::cout << "MATRIX W:" << '\n' << Eigen::MatrixXd(weights.asDiagonal()) << std::endl;
