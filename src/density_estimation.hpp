@@ -6,6 +6,7 @@
 #include <iostream>
 #include "bspline.hpp"
 #include "sandia_rules.hpp"
+#include <unsupported/Eigen/SparseExtra> // to save the matrix
 
 // NOTE: maybe useful a diagonal matrix W instead of weights.asDiagonal
 
@@ -131,6 +132,13 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
     {
       std::cout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
       std::cout << "B-SPLINE COEFFICIENTS b = DKc" << '\n' << b << '\n';
+    };
+
+    void save_matrix() const
+    {
+      P.makeCompressed();
+      Eigen::saveMarket(P, "density.mtx");
+      Eigen::saveMarketVector(p, "density_b.mtx");
     };
 };
 
