@@ -15,6 +15,7 @@ class Density {
 private:
     unsigned int k;   // Spline degree
     unsigned int n;   // Number of control points
+    unsigned int g;   // Number knots - 2
     unsigned int G;   // Number of knots including additional ones
 
     double u, v;    // [u,v] support of spline
@@ -56,8 +57,8 @@ private:
 public:
 
     Density(const std::vector<double>& knots, const std::vector<double>& xcp,
-      const std::vector<double>& ycp, double kk, double g, unsigned int ll, double opt_param = 1.0):
-      k(kk), n(xcp.size()), G(g+k+1), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param)
+      const std::vector<double>& ycp, double kk, unsigned int ll, double opt_param):
+      k(kk), g(knots.size()-2), n(xcp.size()), G(g+k+1), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param)
     {
 std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
@@ -82,30 +83,6 @@ std::cout << Eigen::MatrixXd(S) << '\n';
       p = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
 std::cout << "Constructor done - p:" << '\n' << p << '\n';
     }
-
-    // Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
-    //   double kk, double g, double opt_param):
-    //   alpha(opt_param)
-    // {
-    //   Density(knots, xcp, ycp, kk,g);
-    // }
-    //
-    // Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
-    //    double kk, double g, unsigned int ll)
-    // {
-    //   // assert(ll<G);
-    //   l = ll;
-    //   Density(knots, xcp, ycp, kk, g);
-    // }
-    //
-    // Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
-    //    double kk, double g, double opt_param, unsigned int ll):
-    //   alpha(opt_param)
-    // {
-    //   // assert(ll<G);
-    //   l = ll;
-    //   Density(knots, xcp, ycp, kk, g);
-    // }
 
     void print_all() const
     {
@@ -133,12 +110,12 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
       std::cout << "B-SPLINE COEFFICIENTS b = DKc" << '\n' << b << '\n';
     };
 
-    void save_matrix() const
-    {
-      P.makeCompressed();
-      Eigen::saveMarket(P, "density.mtx");
-      Eigen::saveMarketVector(p, "density_b.mtx");
-    };
+    // void save_matrix() const
+    // {
+    //   P.makeCompressed();
+    //   Eigen::saveMarket(P, "density.mtx");
+    //   Eigen::saveMarketVector(p, "density_b.mtx");
+    // };
 };
 
 #endif //PROGETTO_DENSITY_ESTIMATION_HPP
