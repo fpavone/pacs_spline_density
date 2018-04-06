@@ -23,13 +23,21 @@
 
 class Mother {
 
-    std::vector<std::vector<double>> data;
-    std::vector<std::vector<double>> prop_data;
+    // std::vector<std::vector<double>> data;
+    // std::vector<std::vector<double>> prop_data;
     std::vector<std::vector<double>> transf_data;
+
+    unsigned int k;  // Spline degree
+    unsigned int l;
+    double alpha;  // penalization parameter
+    bool knots_given;
 
     unsigned int nclasses;
     double min, max;
     std::vector<double> intervals;
+
+    Mother(unsigned int kk, unsigned int ll, double opt_param, bool given):
+      k(kk), l(ll), alpha(opt_param), knots_given(given);
 
     unsigned int
     set_nclasses () const
@@ -99,7 +107,7 @@ class Mother {
       // Because of count character of values in prop_data, also some zero values
       // occurred that would make further processing by clr transformation impossible.
       // For this reason, their imputation using a model-based procedure was performed
-      prop_data = coda::GBM(prop_data);
+      prop_data = coda::BM(prop_data);
     }
 
     void
@@ -123,7 +131,7 @@ class Mother {
     void
     antitData (std::vector<double>& v)
     {
-      // anti clr transformation 
+      // anti clr transformation
       double a = 0.0;
       for (const auto& x:v)
         a += exp(x);

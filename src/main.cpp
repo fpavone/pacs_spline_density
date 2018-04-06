@@ -1,5 +1,6 @@
 // #include "create_matrix.hpp"
 #include "density_estimation.hpp"
+#include "ctzeros.hpp"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -81,6 +82,40 @@ int main(int argc, char* argv[]) {
     // }
 
     // Testing first row
+    std::vector<std::vector<double>> prop_data = coda::BM(ycp);
+    std::vector<std::vector<double>> transf_data;
+    std::vector<double> temp;
+    double a = 1.0;
+    for (auto& x:prop_data)
+    {
+      // computing geometric mean
+      for (const auto& y:x)
+        a *= y;
+      a = pow(a, 1.0/x.size());   // nclasses = x.size()
+
+      // clr transformation
+      for (const auto& y:x)
+        temp.push_back(log(y/a));
+
+      transf_data.push_back(temp);
+      temp.clear();
+    }
+
+    // std::cout<<"prop_data: "<<std::endl;
+    // for (const auto x:prop_data){
+    //   for (const auto y:x)
+    //     std::cout<<y<<"  ";
+    //   std::cout<<"\n";
+    // }
+    // std::cout <<"\n\n\n\n\n" << std::endl;
+    //
+    // std::cout<<"transf: "<<std::endl;
+    // for (const auto x:transf_data){
+    //   for (const auto y:x)
+    //     std::cout<<y<<"  ";
+    //   std::cout<<"\n";
+    // }
+
     Density MyDensity(knots, xcp, ycp[0], k, l, alpha);
     // MyDensity.print_all();
     // MyDensity.solve();
