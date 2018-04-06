@@ -1,5 +1,5 @@
 // #include "create_matrix.hpp"
-// #include "density_estimation.hpp"
+#include "density_estimation.hpp"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -18,6 +18,11 @@ int main(int argc, char* argv[]) {
     unsigned int l = filePara("l", 2);
     double alpha = filePara("alpha", 1.0);  // penalization parameter
     bool knots_given = filePara("knots_given", false);
+    std::string line;
+
+    std::vector<double> knots;
+    std::vector<double> xcp;
+    std::vector<std::vector<double>> ycp;
 
     // Read data
     const std::string fileD = commandline.follow("../input/data", 1, "-d");
@@ -25,10 +30,6 @@ int main(int argc, char* argv[]) {
     if (!file_stream) {
       std::cout << "Could not open file " << fileD << std::endl;
     }
-
-    std::string line;
-    std::vector<double> xcp;
-    std::vector<std::vector<double>> ycp;
 
     // Read xcp
     getline(file_stream, line, '\n');
@@ -48,6 +49,27 @@ int main(int argc, char* argv[]) {
       ycp.push_back(numbers);
     }
 
+    // Read knots if knots_given
+    if(knots_given)
+    {
+      const std::string fileK = commandline.follow("../input/knots", 2, "-k", "--knots");
+      std::ifstream file_stream(fileK, std::ios_base::in);
+      if (!file_stream) {
+        std::cout << "Could not open file " << fileK << std::endl;
+      }
+
+      getline(file_stream, line, '\n');
+      std::stringstream line_stream(line);
+      std::istream_iterator<double> start(line_stream), end;
+      std::vector<double> numbers(start, end);
+      for (const auto x:numbers)
+        knots.push_back(x);
+    }
+    else
+    {
+
+    }
+
     // Checking data are read correctly
     for (const auto x:xcp)
       std::cout<<x<<"  ";
@@ -57,17 +79,9 @@ int main(int argc, char* argv[]) {
         std::cout<<y<<"  ";
       std::cout<<"\n";
     }
+    // Testing first row
 
-
-
-    // //1st ROW EXAMPLE
-    // std::vector<double> const knots{0.0, 30000, 70000, 110709}; //Knot sequence
-    //
-    // unsigned int g = knots.size()-2;  //number of knots excluding the end points
-    // // const int n = xcp.size(); //corretto: cp.size()     //Number of control points
-    // // const int G = g + k + 1;
-    //
-    // Density MyDensity(knots, xcp, ycp, k, g, l);
+    Density MyDensity(knots, xcp, ycp[0], k, l, alpha);
     // MyDensity.print_all();
     // MyDensity.solve();
     // MyDensity.print_sol();
