@@ -24,7 +24,7 @@ names <- colnames(data)
 for(it in 1:length(names)) names[it] <- substring(names[it],3,nchar(names[it]))
 colnames(data) <- names
   
-write.table(data, file="data.txt", row.names = FALSE, col.names=TRUE, quote = FALSE)
+write.table(data, file="data", row.names = FALSE, col.names=TRUE, quote = FALSE)
 
 
 
