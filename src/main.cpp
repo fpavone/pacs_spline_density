@@ -17,6 +17,7 @@ int main(int argc, char* argv[]) {
     unsigned int k = filePara("k", 3);     // Spline degree
     unsigned int l = filePara("l", 2);
     double alpha = filePara("alpha", 1.0);  // penalization parameter
+    bool knots_given = filePara("knots_given", false);
 
     // Read data
     const std::string fileD = commandline.follow("../input/data", 1, "-d");
