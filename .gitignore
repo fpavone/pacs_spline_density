@@ -4,4 +4,5 @@
 .DS_Store
 /mydev
 main
-/data
+/data/topsecret
+.Rhistory
