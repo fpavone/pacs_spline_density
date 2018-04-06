@@ -11,7 +11,7 @@ int main(int argc, char* argv[]) {
 
     // Read parameters
     GetPot commandline(argc, argv);
-    const std::string fileName = commandline.follow("../input/parameters", 2, "-p", "--pars");
+    const std::string fileName = commandline.follow("input/parameters", 2, "-p", "--pars");
     GetPot filePara ( fileName.c_str() );
 
     unsigned int k = filePara("k", 3);     // Spline degree
@@ -19,13 +19,15 @@ int main(int argc, char* argv[]) {
     double alpha = filePara("alpha", 1.0);  // penalization parameter
     bool knots_given = filePara("knots_given", false);
     std::string line;
+    std::cout << alpha << std::endl;
+
 
     std::vector<double> knots;
     std::vector<double> xcp;
     std::vector<std::vector<double>> ycp;
 
     // Read data
-    const std::string fileD = commandline.follow("../input/data", 1, "-d");
+    const std::string fileD = commandline.follow("input/data", 1, "-d");
     std::ifstream file_stream(fileD, std::ios_base::in);
     if (!file_stream) {
       std::cout << "Could not open file " << fileD << std::endl;
@@ -52,7 +54,7 @@ int main(int argc, char* argv[]) {
     // Read knots if knots_given
     if(knots_given)
     {
-      const std::string fileK = commandline.follow("../input/knots", 2, "-k", "--knots");
+      const std::string fileK = commandline.follow("input/knots", 2, "-k", "--knots");
       std::ifstream file_stream(fileK, std::ios_base::in);
       if (!file_stream) {
         std::cout << "Could not open file " << fileK << std::endl;
@@ -80,7 +82,6 @@ int main(int argc, char* argv[]) {
       std::cout<<"\n";
     }
     // Testing first row
-
     Density MyDensity(knots, xcp, ycp[0], k, l, alpha);
     // MyDensity.print_all();
     // MyDensity.solve();
