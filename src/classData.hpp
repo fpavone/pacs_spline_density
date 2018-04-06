@@ -4,6 +4,7 @@
 #include <math.h>
 // #include <Eigen/Dense>
 // #include <Eigen/Sparse>
+#include <Eigen/Core>
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -28,10 +29,16 @@ class Mother {
 private:
 
   unsigned int k;  // Spline degree
-  unsigned int l;
+  unsigned int l;  // order of derivative in penalization term
   double alpha;  // penalization parameter
 
+  unsigned int n;   // Number of control points
+  unsigned int g;   // Number knots - 2
+  unsigned int G;   // Number of knots including additional ones
+
   std::vector<double> knots; // spline knots
+  double u, v;    // [u,v] support of spline
+
   std::vector<double> xcp;
 
   // std::vector<std::vector<double>> data;
@@ -39,6 +46,8 @@ private:
   std::vector<std::vector<double>> transf_data; // clr-transformed data
 
   Density dens;
+
+  std::vector<Eigen::VectorXd> bspline;
 
   // NOTE: generalization for different data input
   unsigned int nclasses;
@@ -52,6 +61,10 @@ public:
   void createKnots()
   {
     std::cout << "ATTENTO NODI NON CREATI: DA FINIRE.." << std::endl;
+    g = knots.size()-2;
+    G = g+k+1;
+    u = knots.front();
+    v = knots.back();
   }
 
   void readData(const std::string & fileD)
@@ -82,6 +95,7 @@ public:
       prop_data.push_back(coda::BM(numbers));
     }
 
+    n = xcp.size();
   }
 
   void readData(const std::string & fileD, const std::string & fileK)
@@ -101,6 +115,11 @@ public:
     std::vector<double> numbers(start, end);
     for (const auto x:numbers)
       knots.push_back(x);
+
+    g = knots.size()-2;
+    G = g+k+1;
+    u = knots.front();
+    v = knots.back();
   }
 
   void
@@ -130,7 +149,10 @@ public:
   pacs()
   {
     for(const auto & it:transf_data)
-    dens(knots,xcp,it)
+    {
+      dens(it);
+      bspline.push_back(dens.solve());
+    }
   }
 
   // NOTE: generalization for different data input

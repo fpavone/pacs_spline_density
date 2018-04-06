@@ -1,6 +1,7 @@
 // #include "create_matrix.hpp"
 #include "density_estimation.hpp"
 #include "ctzeros.hpp"
+#include "classData.hpp"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -38,6 +39,7 @@ int main(int argc, char* argv[]) {
     }
 
     obj.transfData();
+    obj.pacs();
 
     // Checking data are read correctly
     // for (const auto x:xcp)
@@ -49,25 +51,5 @@ int main(int argc, char* argv[]) {
     //   std::cout<<"\n";
     // }
 
-    // Testing first row
-    // std::cout<<"prop_data: "<<std::endl;
-    // for (const auto x:prop_data){
-    //   for (const auto y:x)
-    //     std::cout<<y<<"  ";
-    //   std::cout<<"\n";
-    // }
-    // std::cout <<"\n\n\n\n\n" << std::endl;
-    //
-    // std::cout<<"transf: "<<std::endl;
-    // for (const auto x:transf_data){
-    //   for (const auto y:x)
-    //     std::cout<<y<<"  ";
-    //   std::cout<<"\n";
-    // }
-
-    Density MyDensity(knots, xcp, ycp[0], k, l, alpha);
-    // MyDensity.print_all();
-    // MyDensity.solve();
-    // MyDensity.print_sol();
     return 0;
 }
