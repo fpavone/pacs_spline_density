@@ -13,14 +13,6 @@
 class Density {
 // G = G + k + 1
 private:
-    unsigned int k;   // Spline degree
-    unsigned int n;   // Number of control points
-    unsigned int g;   // Number knots - 2
-    unsigned int G;   // Number of knots including additional ones
-
-    double u, v;    // [u,v] support of spline
-    unsigned int l;       // order of derivative in penalization term
-    double alpha;  // penalization parameter
 
     Eigen::MatrixXd C;   // Collocation matrix - nxG
     Eigen::MatrixXd M;   // GxG
@@ -56,9 +48,7 @@ private:
 
 public:
 
-    Density(const std::vector<double>& knots, const std::vector<double>& xcp,
-      const std::vector<double>& ycp, double kk, unsigned int ll, double opt_param):
-      k(kk), n(xcp.size()), g(knots.size()-2), G(g+k+1), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param)
+    Density(const std::vector<double>& ycp):
     {
 std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
@@ -92,7 +82,8 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
         std::cout << "MATRIX W:" << '\n' << Eigen::MatrixXd(weights.asDiagonal()) << std::endl;
     }
 
-    void solve()
+    Eigen::VectorXd
+    solve()
     {   /* NAIVE SOLVER */
       Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
       // Compute the ordering permutation vector from the structural pattern of P
@@ -102,6 +93,7 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
       //Use the factors to solve the linear system
       c = solver.solve(p);
       b = DK*c;
+      return b;
     };
 
     void print_sol() const
