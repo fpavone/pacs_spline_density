@@ -58,7 +58,7 @@ public:
 
     Density(const std::vector<double>& knots, const std::vector<double>& xcp,
       const std::vector<double>& ycp, double kk, unsigned int ll, double opt_param):
-      k(kk), g(knots.size()-2), n(xcp.size()), G(g+k+1), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param)
+      k(kk), n(xcp.size()), g(knots.size()-2), G(g+k+1), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param)
     {
 std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
