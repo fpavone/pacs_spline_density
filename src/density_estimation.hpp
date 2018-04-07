@@ -10,7 +10,7 @@
 // NOTE: maybe useful a diagonal matrix W instead of weights.asDiagonal
 
 class Density {
-// G = G + k + 1
+// G = g + k + 1
 private:
     unsigned int k;   // Spline degree
     unsigned int n;   // Number of control points
@@ -32,6 +32,7 @@ private:
     Eigen::VectorXd b; // B-spline coefficients - G
 
     Eigen::VectorXd weights;
+    std::vector<double> knots;
     std::vector<double> lambda;  // extended vector of knots - with extra ones
                                  // dimension: g + 2k + 2 = G + k + 1
 
@@ -39,7 +40,7 @@ private:
       (const std::vector<double>& cp, const std::vector<double>& knots);
 
     void fill_M
-      (const std::vector<double>& knots); // it uses lambda
+      (); // it uses lambda
       // NOTE: better to void fill_M() and use lambda member as in fill_DK?
 
     void fill_DK
@@ -56,7 +57,7 @@ public:
 
     Density(const std::vector<double>& knots, const std::vector<double>& xcp,
       const std::vector<double>& ycp, double kk, double g, unsigned int ll, double opt_param = 1.0):
-      k(kk), n(xcp.size()), G(g+k+1), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param)
+      k(kk), n(xcp.size()), G(g+k+1), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param),knots(knots)
     {
 std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
@@ -65,7 +66,7 @@ std::cout << "fill_C.." << '\n';
       fill_C(xcp, lambda);
 std::cout << C << std::endl;
 std::cout << "fill_M.." << '\n';
-      fill_M(lambda);
+      fill_M();
 std::cout << M << std::endl;
 std::cout << "fill_DK.." << '\n';
       fill_DK();
