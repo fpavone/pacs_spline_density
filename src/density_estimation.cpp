@@ -4,16 +4,14 @@
 
 void
 Density::fill_C
-(const std::vector<double>& cp, const std::vector<double>& knots)
+(const std::vector<double>& cp)
 {
     C.resize(n,G);
-    double t = 0.0;
     Eigen::ArrayXd N;
     for (unsigned int i = 0; i < n; i++) {
       N = Eigen::ArrayXd::Constant(G, 0.0);
-      t = cp[i];
-      int fs = bspline::findspan(k, t, knots);
-      bspline::basisfun(fs, t, k, knots, N);
+      int fs = bspline::findspan(k, cp[i], lambda);
+      bspline::basisfun(fs, cp[i], k, lambda, N);
       C.row(i) = N;
     }
 }
@@ -39,15 +37,14 @@ Density::fill_M
     lambda_der.insert(lambda_der.end(), k-l ,knots.back());
 
     int fs;
-    double t;
     for (unsigned int i = 0; i < n; ++i) {
         N.setZero();
         t = x[i];
         fs = bspline::findspan(k-l, t, lambda_der);
         bspline::basisfun(fs, t, k-l, lambda_der, N);
         for (unsigned int j = 0; j < G-l; ++j) {
-
             for (unsigned int y = 0; y < G-l; ++y) {
+
                 M(j, y) += w[i] * N(j) * N(y);
             }
         }
@@ -63,11 +60,11 @@ Density::fill_DK
 {
   DK.resize(G,G);
 //  DK.reserve(Eigen::VectorXi::Constant(G,2));
-  DK.insert(0, 0) = (k+1)/(lambda[k+1] - lambda[0]); // DK.insert(0, 0) = (k+1)/(lambda[k+2] - knots[0]);
-  DK.insert(0, G-1) = -(k+1)/(lambda[G + k] - lambda[G-1]); // DK.insert(0, G-1) = -(k+1)/(knots[k+1] - knots[0]);
+  DK.insert(0, 0) = (double)(k+1)/(lambda[k+1] - lambda[0]); // DK.insert(0, 0) = (k+1)/(lambda[k+2] - knots[0]);
+  DK.insert(0, G-1) = -(double)(k+1)/(lambda[G + k] - lambda[G-1]); // DK.insert(0, G-1) = -(k+1)/(knots[k+1] - knots[0]);
   for (std::size_t i = 1; i < G; i++) {
-      DK.insert(i,i-1) = -(k+1)/(lambda[k+1+i] - lambda[i]);  // DK.insert(i,i-1) = -1/(lambda[k+2+i] - knots[i]);
-      DK.insert(i,i) = (k+1)/(lambda[k+1+i] - lambda[i]); // DK.insert(i,i) = 1/(lambda[k+2+i] - knots[i]);
+      DK.insert(i,i-1) = -(double)(k+1)/(lambda[k+1+i] - lambda[i]);  // DK.insert(i,i-1) = -1/(lambda[k+2+i] - knots[i]);
+      DK.insert(i,i) = (double)(k+1)/(lambda[k+1+i] - lambda[i]); // DK.insert(i,i) = 1/(lambda[k+2+i] - knots[i]);
   }
   DK.makeCompressed();
 }

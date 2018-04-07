@@ -6,6 +6,7 @@
 #include <iostream>
 #include "bspline.hpp"
 #include "sandia_rules.hpp"
+#include <unsupported/Eigen/SparseExtra> // to save the matrix
 
 // NOTE: maybe useful a diagonal matrix W instead of weights.asDiagonal
 
@@ -14,6 +15,7 @@ class Density {
 private:
     unsigned int k;   // Spline degree
     unsigned int n;   // Number of control points
+    unsigned int g;   // Number knots - 2
     unsigned int G;   // Number of knots including additional ones
 
     double u, v;    // [u,v] support of spline
@@ -37,7 +39,7 @@ private:
                                  // dimension: g + 2k + 2 = G + k + 1
 
     void fill_C
-      (const std::vector<double>& cp, const std::vector<double>& knots);
+      (const std::vector<double>& cp);
 
     void fill_M
       (); // it uses lambda
@@ -56,14 +58,14 @@ private:
 public:
 
     Density(const std::vector<double>& knots, const std::vector<double>& xcp,
-      const std::vector<double>& ycp, double kk, double g, unsigned int ll, double opt_param = 1.0):
-      k(kk), n(xcp.size()), G(g+k+1), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param),knots(knots)
+      const std::vector<double>& ycp, double kk, unsigned int ll, double opt_param):
+      k(kk), n(xcp.size()), G(knots.size()-2), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param),knots(knots)
     {
 std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
       weights = Eigen::VectorXd::Constant(n,1.0);
       set_lambda(knots);
-      fill_C(xcp, lambda);
+      fill_C(xcp);
 std::cout << C << std::endl;
 std::cout << "fill_M.." << '\n';
       fill_M();
@@ -83,34 +85,9 @@ std::cout << Eigen::MatrixXd(S) << '\n';
 std::cout << "Constructor done - p:" << '\n' << p << '\n';
     }
 
-    // Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
-    //   double kk, double g, double opt_param):
-    //   alpha(opt_param)
-    // {
-    //   Density(knots, xcp, ycp, kk,g);
-    // }
-    //
-    // Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
-    //    double kk, double g, unsigned int ll)
-    // {
-    //   // assert(ll<G);
-    //   l = ll;
-    //   Density(knots, xcp, ycp, kk, g);
-    // }
-    //
-    // Density(const std::vector<double>& knots, const std::vector<double>& xcp, const std::vector<double>& ycp,
-    //    double kk, double g, double opt_param, unsigned int ll):
-    //   alpha(opt_param)
-    // {
-    //   // assert(ll<G);
-    //   l = ll;
-    //   Density(knots, xcp, ycp, kk, g);
-    // }
-
     void print_all() const
     {
         std::cout << "MATRIX C:" << '\n' << C << std::endl;
-        std::cout << lambda[0] << std::endl;
         std::cout << "MATRIX M:" << '\n' << M << std::endl;
         std::cout << "MATRIX DK:" << '\n' << Eigen::MatrixXd(DK) << std::endl;
         std::cout << "MATRIX W:" << '\n' << Eigen::MatrixXd(weights.asDiagonal()) << std::endl;
@@ -133,6 +110,13 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
       std::cout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
       std::cout << "B-SPLINE COEFFICIENTS b = DKc" << '\n' << b << '\n';
     };
+
+    // void save_matrix() const
+    // {
+    //   P.makeCompressed();
+    //   Eigen::saveMarket(P, "density.mtx");
+    //   Eigen::saveMarketVector(p, "density_b.mtx");
+    // };
 };
 
 #endif //PROGETTO_DENSITY_ESTIMATION_HPP
