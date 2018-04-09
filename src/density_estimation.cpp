@@ -20,7 +20,6 @@ void
 Density::fill_M
 ()
 {
-
     M.resize(G-l,G-l);
     M.setZero();
     Eigen::ArrayXd N = Eigen::ArrayXd::Constant(G-l, 0.0);
@@ -31,17 +30,12 @@ Density::fill_M
         x[ll] = (v - u) / 2 * x[ll] + (v + u) / 2;
         w[ll] = (v - u) / 2 * w[ll];
     }
-    std::vector<double> lambda_der;
-    lambda_der.assign(k-l, knots[0]);
-    lambda_der.insert(lambda_der.begin() + k-l, knots.begin(), knots.end());
-    lambda_der.insert(lambda_der.end(), k-l ,knots.back());
 
     int fs;
     for (unsigned int i = 0; i < n; ++i) {
         N.setZero();
-        t = x[i];
-        fs = bspline::findspan(k-l, t, lambda_der);
-        bspline::basisfun(fs, t, k-l, lambda_der, N);
+        fs = bspline::findspan(k-l, x[i], lambda_der);
+        bspline::basisfun(fs, x[i], k-l, lambda_der, N);
         for (unsigned int j = 0; j < G-l; ++j) {
             for (unsigned int y = 0; y < G-l; ++y) {
 
@@ -110,4 +104,12 @@ Density::set_lambda
   lambda.assign(k, knots[0]);
   lambda.insert(lambda.begin() + k, knots.begin(), knots.end());
   lambda.insert(lambda.end(), k ,knots.back());
+}
+void
+Density::set_lambda_der
+        (const std::vector<double> & knots)
+{
+    lambda_der.assign(k-l, knots[0]);
+    lambda_der.insert(lambda_der.begin() + k-l, knots.begin(), knots.end());
+    lambda_der.insert(lambda_der.end(), k-l ,knots.back());
 }

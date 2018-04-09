@@ -34,9 +34,10 @@ private:
     Eigen::VectorXd b; // B-spline coefficients - G
 
     Eigen::VectorXd weights;
-    std::vector<double> knots;
+
     std::vector<double> lambda;  // extended vector of knots - with extra ones
                                  // dimension: g + 2k + 2 = G + k + 1
+    std::vector<double> lambda_der;
 
     void fill_C
       (const std::vector<double>& cp);
@@ -54,17 +55,20 @@ private:
 
     void set_lambda
       (const std::vector<double>& knots);
+    void set_lambda_der
+            (const std::vector<double>& knots);
 
 public:
 
     Density(const std::vector<double>& knots, const std::vector<double>& xcp,
       const std::vector<double>& ycp, double kk, unsigned int ll, double opt_param):
-      k(kk), n(xcp.size()), G(knots.size()-2), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param),knots(knots)
+      k(kk), n(xcp.size()), G(knots.size()-2), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param)
     {
 std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
       weights = Eigen::VectorXd::Constant(n,1.0);
       set_lambda(knots);
+      set_lambda_der(knots);
       fill_C(xcp);
 std::cout << C << std::endl;
 std::cout << "fill_M.." << '\n';
