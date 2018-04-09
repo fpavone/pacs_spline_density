@@ -26,6 +26,8 @@
 
 class Mother {
 
+  friend class Density;
+
 private:
 
   unsigned int k;  // Spline degree
@@ -44,8 +46,6 @@ private:
   // std::vector<std::vector<double>> data;
   std::vector<std::vector<double>> prop_data; // count data with zero replacement
   std::vector<std::vector<double>> transf_data; // clr-transformed data
-
-  Density dens;
 
   std::vector<Eigen::VectorXd> bspline;
 
@@ -148,9 +148,10 @@ public:
   void
   pacs()
   {
+    Density dens;
     for(const auto & it:transf_data)
     {
-      dens(it);
+      dens.set_density(it);
       bspline.push_back(dens.solve());
     }
   }

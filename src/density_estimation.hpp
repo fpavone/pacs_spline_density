@@ -48,7 +48,9 @@ private:
 
 public:
 
-    Density(const std::vector<double>& ycp)
+    Density();
+
+    void set_density(const std::vector<double>& ycp)
     {
 std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
