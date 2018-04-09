@@ -21,24 +21,30 @@ Density::fill_M
 ()
 {
 
-    M.resize(G,G);
+    M.resize(G-l,G-l);
     M.setZero();
-    Eigen::ArrayXd N = Eigen::ArrayXd::Constant(G, 0.0);
+    Eigen::ArrayXd N = Eigen::ArrayXd::Constant(G-l, 0.0);
     double x[n];
     double w[n];
     webbur::legendre_compute(n, x, w);
-    for (unsigned int l = 0; l < n; ++l) {
-        x[l] = (v - u) / 2 * x[l] + (v + u) / 2;
-        w[l] = (v - u) / 2 * w[l];
+    for (unsigned int ll = 0; ll < n; ++ll) {
+        x[ll] = (v - u) / 2 * x[ll] + (v + u) / 2;
+        w[ll] = (v - u) / 2 * w[ll];
     }
+    std::vector<double> lambda_der;
+    lambda_der.assign(k-l, knots[0]);
+    lambda_der.insert(lambda_der.begin() + k-l, knots.begin(), knots.end());
+    lambda_der.insert(lambda_der.end(), k-l ,knots.back());
 
     int fs;
     for (unsigned int i = 0; i < n; ++i) {
         N.setZero();
-        fs = bspline::findspan(k, x[i], lambda);
-        bspline::basisfun(fs, x[i], k, lambda, N);
-        for (unsigned int j = 0; j < G; ++j) {
-            for (int y = 0; y < G; ++y) {
+        t = x[i];
+        fs = bspline::findspan(k-l, t, lambda_der);
+        bspline::basisfun(fs, t, k-l, lambda_der, N);
+        for (unsigned int j = 0; j < G-l; ++j) {
+            for (unsigned int y = 0; y < G-l; ++y) {
+
                 M(j, y) += w[i] * N(j) * N(y);
             }
         }

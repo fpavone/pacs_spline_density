@@ -11,7 +11,7 @@
 // NOTE: maybe useful a diagonal matrix W instead of weights.asDiagonal
 
 class Density {
-// G = G + k + 1
+// G = g + k + 1
 private:
     unsigned int k;   // Spline degree
     unsigned int n;   // Number of control points
@@ -34,6 +34,7 @@ private:
     Eigen::VectorXd b; // B-spline coefficients - G
 
     Eigen::VectorXd weights;
+    std::vector<double> knots;
     std::vector<double> lambda;  // extended vector of knots - with extra ones
                                  // dimension: g + 2k + 2 = G + k + 1
 
@@ -58,7 +59,7 @@ public:
 
     Density(const std::vector<double>& knots, const std::vector<double>& xcp,
       const std::vector<double>& ycp, double kk, unsigned int ll, double opt_param):
-      k(kk), n(xcp.size()), g(knots.size()-2), G(g+k+1), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param)
+      k(kk), n(xcp.size()), G(knots.size()-2), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param),knots(knots)
     {
 std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);

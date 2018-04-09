@@ -17,7 +17,7 @@ namespace bspline{
     t (Input) Parametric point
     p (Input) Spline degree
     U (Input) Knot sequence
-    N (Output) Vector of the functions of the basis (p+1 dimensional)
+    N (Output) Vector of the functions of the basis
     */
   void
   basisfun (unsigned int i, double t, int p, const vect &U, Eigen::ArrayXd &N);
