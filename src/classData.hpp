@@ -151,7 +151,7 @@ public:
     Density dens;
     for(const auto & it:transf_data)
     {
-      dens.set_density(it);
+      dens.set_density(it, *this);
       bspline.push_back(dens.solve());
     }
   }
