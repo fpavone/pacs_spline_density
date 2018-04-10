@@ -6,13 +6,18 @@
 #include <iostream>
 #include "bspline.hpp"
 #include "sandia_rules.hpp"
-#include <unsupported/Eigen/SparseExtra> // to save the matrix
+#include "classData.hpp"
+//#include <unsupported/Eigen/SparseExtra> // to save the matrix
 
 // NOTE: maybe useful a diagonal matrix W instead of weights.asDiagonal
+class Mother
+
 
 class Density {
 // G = G + k + 1
 private:
+
+    const Mother obj;
 
     Eigen::MatrixXd C;   // Collocation matrix - nxG
     Eigen::MatrixXd M;   // GxG
@@ -48,9 +53,9 @@ private:
 
 public:
 
-    Density();
+    Density(const Mother input): obj(input) {};
 
-    void set_density(const std::vector<double>& ycp, const Mother & obj)
+    void set_density(const std::vector<double>& ycp)
     {
 std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);

@@ -6,6 +6,7 @@
 // #include <Eigen/Sparse>
 #include <Eigen/Core>
 #include <iostream>
+#include <iterator>
 #include <vector>
 #include <algorithm>
 #include <functional>
@@ -22,7 +23,7 @@
 // NOTE: geometric mean is computed in a straigth way: values are not so big,
 // there's no reason to have overflow (i hope no underflow too, not so many classes)
 
-
+class Density
 
 class Mother {
 
@@ -100,6 +101,8 @@ public:
 
   void readData(const std::string & fileD, const std::string & fileK)
   {
+    std::string line;
+
     readData(fileD);
 
     // Read knots
@@ -148,10 +151,10 @@ public:
   void
   pacs()
   {
-    Density dens;
+    Density dens(*this);
     for(const auto & it:transf_data)
     {
-      dens.set_density(it, *this);
+      dens.set_density(it);
       bspline.push_back(dens.solve());
     }
   }
