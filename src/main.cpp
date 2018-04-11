@@ -9,7 +9,6 @@
 #include <iterator>
 #include "GetPot"
 
-// hope first
 
 int main(int argc, char* argv[]) {
 
