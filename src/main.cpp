@@ -118,7 +118,7 @@ int main(int argc, char* argv[]) {
     //   std::cout<<"\n";
     // }
 
-    Density MyDensity(knots, xcp, ycp[0], k, l, alpha);
+    Density MyDensity(knots, xcp, transf_data[0], k, l, alpha);
     // MyDensity.print_all();
     // MyDensity.solve();
     // MyDensity.print_sol();

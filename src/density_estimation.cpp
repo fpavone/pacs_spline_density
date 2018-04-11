@@ -10,7 +10,7 @@ Density::fill_C
     Eigen::ArrayXd N;
     for (unsigned int i = 0; i < n; i++) {
       N = Eigen::ArrayXd::Constant(G, 0.0);
-      int fs = bspline::findspan(k, cp[i], lambda);
+      unsigned int fs = bspline::findspan(k, cp[i], lambda);
       bspline::basisfun(fs, cp[i], k, lambda, N);
       C.row(i) = N;
     }
