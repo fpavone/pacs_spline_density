@@ -4,23 +4,98 @@
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include <iostream>
+#include <iterator>
+#include <string>
+#include <vector>
 #include "bspline.hpp"
 #include "sandia_rules.hpp"
-#include <unsupported/Eigen/SparseExtra> // to save the matrix
+//#include <unsupported/Eigen/SparseExtra> // to save the matrix
 
 // NOTE: maybe useful a diagonal matrix W instead of weights.asDiagonal
+class myParameters {
+protected:
 
-class Density {
-// G = g + k + 1
+  unsigned int k;  // Spline degree
+  unsigned int l;  // order of derivative in penalization term
+  double alpha;  // penalization parameter
+
+  unsigned int n;   // Number of control points
+  unsigned int g;   // Number knots - 2
+  unsigned int G;   // Number of knots including additional ones
+
+  std::vector<double> knots; // spline knots
+  double u, v;    // [u,v] support of spline
+
+  std::vector<double> xcp;
+
+
+  // NOTE: generalization for different data input
+  unsigned int nclasses;
+  double min, max;
+  std::vector<double> intervals;
+
+public:
+  myParameters(const unsigned int kk, const unsigned int ll, const double opt_param):
+    k(kk), l(ll), alpha(opt_param) {};
+
+  void createKnots()
+  {
+    std::cout << "ATTENTO NODI NON CREATI: DA FINIRE.." << std::endl;
+    g = knots.size()-2;
+    G = g+k+1;
+    u = knots.front();
+    v = knots.back();
+  }
+
+  void readKnots(const std::string & fileK)
+  {
+    std::string line;
+
+    // Read knots
+    std::ifstream file_stream(fileK, std::ios_base::in);
+    if (!file_stream)
+    {
+      std::cout << "Could not open file " << fileK << std::endl;
+    }
+
+    getline(file_stream, line, '\n');
+    std::stringstream line_stream(line);
+    std::istream_iterator<double> start(line_stream), end;
+    std::vector<double> numbers(start, end);
+    for (const auto x:numbers)
+      knots.push_back(x);
+
+    g = knots.size()-2;
+    G = g+k+1;
+    u = knots.front();
+    v = knots.back();
+  }
+
+  void readXcp(const std::string & fileD)
+  {
+    std::string line;
+
+    std::ifstream file_stream(fileD, std::ios_base::in);
+    if (!file_stream) {
+      std::cout << "Could not open file " << fileD << std::endl;
+    }
+
+    // Read xcp
+    getline(file_stream, line, '\n');
+    std::stringstream line_stream(line);
+    std::istream_iterator<double> start(line_stream), end;
+    std::vector<double> numbers(start, end);
+    for (const auto x:numbers)
+      xcp.push_back(x);
+
+    n = xcp.size();
+  }
+};
+
+
+class myDensity: public myParameters {
+// G = G + k + 1
 private:
-    unsigned int k;   // Spline degree
-    unsigned int n;   // Number of control points
-    unsigned int g;   // Number knots - 2
-    unsigned int G;   // Number of knots including additional ones
-
-    double u, v;    // [u,v] support of spline
-    unsigned int l;       // order of derivative in penalization term
-    double alpha;  // penalization parameter
 
     Eigen::MatrixXd C;   // Collocation matrix - nxG
     Eigen::MatrixXd M;   // GxG
@@ -34,7 +109,6 @@ private:
     Eigen::VectorXd b; // B-spline coefficients - G
 
     Eigen::VectorXd weights;
-
     std::vector<double> lambda;  // extended vector of knots - with extra ones
                                  // dimension: g + 2k + 2 = G + k + 1
     std::vector<double> lambda_der;
@@ -55,14 +129,15 @@ private:
 
     void set_lambda
       (const std::vector<double>& knots);
+
     void set_lambda_der
-            (const std::vector<double>& knots);
+      (const std::vector<double> & knots);
 
 public:
 
-    Density(const std::vector<double>& knots, const std::vector<double>& xcp,
-      const std::vector<double>& ycp, double kk, unsigned int ll, double opt_param):
-      k(kk), n(xcp.size()), G(knots.size()-2), u(knots[0]), v(*(knots.end()-1)), l(ll), alpha(opt_param)
+    myDensity(const myParameters & input): myParameters(input) {};
+
+    void set_density(const std::vector<double>& ycp)
     {
 std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
@@ -80,9 +155,10 @@ std::cout << Eigen::MatrixXd(DK) << '\n';
 std::cout << "fill_S.." << '\n';
       fill_S();
 std::cout << Eigen::MatrixXd(S) << '\n';
-      P = (1 / alpha * (DK).transpose() * M * (DK) + (C * DK).transpose() * weights.asDiagonal() * C * DK).sparseView();
+      P = (1 / alpha * (DK).transpose() * S.transpose() * M * S * (DK) +
+            (C * DK).transpose() * weights.asDiagonal() * C * DK).sparseView();
       Eigen::VectorXd newycp(ycp.size());
-      for (unsigned int i = 0; i < ycp.size() ; ++i) {
+      for (unsigned int i = 0, nn = ycp.size(); i < nn ; ++i) {
           newycp[i] = ycp[i];
       }
       p = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
@@ -97,7 +173,8 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
         std::cout << "MATRIX W:" << '\n' << Eigen::MatrixXd(weights.asDiagonal()) << std::endl;
     }
 
-    void solve()
+    Eigen::VectorXd
+    solve()
     {   /* NAIVE SOLVER */
       Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
       // Compute the ordering permutation vector from the structural pattern of P
@@ -107,6 +184,7 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
       //Use the factors to solve the linear system
       c = solver.solve(p);
       b = DK*c;
+      return b;
     };
 
     void print_sol() const

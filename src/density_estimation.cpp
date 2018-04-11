@@ -1,23 +1,23 @@
 #include "density_estimation.hpp"
-
+#include "classData.hpp"
 
 
 void
-Density::fill_C
+myDensity::fill_C
 (const std::vector<double>& cp)
 {
     C.resize(n,G);
     Eigen::ArrayXd N;
     for (unsigned int i = 0; i < n; i++) {
       N = Eigen::ArrayXd::Constant(G, 0.0);
-      unsigned int fs = bspline::findspan(k, cp[i], lambda);
+      int fs = bspline::findspan(k, cp[i], lambda);
       bspline::basisfun(fs, cp[i], k, lambda, N);
       C.row(i) = N;
     }
 }
 
 void
-Density::fill_M
+myDensity::fill_M
 ()
 {
     M.resize(G-l,G-l);
@@ -34,8 +34,11 @@ Density::fill_M
     int fs;
     for (unsigned int i = 0; i < n; ++i) {
         N.setZero();
+      std::cout << "SONO QUI 1.. " << i << std::endl;
         fs = bspline::findspan(k-l, x[i], lambda_der);
+      std::cout << "SONO QUI 2.. " << i << std::endl;
         bspline::basisfun(fs, x[i], k-l, lambda_der, N);
+      std::cout << "SONO QUI 3.. " << i << std::endl;
         for (unsigned int j = 0; j < G-l; ++j) {
             for (unsigned int y = 0; y < G-l; ++y) {
 
@@ -49,7 +52,7 @@ Density::fill_M
 
 
 void
-Density::fill_DK
+myDensity::fill_DK
 ()
 {
   DK.resize(G,G);
@@ -66,7 +69,7 @@ Density::fill_DK
 
 // Compute the S_l matrix for the penalization term
 void
-Density::fill_S
+myDensity::fill_S
 ()
 {
   for (std::size_t j = l; j >= 1; j--)
@@ -98,15 +101,17 @@ Density::fill_S
 
 
 void
-Density::set_lambda
+myDensity::set_lambda
 (const std::vector<double> & knots)
 {
   lambda.assign(k, knots[0]);
   lambda.insert(lambda.begin() + k, knots.begin(), knots.end());
   lambda.insert(lambda.end(), k ,knots.back());
 }
+
+
 void
-Density::set_lambda_der
+myDensity::set_lambda_der
         (const std::vector<double> & knots)
 {
     lambda_der.assign(k-l, knots[0]);
