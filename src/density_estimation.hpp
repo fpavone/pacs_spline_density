@@ -17,8 +17,6 @@ class Density {
 // G = G + k + 1
 private:
 
-    const Mother obj;
-
     Eigen::MatrixXd C;   // Collocation matrix - nxG
     Eigen::MatrixXd M;   // GxG
 
@@ -59,9 +57,9 @@ public:
     {
 std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
-      weights = Eigen::VectorXd::Constant(obj.n,1.0);
-      set_lambda(obj.knots);
-      fill_C(obj.xcp);
+      weights = Eigen::VectorXd::Constant(n,1.0);
+      set_lambda(knots);
+      fill_C(xcp);
 std::cout << C << std::endl;
 std::cout << "fill_M.." << '\n';
       fill_M();
@@ -72,7 +70,7 @@ std::cout << Eigen::MatrixXd(DK) << '\n';
 std::cout << "fill_S.." << '\n';
       fill_S();
 std::cout << Eigen::MatrixXd(S) << '\n';
-      P = (1 / obj.alpha * (DK).transpose() * M * (DK) + (C * DK).transpose() * weights.asDiagonal() * C * DK).sparseView();
+      P = (1 / alpha * (DK).transpose() * M * (DK) + (C * DK).transpose() * weights.asDiagonal() * C * DK).sparseView();
       Eigen::VectorXd newycp(ycp.size());
       for (unsigned int i = 0, nn = ycp.size(); i < nn ; ++i) {
           newycp[i] = ycp[i];
