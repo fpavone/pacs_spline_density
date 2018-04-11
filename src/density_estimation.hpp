@@ -4,16 +4,96 @@
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include <iostream>
+#include <iterator>
+#include <string>
+#include <vector>
 #include "bspline.hpp"
 #include "sandia_rules.hpp"
-#include "classData.hpp"
 //#include <unsupported/Eigen/SparseExtra> // to save the matrix
 
 // NOTE: maybe useful a diagonal matrix W instead of weights.asDiagonal
-class Mother
+class myParameters {
+protected:
+
+  unsigned int k;  // Spline degree
+  unsigned int l;  // order of derivative in penalization term
+  double alpha;  // penalization parameter
+
+  unsigned int n;   // Number of control points
+  unsigned int g;   // Number knots - 2
+  unsigned int G;   // Number of knots including additional ones
+
+  std::vector<double> knots; // spline knots
+  double u, v;    // [u,v] support of spline
+
+  std::vector<double> xcp;
 
 
-class Density {
+  // NOTE: generalization for different data input
+  unsigned int nclasses;
+  double min, max;
+  std::vector<double> intervals;
+
+public:
+  myParameters(const unsigned int kk, const unsigned int ll, const double opt_param):
+    k(kk), l(ll), alpha(opt_param) {};
+
+  void createKnots()
+  {
+    std::cout << "ATTENTO NODI NON CREATI: DA FINIRE.." << std::endl;
+    g = knots.size()-2;
+    G = g+k+1;
+    u = knots.front();
+    v = knots.back();
+  }
+
+  void readKnots(const std::string & fileK)
+  {
+    std::string line;
+
+    // Read knots
+    std::ifstream file_stream(fileK, std::ios_base::in);
+    if (!file_stream)
+    {
+      std::cout << "Could not open file " << fileK << std::endl;
+    }
+
+    getline(file_stream, line, '\n');
+    std::stringstream line_stream(line);
+    std::istream_iterator<double> start(line_stream), end;
+    std::vector<double> numbers(start, end);
+    for (const auto x:numbers)
+      knots.push_back(x);
+
+    g = knots.size()-2;
+    G = g+k+1;
+    u = knots.front();
+    v = knots.back();
+  }
+
+  void readXcp(const std::string & fileD)
+  {
+    std::string line;
+
+    std::ifstream file_stream(fileD, std::ios_base::in);
+    if (!file_stream) {
+      std::cout << "Could not open file " << fileD << std::endl;
+    }
+
+    // Read xcp
+    getline(file_stream, line, '\n');
+    std::stringstream line_stream(line);
+    std::istream_iterator<double> start(line_stream), end;
+    std::vector<double> numbers(start, end);
+    for (const auto x:numbers)
+      xcp.push_back(x);
+
+    n = xcp.size();
+  }
+};
+
+
+class myDensity: public myParameters {
 // G = G + k + 1
 private:
 
@@ -51,7 +131,7 @@ private:
 
 public:
 
-    Density(const Mother input): obj(input) {};
+    myDensity(const myParameters & input): myParameters(input) {};
 
     void set_density(const std::vector<double>& ycp)
     {

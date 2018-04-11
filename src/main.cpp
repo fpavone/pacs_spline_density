@@ -21,25 +21,28 @@ int main(int argc, char* argv[]) {
     double alpha = filePara("alpha", 1.0);  // penalization parameter
     bool knots_given = filePara("knots_given", 0);
 
-    Mother obj(k,l,alpha);
+    myData obj;
+    myParameters pars(k,l,alpha);
 
     // Read data
     const std::string fileD = commandline.follow("input/data", 1, "-d");
+    obj.readData(fileD);
+    pars.readXcp(fileD);
 
     // Read knots if knots_given
     if(knots_given)
     {
       const std::string fileK = commandline.follow("input/knots", 2, "-k", "--knots");
-      obj.readData(fileD,fileK);
+      pars.readKnots(fileK);
     }
     else
     {
-      obj.createKnots();
-      obj.readData(fileD);
+      pars.createKnots();
     }
 
     obj.transfData();
-    obj.pacs();
+
+    obj.pacs(pars);
 
     // Checking data are read correctly
     // for (const auto x:xcp)

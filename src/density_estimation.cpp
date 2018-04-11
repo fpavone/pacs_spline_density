@@ -3,7 +3,7 @@
 
 
 void
-Density::fill_C
+myDensity::fill_C
 (const std::vector<double>& cp)
 {
     C.resize(n,G);
@@ -17,7 +17,7 @@ Density::fill_C
 }
 
 void
-Density::fill_M
+myDensity::fill_M
 ()
 {
 
@@ -38,7 +38,7 @@ Density::fill_M
         fs = bspline::findspan(k, x[i], lambda);
         bspline::basisfun(fs, x[i], k, lambda, N);
         for (unsigned int j = 0; j < G; ++j) {
-            for (int y = 0; y < G; ++y) {
+            for (unsigned int y = 0; y < G; ++y) {
                 M(j, y) += w[i] * N(j) * N(y);
             }
         }
@@ -49,7 +49,7 @@ Density::fill_M
 
 
 void
-Density::fill_DK
+myDensity::fill_DK
 ()
 {
   DK.resize(G,G);
@@ -66,7 +66,7 @@ Density::fill_DK
 
 // Compute the S_l matrix for the penalization term
 void
-Density::fill_S
+myDensity::fill_S
 ()
 {
   for (std::size_t j = l; j >= 1; j--)
@@ -98,7 +98,7 @@ Density::fill_S
 
 
 void
-Density::set_lambda
+myDensity::set_lambda
 (const std::vector<double> & knots)
 {
   lambda.assign(k, knots[0]);
