@@ -111,6 +111,7 @@ private:
     Eigen::VectorXd weights;
     std::vector<double> lambda;  // extended vector of knots - with extra ones
                                  // dimension: g + 2k + 2 = G + k + 1
+    std::vector<double> lambda_der;
 
     void fill_C
       (const std::vector<double>& cp);
@@ -129,6 +130,9 @@ private:
     void set_lambda
       (const std::vector<double>& knots);
 
+    void set_lambda_der
+      (const std::vector<double> & knots);
+
 public:
 
     myDensity(const myParameters & input): myParameters(input) {};
@@ -139,6 +143,7 @@ std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
       weights = Eigen::VectorXd::Constant(n,1.0);
       set_lambda(knots);
+      set_lambda_der(knots);
       fill_C(xcp);
 std::cout << C << std::endl;
 std::cout << "fill_M.." << '\n';
@@ -150,7 +155,8 @@ std::cout << Eigen::MatrixXd(DK) << '\n';
 std::cout << "fill_S.." << '\n';
       fill_S();
 std::cout << Eigen::MatrixXd(S) << '\n';
-      P = (1 / alpha * (DK).transpose() * M * (DK) + (C * DK).transpose() * weights.asDiagonal() * C * DK).sparseView();
+      P = (1 / alpha * (DK).transpose() * S.transpose() * M * S * (DK) +
+            (C * DK).transpose() * weights.asDiagonal() * C * DK).sparseView();
       Eigen::VectorXd newycp(ycp.size());
       for (unsigned int i = 0, nn = ycp.size(); i < nn ; ++i) {
           newycp[i] = ycp[i];

@@ -20,25 +20,28 @@ void
 myDensity::fill_M
 ()
 {
-
-    M.resize(G,G);
+    M.resize(G-l,G-l);
     M.setZero();
-    Eigen::ArrayXd N = Eigen::ArrayXd::Constant(G, 0.0);
+    Eigen::ArrayXd N = Eigen::ArrayXd::Constant(G-l, 0.0);
     double x[n];
     double w[n];
     webbur::legendre_compute(n, x, w);
-    for (unsigned int l = 0; l < n; ++l) {
-        x[l] = (v - u) / 2 * x[l] + (v + u) / 2;
-        w[l] = (v - u) / 2 * w[l];
+    for (unsigned int ll = 0; ll < n; ++ll) {
+        x[ll] = (v - u) / 2 * x[ll] + (v + u) / 2;
+        w[ll] = (v - u) / 2 * w[ll];
     }
 
     int fs;
     for (unsigned int i = 0; i < n; ++i) {
         N.setZero();
-        fs = bspline::findspan(k, x[i], lambda);
-        bspline::basisfun(fs, x[i], k, lambda, N);
-        for (unsigned int j = 0; j < G; ++j) {
-            for (unsigned int y = 0; y < G; ++y) {
+      std::cout << "SONO QUI 1.. " << i << std::endl;
+        fs = bspline::findspan(k-l, x[i], lambda_der);
+      std::cout << "SONO QUI 2.. " << i << std::endl;
+        bspline::basisfun(fs, x[i], k-l, lambda_der, N);
+      std::cout << "SONO QUI 3.. " << i << std::endl;
+        for (unsigned int j = 0; j < G-l; ++j) {
+            for (unsigned int y = 0; y < G-l; ++y) {
+
                 M(j, y) += w[i] * N(j) * N(y);
             }
         }
@@ -104,4 +107,14 @@ myDensity::set_lambda
   lambda.assign(k, knots[0]);
   lambda.insert(lambda.begin() + k, knots.begin(), knots.end());
   lambda.insert(lambda.end(), k ,knots.back());
+}
+
+
+void
+myDensity::set_lambda_der
+        (const std::vector<double> & knots)
+{
+    lambda_der.assign(k-l, knots[0]);
+    lambda_der.insert(lambda_der.begin() + k-l, knots.begin(), knots.end());
+    lambda_der.insert(lambda_der.end(), k-l ,knots.back());
 }
