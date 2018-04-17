@@ -9,6 +9,7 @@
 #include <vector>
 #include "bspline.hpp"
 #include "sandia_rules.hpp"
+#include "gauss_points_weights.hpp"
 //#include <unsupported/Eigen/SparseExtra> // to save the matrix
 
 // NOTE: maybe useful a diagonal matrix W instead of weights.asDiagonal
@@ -155,13 +156,16 @@ std::cout << Eigen::MatrixXd(DK) << '\n';
 std::cout << "fill_S.." << '\n';
       fill_S();
 std::cout << Eigen::MatrixXd(S) << '\n';
+        std::cout << "P: " << '\n';
       P = (1 / alpha * (DK).transpose() * S.transpose() * M * S * (DK) +
             (C * DK).transpose() * weights.asDiagonal() * C * DK).sparseView();
+        std::cout << Eigen::MatrixXd(P) << '\n';
       Eigen::VectorXd newycp(ycp.size());
       for (unsigned int i = 0, nn = ycp.size(); i < nn ; ++i) {
           newycp[i] = ycp[i];
       }
       p = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
+
 std::cout << "Constructor done - p:" << '\n' << p << '\n';
     }
 

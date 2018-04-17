@@ -23,9 +23,9 @@ myDensity::fill_M
     M.resize(G-l,G-l);
     M.setZero();
     Eigen::ArrayXd N = Eigen::ArrayXd::Constant(G-l, 0.0);
-    double x[n];
-    double w[n];
-    webbur::legendre_compute(n, x, w);
+    std::vector<double> x(n);
+    std::vector<double> w(n);
+    integral::grule(x, w);
     for (unsigned int ll = 0; ll < n; ++ll) {
         x[ll] = (v - u) / 2 * x[ll] + (v + u) / 2;
         w[ll] = (v - u) / 2 * w[ll];
@@ -34,11 +34,8 @@ myDensity::fill_M
     int fs;
     for (unsigned int i = 0; i < n; ++i) {
         N.setZero();
-      std::cout << "SONO QUI 1.. " << i << std::endl;
         fs = bspline::findspan(k-l, x[i], lambda_der);
-      std::cout << "SONO QUI 2.. " << i << std::endl;
         bspline::basisfun(fs, x[i], k-l, lambda_der, N);
-      std::cout << "SONO QUI 3.. " << i << std::endl;
         for (unsigned int j = 0; j < G-l; ++j) {
             for (unsigned int y = 0; y < G-l; ++y) {
 
@@ -58,7 +55,7 @@ myDensity::fill_DK
   DK.resize(G,G);
 //  DK.reserve(Eigen::VectorXi::Constant(G,2));
   DK.insert(0, 0) = (double)(k+1)/(lambda[k+1] - lambda[0]); // DK.insert(0, 0) = (k+1)/(lambda[k+2] - knots[0]);
-  DK.insert(0, G-1) = -(double)(k+1)/(lambda[G + k] - lambda[G-1]); // DK.insert(0, G-1) = -(k+1)/(knots[k+1] - knots[0]);
+  DK.insert(0, G-1) = -(double)(k+1)/(lambda[k+1] - lambda[0]); //DK.insert(0, G-1) = -(double)(k+1)/(lambda[G + k] - lambda[G-1]);
   for (std::size_t i = 1; i < G; i++) {
       DK.insert(i,i-1) = -(double)(k+1)/(lambda[k+1+i] - lambda[i]);  // DK.insert(i,i-1) = -1/(lambda[k+2+i] - knots[i]);
       DK.insert(i,i) = (double)(k+1)/(lambda[k+1+i] - lambda[i]); // DK.insert(i,i) = 1/(lambda[k+2+i] - knots[i]);

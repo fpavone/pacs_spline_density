@@ -93,6 +93,7 @@ public:
     {
       dens.set_density(transf_data[row]);
       bspline[row] = dens.solve();
+      dens.print_sol();
     }
   }
 
