@@ -165,7 +165,6 @@ std::cout << Eigen::MatrixXd(S) << '\n';
           newycp[i] = ycp[i];
       }
       p = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
-
 std::cout << "Constructor done - p:" << '\n' << p << '\n';
     }
 
