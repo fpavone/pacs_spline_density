@@ -103,7 +103,7 @@ private:
 
     Eigen::SparseMatrix<double> S;
     Eigen::SparseMatrix<double> DK; // GxG
-    Eigen::SparseMatrix<double> P; // matrix of the problem we have to solve - GxG
+    Eigen::MatrixXd P; // matrix of the problem we have to solve - GxG
 
     Eigen::VectorXd p; // known vector of the problem we have to solve - G
     Eigen::VectorXd c; // solution of the problem: c = P^(-)p - G
@@ -157,15 +157,14 @@ std::cout << "fill_S.." << '\n';
       fill_S();
 std::cout << Eigen::MatrixXd(S) << '\n';
         std::cout << "P: " << '\n';
-      P = (1 / alpha * (DK).transpose() * S.transpose() * M * S * (DK) +
-            (C * DK).transpose() * weights.asDiagonal() * C * DK).sparseView();
-        std::cout << Eigen::MatrixXd(P) << '\n';
+      P = Eigen::MatrixXd( 1.0 / alpha * (DK).transpose() * S.transpose() * M * S * (DK) +
+            (C * DK).transpose() * weights.asDiagonal() * C * DK);
+        std::cout << P << '\n';
       Eigen::VectorXd newycp(ycp.size());
       for (unsigned int i = 0, nn = ycp.size(); i < nn ; ++i) {
           newycp[i] = ycp[i];
       }
-      p = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
-
+      p = Eigen::VectorXd(DK.transpose()* C.transpose() * weights.asDiagonal() * newycp);
 std::cout << "Constructor done - p:" << '\n' << p << '\n';
     }
 
@@ -180,13 +179,17 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
     Eigen::VectorXd
     solve()
     {   /* NAIVE SOLVER */
-      Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
+      //Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
       // Compute the ordering permutation vector from the structural pattern of P
-      solver.analyzePattern(P);
+      //solver.analyzePattern(P);
       // Compute the numerical factorization
-      solver.factorize(P);
+      //solver.factorize(P);
       //Use the factors to solve the linear system
-      c = solver.solve(p);
+      //c = solver.solve(p);
+      std::cout << "P" << '\n'<< P << std::endl;
+      std::cout << "p" << '\n' << p << std::endl;
+      c = P.fullPivHouseholderQr().solve(p);
+      std::cout << "c" << '\n'<< c << std::endl;
       b = DK*c;
       return b;
     };
