@@ -64,20 +64,20 @@ public:
   transfData ()
   {
     // clr transformation of prop_data in transf_data
-    double a = 1.0;
+    double a;
     std::vector<double> temp;
 
     for (auto& x:prop_data)
     {
       // computing geometric mean
+      a = 1.0;
       for (const auto& y:x)
         a *= y;
       a = pow(a, 1.0/x.size());   // nclasses = x.size()
-
       // clr transformation
-      for (const auto& y:x)
+      for (const auto& y:x){
         temp.push_back(log(y/a));
-
+      }
       transf_data.push_back(temp);
       temp.clear();
     }

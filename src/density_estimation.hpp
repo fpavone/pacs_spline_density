@@ -140,32 +140,33 @@ public:
 
     void set_density(const std::vector<double>& ycp)
     {
-std::cout << "fill_C.." << '\n';
+//std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
       weights = Eigen::VectorXd::Constant(n,1.0);
       set_lambda(knots);
       set_lambda_der(knots);
       fill_C(xcp);
-std::cout << C << std::endl;
-std::cout << "fill_M.." << '\n';
+//std::cout << C << std::endl;
+//std::cout << "fill_M.." << '\n';
       fill_M();
-std::cout << M << std::endl;
-std::cout << "fill_DK.." << '\n';
+//std::cout << M << std::endl;
+//std::cout << "fill_DK.." << '\n';
       fill_DK();
-std::cout << Eigen::MatrixXd(DK) << '\n';
-std::cout << "fill_S.." << '\n';
+//std::cout << Eigen::MatrixXd(DK) << '\n';
+//std::cout << "fill_S.." << '\n';
       fill_S();
-std::cout << Eigen::MatrixXd(S) << '\n';
-        std::cout << "P: " << '\n';
-      P = Eigen::MatrixXd( 1.0 / alpha * (DK).transpose() * S.transpose() * M * S * (DK) +
-            (C * DK).transpose() * weights.asDiagonal() * C * DK);
-        std::cout << P << '\n';
+//std::cout << Eigen::MatrixXd(S) << '\n';
+//std::cout << "P: " << '\n';
+      // sarebbe meglio fare P.noalias()= .. per evitare copie inutili
+      P.noalias() = 1.0 / alpha * (DK).transpose() * S.transpose() * M * S * (DK) +
+            (C * DK).transpose() * weights.asDiagonal() * C * DK;
       Eigen::VectorXd newycp(ycp.size());
       for (unsigned int i = 0, nn = ycp.size(); i < nn ; ++i) {
           newycp[i] = ycp[i];
       }
-      p = Eigen::VectorXd(DK.transpose()* C.transpose() * weights.asDiagonal() * newycp);
-std::cout << "Constructor done - p:" << '\n' << p << '\n';
+      p.noalias() = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
+//std::cout << "Constructor done - p:" << '\n' << p << '\n';
+//std::cout << "Data vector: " << '\n' << newycp << '\n';
     }
 
     void print_all() const
@@ -186,18 +187,17 @@ std::cout << "Constructor done - p:" << '\n' << p << '\n';
       //solver.factorize(P);
       //Use the factors to solve the linear system
       //c = solver.solve(p);
-      std::cout << "P" << '\n'<< P << std::endl;
-      std::cout << "p" << '\n' << p << std::endl;
       c = P.fullPivHouseholderQr().solve(p);
-      std::cout << "c" << '\n'<< c << std::endl;
       b = DK*c;
       return b;
     };
 
     void print_sol() const
     {
+      std::cout << "Matrix P: " << '\n' << P << '\n';
       std::cout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
-      std::cout << "B-SPLINE COEFFICIENTS b = DKc" << '\n' << b << '\n';
+    //  std::cout << "B-SPLINE COEFFICIENTS b = DKc" << '\n' << b << '\n';
+    //  std::cout << "PROVA P*c = p..?" << '\n' << Eigen::VectorXd(P*c) << '\n';
     };
 
     // void save_matrix() const
