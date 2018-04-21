@@ -5,6 +5,6 @@
 /mydev
 main
 /data/topsecret
-.Rhistory
-.RData
-.Rdata
+*.Rhistory
+*.RData
+*.Rdata
