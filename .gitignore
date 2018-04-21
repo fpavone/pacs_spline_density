@@ -6,5 +6,3 @@
 main
 /data/topsecret
 *.Rhistory
-*.RData
-*.Rdata
