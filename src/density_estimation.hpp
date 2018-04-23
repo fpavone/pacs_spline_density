@@ -155,6 +155,8 @@ public:
 //std::cout << Eigen::MatrixXd(DK) << '\n';
 //std::cout << "fill_S.." << '\n';
       fill_S();
+      Eigen::IOFormat HeavyFmt(Eigen::FullPrecision, 0, ", ", ";\n", "[", "]", "[", "]");
+        std::cout << P.format(HeavyFmt) << '\n';
 //std::cout << Eigen::MatrixXd(S) << '\n';
 //std::cout << "P: " << '\n';
       // sarebbe meglio fare P.noalias()= .. per evitare copie inutili
@@ -165,8 +167,6 @@ public:
           newycp[i] = ycp[i];
       }
       p.noalias() = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
-//std::cout << "Constructor done - p:" << '\n' << p << '\n';
-//std::cout << "Data vector: " << '\n' << newycp << '\n';
     }
 
     void print_all() const
