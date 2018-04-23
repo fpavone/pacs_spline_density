@@ -88,7 +88,9 @@ public:
   {
     std::size_t N = transf_data.size();
     myDensity dens(pars);
+    dens.set_matrix();
     bspline.resize(N);
+
     for(std::size_t row = 0; row < N ;row++)
     {
       dens.set_density(transf_data[row]);

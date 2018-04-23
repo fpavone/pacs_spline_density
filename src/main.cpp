@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
     }
     else
     {
-      pars.createKnots();
+    //  pars.createKnots();
     }
 
     obj.transfData();

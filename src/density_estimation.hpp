@@ -1,6 +1,7 @@
 #ifndef PROGETTO_DENSITY_ESTIMATION_HPP
 #define PROGETTO_DENSITY_ESTIMATION_HPP
 
+#include <Eigen/Eigenvalues>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include <iostream>
@@ -39,13 +40,18 @@ public:
   myParameters(const unsigned int kk, const unsigned int ll, const double opt_param):
     k(kk), l(ll), alpha(opt_param) {};
 
-  void createKnots()
+  void createKnots(const unsigned int & size, const double & uu, const double & vv)
   {
-    std::cout << "ATTENTO NODI NON CREATI: DA FINIRE.." << std::endl;
+    /* Creating equispaced knots between uu and vv */
+    u = uu;
+    v = vv;
+    double step = (v - u)/(size-1);
+
+    for(unsigned int i = 0; i < size; i++)
+      knots.push_back(u + i*step);
+
     g = knots.size()-2;
     G = g+k+1;
-    u = knots.front();
-    v = knots.back();
   }
 
   void readKnots(const std::string & fileK)
@@ -138,7 +144,7 @@ public:
 
     myDensity(const myParameters & input): myParameters(input) {};
 
-    void set_density(const std::vector<double>& ycp)
+    void set_matrix()
     {
 //std::cout << "fill_C.." << '\n';
       // weights.assign(n,1.0);
@@ -160,6 +166,10 @@ public:
       // sarebbe meglio fare P.noalias()= .. per evitare copie inutili
       P.noalias() = 1.0 / alpha * (DK).transpose() * S.transpose() * M * S * (DK) +
             (C * DK).transpose() * weights.asDiagonal() * C * DK;
+    }
+
+    void set_density(const std::vector<double>& ycp)
+    {
       Eigen::VectorXd newycp(ycp.size());
       for (unsigned int i = 0, nn = ycp.size(); i < nn ; ++i) {
           newycp[i] = ycp[i];
@@ -187,7 +197,17 @@ public:
       //solver.factorize(P);
       //Use the factors to solve the linear system
       //c = solver.solve(p);
-      c = P.fullPivHouseholderQr().solve(p);
+      //c = P.fullPivHouseholderQr().solve(p);
+      Eigen::LDLT<Eigen::MatrixXd> solver;
+      solver.compute(P);
+      if(solver.info() != Eigen::Success){
+        std::cout << "Not positive/negative semidefinite.. using HouseholderQr" << std::endl;
+        Eigen::FullPivHouseholderQR<Eigen::MatrixXd> solver2;
+        solver2.compute(P);
+        c = solver2.solve(p);
+      }
+      else
+        c = solver.solve(p);
       b = DK*c;
       return b;
     };
@@ -196,6 +216,10 @@ public:
     {
       std::cout << "Matrix P: " << '\n' << P << '\n';
       std::cout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
+      Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(P);
+   //   std::cout << "P positive definite?  " << es.eigenvalues() << std::endl;
+      double relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
+      std::cout << "The relative error is:\n" << relative_error << std::endl;
     //  std::cout << "B-SPLINE COEFFICIENTS b = DKc" << '\n' << b << '\n';
     //  std::cout << "PROVA P*c = p..?" << '\n' << Eigen::VectorXd(P*c) << '\n';
     };
