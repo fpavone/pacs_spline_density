@@ -209,16 +209,16 @@ public:
         c = solverLDLT.solve(p);
         std::cout << "Solver LDLT.." << '\n' << c << '\n';
         relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
-        std::cout << "The relative error is:\n" << relative_error << std::endl;
+        std::cout << "\nThe relative error is:\n" << relative_error << std::endl;
       }
-      else std::cout << "Not positive/negative semidefinite.. \n" << std::endl;
+      else std::cout << "\nNot positive/negative semidefinite.. \n" << std::endl;
 
       std::cout << '\n' << "**************************" << '\n';
 
       c = solverQR.solve(p);
-      std::cout << "\n Solver FullPivHouseholderQR.." << '\n' << c << '\n';
+      std::cout << "\nSolver FullPivHouseholderQR.." << '\n' << c << '\n';
       relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
-      std::cout << "\n The relative error is:\n" << relative_error << std::endl;
+      std::cout << "\nThe relative error is:\n" << relative_error << std::endl;
 
       std::cout << '\n' << "**************************" << '\n';
 
