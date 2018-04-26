@@ -198,28 +198,42 @@ public:
       //Use the factors to solve the linear system
       //c = solver.solve(p);
       //c = P.fullPivHouseholderQr().solve(p);
-      Eigen::LDLT<Eigen::MatrixXd> solver;
-      solver.compute(P);
-      if(solver.info() != Eigen::Success){
-        std::cout << "Not positive/negative semidefinite.. using HouseholderQr" << std::endl;
-        Eigen::FullPivHouseholderQR<Eigen::MatrixXd> solver2;
-        solver2.compute(P);
-        c = solver2.solve(p);
+      Eigen::LDLT<Eigen::MatrixXd> solverLDLT;
+      Eigen::FullPivHouseholderQR<Eigen::MatrixXd> solverQR;
+
+      solverLDLT.compute(P);
+      solverQR.compute(P);
+      double relative_error = 0.0;
+
+      if(solverLDLT.info() == Eigen::Success){
+        c = solverLDLT.solve(p);
+        std::cout << "Solver LDLT.." << '\n' << c << '\n';
+        relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
+        std::cout << "The relative error is:\n" << relative_error << std::endl;
       }
-      else
-        c = solver.solve(p);
+      else std::cout << "Not positive/negative semidefinite.. \n" << std::endl;
+
+      std::cout << '\n' << "**************************" << '\n';
+
+      c = solverQR.solve(p);
+      std::cout << "\n Solver FullPivHouseholderQR.." << '\n' << c << '\n';
+      relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
+      std::cout << "\n The relative error is:\n" << relative_error << std::endl;
+
+      std::cout << '\n' << "**************************" << '\n';
+
       b = DK*c;
       return b;
     };
 
     void print_sol() const
     {
-      std::cout << "Matrix P: " << '\n' << P << '\n';
-      std::cout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
-      Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(P);
-   //   std::cout << "P positive definite?  " << es.eigenvalues() << std::endl;
-      double relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
-      std::cout << "The relative error is:\n" << relative_error << std::endl;
+      std::cout << "\n Matrix P: " << '\n' << P << '\n';
+      // std::cout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
+       Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(P);
+      std::cout << "\n P positive definite? \n " << es.eigenvalues() << std::endl;
+      // double relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
+      // std::cout << "The relative error is:\n" << relative_error << std::endl;
     //  std::cout << "B-SPLINE COEFFICIENTS b = DKc" << '\n' << b << '\n';
     //  std::cout << "PROVA P*c = p..?" << '\n' << Eigen::VectorXd(P*c) << '\n';
     };
