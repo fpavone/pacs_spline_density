@@ -3,7 +3,7 @@
 
 # compiler options
 CXX = g++
-CXXFLAGS += -Wall -std=c++14 -I${mkEigenInc} ##-I/usr/include/mysql -fopenmp
+CXXFLAGS += -Wall -Wno-unused-variable -Wno-unused-but-set-variable -Wno-sign-compare -std=c++14 -I${mkEigenInc} ##-I/usr/include/mysql -fopenmp
 
 # name of executable
 EXEC=main##OPT_JR_CPP
