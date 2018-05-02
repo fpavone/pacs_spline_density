@@ -222,6 +222,11 @@ public:
 
       std::cout << '\n' << "**************************" << '\n';
 
+      std::cout << '\n' << "MATRIX Q: \n" << '\n';
+      std::cout << solverQR.matrixQ() << '\n';
+      std::cout << '\n' << "KERNEL DIM of P: " << solverQR.dimensionOfKernel() << '\n';
+
+
       b = DK*c;
       return b;
     };
@@ -232,6 +237,8 @@ public:
       // std::cout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
        Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(P);
       std::cout << "\n P positive definite? \n " << es.eigenvalues() << std::endl;
+      std::cout << "\n Eigenvectors: \n " << es.eigenvectors() << std::endl;
+
       // double relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
       // std::cout << "The relative error is:\n" << relative_error << std::endl;
     //  std::cout << "B-SPLINE COEFFICIENTS b = DKc" << '\n' << b << '\n';
