@@ -128,6 +128,7 @@ coda::BM(const std::vector<double> & in, coda::PRIOR p)
       s = sqrt(help::sum(in));
       return coda::BM(in, s);
     }
+    default: {}
   }
 };
 
