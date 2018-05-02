@@ -12,6 +12,7 @@
 #include "sandia_rules.hpp"
 #include "gauss_points_weights.hpp"
 //#include <unsupported/Eigen/SparseExtra> // to save the matrix
+constexpr double tol = 1e-04;
 
 // NOTE: maybe useful a diagonal matrix W instead of weights.asDiagonal
 class myParameters {
@@ -162,7 +163,7 @@ public:
 //std::cout << "fill_S.." << '\n';
       fill_S();
       Eigen::IOFormat HeavyFmt(Eigen::FullPrecision, 0, ", ", ";\n", "[", "]", "[", "]");
-        std::cout << P.format(HeavyFmt) << '\n';
+//std::cout << P.format(HeavyFmt) << '\n';
 //std::cout << Eigen::MatrixXd(S) << '\n';
 //std::cout << "P: " << '\n';
       // sarebbe meglio fare P.noalias()= .. per evitare copie inutili
@@ -189,44 +190,79 @@ public:
 
     Eigen::VectorXd
     solve()
-    {   /* NAIVE SOLVER */
-      //Eigen::SparseLU<Eigen::SparseMatrix<double>> solver;
-      // Compute the ordering permutation vector from the structural pattern of P
-      //solver.analyzePattern(P);
-      // Compute the numerical factorization
-      //solver.factorize(P);
-      //Use the factors to solve the linear system
-      //c = solver.solve(p);
-      //c = P.fullPivHouseholderQr().solve(p);
-      Eigen::LDLT<Eigen::MatrixXd> solverLDLT;
-      Eigen::FullPivHouseholderQR<Eigen::MatrixXd> solverQR;
+    {
 
-      solverLDLT.compute(P);
+      Eigen::FullPivHouseholderQR<Eigen::MatrixXd> solverQR;
       solverQR.compute(P);
+
+      unsigned int dimKer = solverQR.dimensionOfKernel();
       double relative_error = 0.0;
 
-      if(solverLDLT.info() == Eigen::Success){
-        c = solverLDLT.solve(p);
-        std::cout << "Solver LDLT.." << '\n' << c << '\n';
-        relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
-        std::cout << "\nThe relative error is:\n" << relative_error << std::endl;
-      }
-      else std::cout << "\nNot positive/negative semidefinite.. \n" << std::endl;
-
-      std::cout << '\n' << "**************************" << '\n';
-
-      c = solverQR.solve(p);
+      // // if(solverLDLT.info() == Eigen::Success){
+      // //   c = solverLDLT.solve(p);
+      // //   std::cout << "Solver LDLT.." << '\n' << c << '\n';
+      // //   relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
+      // //   std::cout << "\nThe relative error is:\n" << relative_error << std::endl;
+      // // }
+      // // else std::cout << "\nNot positive/negative semidefinite.. \n" << std::endl;
       std::cout << "\nSolver FullPivHouseholderQR.." << '\n' << c << '\n';
+
+      switch(dimKer){
+        case 0:
+        {
+          c = solverQR.solve(p);
+          break;
+        }
+        case 1:
+        /*
+        we have to find a vector of the kernel and find minimal norm solution,
+        in order to do this we exploit property of matrix Q in QR decomposition: last n-r column
+        of Q are basis for Ker(P) where r=rank(P)
+        */
+        {
+          c = solverQR.solve(p);
+          Eigen::VectorXd kernel = solverQR.matrixQ().col(G-1);
+          double scale = c.dot(kernel)/kernel.dot(kernel);
+          c = c - scale*kernel;
+          break;
+        }
+        case 2:
+        {
+          c = solverQR.solve(p);
+          Eigen::VectorXd ker1= solverQR.matrixQ().col(G-1);
+          Eigen::VectorXd ker2 = solverQR.matrixQ().col(G-2);
+          double scale1 = 0.5*c.dot(ker1 - ker2*(ker1.dot(ker2)/ker2.dot(ker2)))/(ker1.dot(ker1)
+                              - ker1.dot(ker2)*ker1.dot(ker2)/ker2.dot(ker2));
+          double scale2 = -ker1.dot(ker2)/ker2.dot(ker2)*scale1 + 0.5*c.dot(ker2)/ker2.dot(ker2);
+          c = c - scale1*ker1 - scale2*ker2;
+          break;
+        }
+        default:   // case >1
+        {
+          std::cerr << "\n WARNING: kernel dimension of the problem exceeds 2," << '\n';
+          std::cerr << " using Andrey Tychonoff regularization.." << std::endl;
+          double tychlambda2 = 0.01;
+          solverQR.compute(P.transpose()*P + tychlambda2*Eigen::MatrixXd::Identity(G,G));
+          c = solverQR.solve(P.transpose()*p);
+          break;
+        }
+      }
+
       relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
       std::cout << "\nThe relative error is:\n" << relative_error << std::endl;
 
-      std::cout << '\n' << "**************************" << '\n';
+      if(relative_error > tol)
+      /*
+        Least-square solution: we look for a solution in the col space projecting the b (in Ax=b)
+        NOTE: QR should do this automatically without giving any warning (CHECK)
+      */
+        std::cerr << "\n WARNING: found least-square solution..." << std::endl;
 
-      std::cout << '\n' << "MATRIX Q: \n" << '\n';
-      std::cout << solverQR.matrixQ() << '\n';
-      std::cout << '\n' << "KERNEL DIM of P: " << solverQR.dimensionOfKernel() << '\n';
+      std::cout << "\n SOLUTION:\n" << c << '\n';
 
-
+      // std::cout << '\n' << "MATRIX Q: \n" << '\n';
+      // std::cout << solverQR.matrixQ() << '\n';
+      // std::cout << '\n' << "KERNEL DIM of P: " << solverQR.dimensionOfKernel() << '\n';
       b = DK*c;
       return b;
     };
