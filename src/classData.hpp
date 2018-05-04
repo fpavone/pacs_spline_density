@@ -13,9 +13,9 @@
 #include <string>
 #include "ctzeros.hpp"
 #include "density_estimation.hpp"
-#include "R.h"
-#include "Rinternals.h"
-#include "Rdefines.h"
+#include <R.h>
+#include <Rinternals.h>
+#include <Rdefines.h>
 
 // NOTE: suppose data are stored as vector of vectors named data
 // NOTE: data are supposed not to be ordered (otherwise counting occurrences is easier)
@@ -40,14 +40,14 @@ public:
 
   void getData(SEXP input) //NOTE: input expected to be the transpose (rows are columns)
   {
-    int len = Rf_length(df), size = 0;
-    double * tmp;
+    int len = Rf_length(input), size = 0;
+    double*  tmp;
     std::vector<double> numbers;
 
     for (int i = 0; i < len; ++i){
       numbers.clear();
-      tmp = REAL(VECTOR_ELT(df, i))[0]
-      size = LENGTH(VECTOR_ELT(df, i));
+      tmp = REAL(VECTOR_ELT(input, i));
+      size = LENGTH(VECTOR_ELT(input, i));
       for (int j=0; j<size; j++)
         numbers.push_back(tmp[j]);
       prop_data.push_back(coda::BM(numbers));

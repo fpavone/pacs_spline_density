@@ -8,26 +8,26 @@
 #include <sstream>
 #include <iterator>
 // #include "GetPot"
-#include "R.h"
-#include "Rinternals.h"
-#include "Rdefines.h"
+#include <R.h>
+#include <Rinternals.h>
+#include <Rdefines.h>
 
-extern C {
-SEXP main(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, SEXP data_, SEXP Xcp_, SEXP knots_)
+extern "C"{
+SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, SEXP data_, SEXP Xcp_, SEXP knots_)
 {
 
     // Read parameters
 
-    unsigned int &k = INTEGER(k_)[0];     // Spline degree
-    unsigned int &l = INTEGER(l_)[0];
-    double &alpha = REAL(alpha_)[0];  // penalization parameter
-    bool &knots_given = INTEGER(knots_given_)[0];
+    unsigned int k = INTEGER(k_)[0];     // Spline degree
+    unsigned int l = INTEGER(l_)[0];
+    double alpha = REAL(alpha_)[0];  // penalization parameter
+    bool knots_given = INTEGER(knots_given_)[0];
 
     myData obj;
     myParameters pars(k,l,alpha);
 
     // Read data
-    double *Xcp = REAL(Xcp_)[0];
+    double *Xcp = REAL(Xcp_);
     unsigned int Xcpsize = LENGTH(Xcp_);
     pars.getXcp(Xcp,Xcpsize);
 
@@ -38,7 +38,7 @@ SEXP main(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, SEXP data_, SEXP Xcp
     // Read knots if knots_given
     if(knots_given)
     {
-      double *knots = REAL(knots_)[0];
+      double *knots = REAL(knots_);
       unsigned int knotsSize = LENGTH(knots_);
       pars.getKnots(knots,knotsSize);
       // const std::string fileK = commandline.follow("input/knots", 2, "-k", "--knots");
@@ -63,7 +63,7 @@ SEXP main(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, SEXP data_, SEXP Xcp
     //   std::cout<<"\n";
     // }
 
-    return 0;
+    return NILSXP;
 }
 }
 
