@@ -55,6 +55,17 @@ public:
     G = g+k+1;
   }
 
+  void getKnots(const double * inputKnots, const unsigned int & size) // read knots by copy
+  {
+    for(std::size_t i=0; i < size; i++)
+      knots.push_back(inputKnots[i]);
+
+    g = knots.size()-2;
+    G = g+k+1;
+    u = knots.front();
+    v = knots.back();
+  }
+
   void readKnots(const std::string & fileK)
   {
     std::string line;
@@ -77,6 +88,13 @@ public:
     G = g+k+1;
     u = knots.front();
     v = knots.back();
+  }
+
+  void getXcp(const double * inputXcp, const unsigned int & size){
+    for(std::size_t i=0; i < size; i++)
+      xcp.push_back(inputXcp[i]);
+
+    n = xcp.size();
   }
 
   void readXcp(const std::string & fileD)

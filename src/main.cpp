@@ -8,11 +8,12 @@
 #include <sstream>
 #include <iterator>
 // #include "GetPot"
-#include <R.h>
-#include <Rinternals.h>
+#include "R.h"
+#include "Rinternals.h"
+#include "Rdefines.h"
 
 extern C {
-SEXP main(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, SEXP data_, SEXP knots_)
+SEXP main(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, SEXP data_, SEXP Xcp_, SEXP knots_)
 {
 
     // Read parameters
@@ -26,15 +27,22 @@ SEXP main(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, SEXP data_, SEXP kno
     myParameters pars(k,l,alpha);
 
     // Read data
-    const std::string fileD = commandline.follow("input/data", 1, "-d");
-    obj.readData(fileD);
-    pars.readXcp(fileD);
+    double *Xcp = REAL(Xcp_)[0];
+    unsigned int Xcpsize = LENGTH(Xcp_);
+    pars.getXcp(Xcp,Xcpsize);
+
+    if(!Rf_inherits(data_, "data.frame"))
+      Rf_error("expecting a data.frame");
+    obj.getData(data_);
 
     // Read knots if knots_given
     if(knots_given)
     {
-      const std::string fileK = commandline.follow("input/knots", 2, "-k", "--knots");
-      pars.readKnots(fileK);
+      double *knots = REAL(knots_)[0];
+      unsigned int knotsSize = LENGTH(knots_);
+      pars.getKnots(knots,knotsSize);
+      // const std::string fileK = commandline.follow("input/knots", 2, "-k", "--knots");
+      //pars.readKnots(fileK);
     }
     else
     {
