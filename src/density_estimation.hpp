@@ -116,6 +116,8 @@ public:
 
     n = xcp.size();
   }
+
+  unsigned int getG() {return G;} //inline ??
 };
 
 
@@ -206,8 +208,8 @@ public:
         std::cout << "MATRIX W:" << '\n' << Eigen::MatrixXd(weights.asDiagonal()) << std::endl;
     }
 
-    Eigen::VectorXd
-    solve()
+    void
+    solve(auto bspline)
     {
 
       Eigen::FullPivHouseholderQR<Eigen::MatrixXd> solverQR;
@@ -281,8 +283,8 @@ public:
       // std::cout << '\n' << "MATRIX Q: \n" << '\n';
       // std::cout << solverQR.matrixQ() << '\n';
       // std::cout << '\n' << "KERNEL DIM of P: " << solverQR.dimensionOfKernel() << '\n';
-      b = DK*c;
-      return b;
+      bspline.noalias() = DK*c;
+      return;
     };
 
     void print_sol() const

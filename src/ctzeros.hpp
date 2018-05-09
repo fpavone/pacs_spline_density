@@ -47,6 +47,16 @@ namespace coda{
                    SQ,             // s = sqrt(n), t = 1/D
                    DEFAULT};       // if sqrt(n)> D --> SQ, otherwise BAYES_LAPLACE
 
+  void
+  BM(std::vector<double> & in, const auto data,
+    coda::PRIOR p = coda::PRIOR::DEFAULT);
+
+  void
+  BM(const std::vector<double> & in, const double & s, const auto data);
+
+  void
+  BM(const std::vector<double> & in, const std::vector<double> & t, const auto data,
+    const double & s = 1.0, const bool & is_strength_inverse = false);
 
   std::vector<double>
   BM(const std::vector<double> & in, const std::vector<double> & t,

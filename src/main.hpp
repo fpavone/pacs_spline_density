@@ -7,13 +7,27 @@
 #include <iostream>
 #include <sstream>
 #include <iterator>
+#include <Eigen/Dense>
 // #include "GetPot"
-#include <R.h>
-#include <Rinternals.h>
-#include <Rdefines.h>
+// #include <R.h>
+// #include <Rinternals.h>
+// #include <Rdefines.h>
+#include <Rcpp.h>
+//#include <RcppEigen.h>
 
-extern "C"{
-SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, SEXP data_, SEXP Xcp_, SEXP knots_)
+using namespace Rcpp;
+
+using Rmat as NumericMatrix;
+using Rvec as NumericVector;
+
+// [[Rcpp::depends(RcppEigen)]]
+// [[Rcpp::export]]
+
+//NOTE: maybe it is better to deal with knots in R and pass only knots_
+//NOTE: decide where to check if data_ is really a matrix
+//NOTE: return a list
+
+SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, Rmat data_, Rvec Xcp_, Rvec knots_)
 {
 
     // Read parameters
@@ -31,10 +45,6 @@ SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, SEXP data_, SEXP X
     unsigned int Xcpsize = LENGTH(Xcp_);
     pars.getXcp(Xcp,Xcpsize);
 
-    if(!Rf_inherits(data_, "data.frame"))
-      Rf_error("expecting a data.frame");
-    obj.getData(data_);
-
     // Read knots if knots_given
     if(knots_given)
     {
@@ -49,9 +59,22 @@ SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, SEXP data_, SEXP X
     //  pars.createKnots();
     }
 
-    obj.transfData();
+    Eigen::Map<Eigen::MatrixXd> data(as<Eigen::Map<Eigen::MatrixXd>> (data_));
 
-    obj.pacs(pars);
+    unsigned int nrow = data.rows();
+
+    myDensity dens(pars);
+    dens.set_matrix();
+
+    Eigen::MatrixXd bsplineMat(nrow,pars.getG());
+
+    for(std::size_t i = 0; i < nrow; i++)
+    {
+      obj.getData(data.row(i));
+      obj.transfData();
+      obj.pacs(dens, bsplineMat.row(i));   //NOTE: check if eigen has problem with references
+    }
+
 
     // Checking data are read correctly
     // for (const auto x:xcp)
@@ -62,10 +85,11 @@ SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, SEXP data_, SEXP X
     //     std::cout<<y<<"  ";
     //   std::cout<<"\n";
     // }
+    List result = List::create(bsplineMat);
 
-    return NILSXP;
-}
-}
+    return wrap(result);
+};
+
 
 // int main(int argc, char* argv[]) {
 //

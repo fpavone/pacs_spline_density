@@ -1,6 +1,7 @@
-PKG_CPPFLAGS = -I${mkEigenInc} -I${mkOctavePrefix}
+PKG_CPPFLAGS = -std=c++14 -I${mkEigenInc} -I/u/sw/pkgs/toolchains/gcc-glibc/5/pkgs/R/3.2.5/lib64/R/include -I/home/vagrant/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include -I/home/vagrant/R/x86_64-pc-linux-gnu-library/3.2/RcppEigen/include
 #PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS)
-CXX_STD = CXX11
+CXX_STD = CXX14
 PKG_CXXFLAGS = -Wno-sign-compare -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment -Wno-deprecated-declarations -Wno-unused-but-set-variable -Wno-maybe-uninitialized
 
 # R CMD SHLIB *.cpp *.hpp -o lib.so -I${mkEigenInc} -I/u/sw/pkgs/toolchains/gcc-glibc/5/pkgs/R/3.2.5/lib64/R/include -std=c++11
+# -I${mkOctavePrefix}

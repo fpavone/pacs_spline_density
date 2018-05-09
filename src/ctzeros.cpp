@@ -35,14 +35,100 @@ double
 help::geom_mean(const std::vector<double> & vect)
 {
   double out = 1.0;
-  for(auto it:vect){
+  for(const auto it:vect){
     out=out*it;
   }
   return pow(out, 1.0/vect.size());;
-}
+};
 
 
 /****** coda namespace definitions *******/
+
+void
+coda::BM(std::vector<double> & in, const auto data,
+  coda::PRIOR p)
+{
+  if(p == coda::PRIOR::DEFAULT)
+  {
+    if( help::sum(in) > (double) (in.size()*in.size()) )  // n > D^2
+        p = coda::PRIOR::SQ;
+    else
+        p = coda::PRIOR::BAYES_LAPLACE;
+  }
+
+  double s;
+
+  switch(p){
+    case coda::PRIOR::PERKS :
+    {
+      s = 1;
+      return coda::BM(in, s, data);
+    }
+    case coda::PRIOR::JEFFREYS :
+    {
+      s = (double)(in.size())/2;
+      return coda::BM(in, s, data);
+    }
+    case coda::PRIOR::BAYES_LAPLACE :
+    {
+      s = (double)(in.size());
+      return coda::BM(in, s, data);
+    }
+    case coda::PRIOR::SQ :
+    {
+      s = sqrt(help::sum(in));
+      return coda::BM(in, s, data);
+    }
+    default: {}
+  }
+};
+
+void
+coda::BM(const std::vector<double> & in, const double & s, const auto data)
+{
+  return coda::BM(in, help::uniform(in.size()), data, s);
+};
+
+void
+coda::BM(const std::vector<double> & in, const std::vector<double> & t, const auto data,
+  const double & s, const bool & is_strength_inverse)
+{
+  assert(s>=0 && " Error (BM): strength must be >=0..");
+  assert(in.size()==t.size() && " Error(BM): different sizes of input..");
+
+  double n = help::sum(in);
+  double tmp = 0;
+
+  double t_tot = 0;
+
+  for(std::size_t i = 0; i < in.size(); i++)
+  {   //computing term of the summation
+    assert(in[i]>=0 && " Error (BM): input must be >=0..");
+    assert(t[i]>=0 && " Error (BM): input must be >=0..");
+
+    if(in[i]==0) tmp += t[i];
+
+    t_tot += t[i];
+  }
+
+  // assert()  NOTE: need to check that t_tot is "equal" to 1
+  for(std::size_t i = 0; i < in.size(); i++)
+  {  //applying BM method
+    if(in[i] == 0)
+    {
+      if(is_strength_inverse == false) data.push_back(t[i]*s/(n + s));
+      else data.push_back(t[i]/(s*n + 1));
+    }
+
+    else
+    {
+      if(is_strength_inverse == false) data.push_back(in[i]*(1 - s*tmp/(n+s))/n);
+      else data.push_back(in[i]*(1 - tmp/(s*n+1))/n);
+    }
+
+  }
+  return;
+};
 
 std::vector<double>
 coda::BM(const std::vector<double> & in, const std::vector<double> & t,

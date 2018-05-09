@@ -26,95 +26,76 @@
 // NOTE: geometric mean is computed in a straigth way: values are not so big,
 // there's no reason to have overflow (i hope no underflow too, not so many classes)
 
+//NOTE: rewrite coda input parameters
+//NOTE: coda::BM modify by reference numbers
+//NOTE: better to keep in memory nclasses instead of computing numbers.size in for loop
 
 
 class myData {
 private:
   // std::vector<std::vector<double>> data;
-  std::vector<std::vector<double>> prop_data; // count data with zero replacement
-  std::vector<std::vector<double>> transf_data; // clr-transformed data
+  // std::vector<std::vector<double>> prop_data; // count data with zero replacement
+  // std::vector<std::vector<double>> transf_data; // clr-transformed data
 
-  std::vector<Eigen::VectorXd> bspline;
+  std::vector<double> numbers; //where data are stored (one row at a time)
+//  unsigned int nclasses;
+
+  Eigen::VectorXd bspline;
 
 public:
 
-  void getData(SEXP input) //NOTE: input expected to be the transpose (rows are columns)
+  void getData(const auto input)
   {
-    int len = Rf_length(input), size = 0;
-    double*  tmp;
-    std::vector<double> numbers;
-
-    for (int i = 0; i < len; ++i){
-      numbers.clear();
-      tmp = REAL(VECTOR_ELT(input, i));
-      size = LENGTH(VECTOR_ELT(input, i));
-      for (int j=0; j<size; j++)
-        numbers.push_back(tmp[j]);
-      prop_data.push_back(coda::BM(numbers));
-    }
+    numbers.clear();
+    coda::BM(numbers,input);
   }
 
-  void readData(const std::string & fileD)
-  {
-    std::string line;
-
-    std::ifstream file_stream(fileD, std::ios_base::in);
-    if (!file_stream) {
-      std::cout << "Could not open file " << fileD << std::endl;
-    }
-
-    // Read xcp and do nothing
-    getline(file_stream, line, '\n');
-
-    // Read prop_data
-    while (getline(file_stream, line, '\n')) // Split up each line of the file.
-    {
-      std::stringstream line_stream(line);
-      // Get a vector of numbers directly from a stream iterator.
-      std::istream_iterator<double> start(line_stream), end;
-      std::vector<double> numbers(start, end);
-      // Taking account zero values replacement with BM
-      prop_data.push_back(coda::BM(numbers));
-    }
-  }
+  // void readData(const std::string & fileD)
+  // {
+  //   std::string line;
+  //
+  //   std::ifstream file_stream(fileD, std::ios_base::in);
+  //   if (!file_stream) {
+  //     std::cout << "Could not open file " << fileD << std::endl;
+  //   }
+  //
+  //   // Read xcp and do nothing
+  //   getline(file_stream, line, '\n');
+  //
+  //   // Read prop_data
+  //   while (getline(file_stream, line, '\n')) // Split up each line of the file.
+  //   {
+  //     std::stringstream line_stream(line);
+  //     // Get a vector of numbers directly from a stream iterator.
+  //     std::istream_iterator<double> start(line_stream), end;
+  //     std::vector<double> numbers(start, end);
+  //     // Taking account zero values replacement with BM
+  //     prop_data.push_back(coda::BM(numbers));
+  //   }
+  // }
 
   void
   transfData ()
   {
     // clr transformation of prop_data in transf_data
-    double a;
-    std::vector<double> temp;
+    double a = 1.0;
 
-    for (auto& x:prop_data)
-    {
-      // computing geometric mean
-      a = 1.0;
-      for (const auto& y:x)
-        a *= y;
-      a = pow(a, 1.0/x.size());   // nclasses = x.size()
-      // clr transformation
-      for (const auto& y:x){
-        temp.push_back(log(y/a));
-      }
-      transf_data.push_back(temp);
-      temp.clear();
-    }
+    // computing geometric mean
+    for (const auto& y:numbers)
+      a *= y;
+    a = pow(a, 1.0/numbers.size());   // nclasses = x.size()
+
+    // clr transformation
+    for (auto& y:numbers){
+      y = log(y/a);
   }
 
   void
-  pacs(const myParameters & pars)
+  pacs(const myDensity & dens, auto bspline)  // bspline is the row of output matrix
   {
-    std::size_t N = transf_data.size();
-    myDensity dens(pars);
-    dens.set_matrix();
-    bspline.resize(N);
-
-    for(std::size_t row = 0; row < N ;row++)
-    {
-      dens.set_density(transf_data[row]);
-      bspline[row] = dens.solve();
-      dens.print_sol();
-    }
+    dens.set_density(numbers);
+    dens.solve(bspline);
+    // dens.print_sol();
   }
 
   // NOTE: generalization for different data input
