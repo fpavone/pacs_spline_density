@@ -57,6 +57,9 @@ public:
       std::vector<double> numbers(start, end);
       // Taking account zero values replacement with BM
       prop_data.push_back(coda::BM(numbers));
+      std::cout << "\n numbers \n" ;
+      for(const auto&x: prop_data[0])
+        std::cout << x <<"\n";
     }
   }
 
@@ -89,6 +92,7 @@ public:
     std::size_t N = transf_data.size();
     myDensity dens(pars);
     dens.set_matrix();
+    dens.print_all();
     bspline.resize(N);
 
     for(std::size_t row = 0; row < N ;row++)
