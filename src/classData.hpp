@@ -62,7 +62,7 @@ geom_mean(const std::vector<double> & vect)
 void
 BM(std::vector<double> & numbers, const auto data)
 {
-  double s = 1.0;
+  double s = data.size();
   const bool  is_strength_inverse = false;
   std::vector<double> t = uniform(data.size());
 
@@ -122,6 +122,11 @@ public:
   {
     numbers.clear();
     BM(numbers,row);
+
+    std::cout << "numbers:\n " << "\n";
+
+    for(const auto &x:numbers)
+      std::cout << x << "\n";
   }
 
   // void readData(const std::string & fileD)
@@ -169,7 +174,7 @@ public:
   {
     dens.set_density(numbers);
     dens.solve(bspline);
-    // dens.print_sol();
+    dens.print_sol();
   }
 
   // NOTE: generalization for different data input

@@ -64,6 +64,13 @@ public:
     G = g+k+1;
     u = knots.front();
     v = knots.back();
+
+
+    std::cout << "knots:\n " << "\n";
+
+    for(const auto &x:knots)
+      std::cout << x << "\n";
+
   }
 
   void readKnots(const std::string & fileK)
@@ -95,6 +102,11 @@ public:
       xcp.push_back(inputXcp[i]);
 
     n = xcp.size();
+
+    std::cout << "xcp:\n " << "\n";
+
+    for(const auto &x:xcp)
+      std::cout << x << "\n";
   }
 
   void readXcp(const std::string & fileD)

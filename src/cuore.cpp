@@ -28,28 +28,23 @@ using Rvec = NumericVector;
 //NOTE: decide where to check if data_ is really a matrix
 //NOTE: return a list
 extern "C"{
-SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, Rmat data_, SEXP Xcp_, SEXP knots_)
+SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, SEXP data_, SEXP Xcp_, SEXP knots_)
 {
 
     // Read parameters
-    Rcout << "SONO QUI" << std::endl;
     unsigned int k = INTEGER(k_)[0];     // Spline degree
     unsigned int l = INTEGER(l_)[0];
     double alpha = REAL(alpha_)[0];  // penalization parameter
     bool knots_given = INTEGER(knots_given_)[0];
-    Rcout << "SONO QUI" << std::endl;
     myData obj;
     myParameters pars(k,l,alpha);
 
-    Rcout << "SONO QUI" << std::endl;
-
+Rcout << "Parameters ok" << std::endl;
     // Read data
     double *Xcp = REAL(Xcp_);
-    Rcout << "SONO QUI" << std::endl;
     unsigned int Xcpsize = LENGTH(Xcp_);
-    Rcout << "SONO QUI" << std::endl;
     pars.getXcp(Xcp,Xcpsize);
-    Rcout << "SONO QUI" << std::endl;
+    Rcout << "Xcp ok" << std::endl;
     // Read knots if knots_given
     if(knots_given)
     {
@@ -63,13 +58,23 @@ SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, Rmat data_, SEXP X
     {
     //  pars.createKnots();
     }
+    Rcout << "Knots ok" << std::endl;
 
+  //  NumericMatrix tmp(data_);
+  //  std::size_t nr = tmp.nrow(), nc = tmp.ncol();
+    Rcout << "QUI" << std::endl;
     Eigen::Map<Eigen::MatrixXd> data(as<Eigen::Map<Eigen::MatrixXd>> (data_));
+  //  Eigen::MatrixXd data = Eigen::Map<Eigen::MatrixXd>(tmp.begin(),nr,nc);
+    //Rcout << data(0,0) << std::endl;
+    Rcout << "data ok" << std::endl;
+    std::cout << "data:\n " << data << "\n";
 
     unsigned int nrow = data.rows();
+    std::cout << "nrow: " << nrow << '\n';
 
     myDensity dens(pars);
     dens.set_matrix();
+    dens.print_all();
 
     Eigen::MatrixXd bsplineMat(nrow,pars.getG());
 
@@ -95,7 +100,6 @@ SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, Rmat data_, SEXP X
     return wrap(result);
 };
 }
-
 
 // int main(int argc, char* argv[]) {
 //
