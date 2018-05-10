@@ -1,24 +1,25 @@
 // #include "create_matrix.hpp"
 #include "density_estimation.hpp"
-#include "ctzeros.hpp"
+// #include "ctzeros.hpp"
 #include "classData.hpp"
 #include <vector>
 #include <string>
 #include <iostream>
 #include <sstream>
 #include <iterator>
-#include <Eigen/Dense>
+// #include <Eigen/Dense>
 // #include "GetPot"
 // #include <R.h>
 // #include <Rinternals.h>
 // #include <Rdefines.h>
+#include <RcppEigen.h>
 #include <Rcpp.h>
-//#include <RcppEigen.h>
+
 
 using namespace Rcpp;
 
-using Rmat as NumericMatrix;
-using Rvec as NumericVector;
+using Rmat = NumericMatrix;
+using Rvec = NumericVector;
 
 // [[Rcpp::depends(RcppEigen)]]
 // [[Rcpp::export]]
@@ -26,25 +27,29 @@ using Rvec as NumericVector;
 //NOTE: maybe it is better to deal with knots in R and pass only knots_
 //NOTE: decide where to check if data_ is really a matrix
 //NOTE: return a list
-
-SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, Rmat data_, Rvec Xcp_, Rvec knots_)
+extern "C"{
+SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, Rmat data_, SEXP Xcp_, SEXP knots_)
 {
 
     // Read parameters
-
+    Rcout << "SONO QUI" << std::endl;
     unsigned int k = INTEGER(k_)[0];     // Spline degree
     unsigned int l = INTEGER(l_)[0];
     double alpha = REAL(alpha_)[0];  // penalization parameter
     bool knots_given = INTEGER(knots_given_)[0];
-
+    Rcout << "SONO QUI" << std::endl;
     myData obj;
     myParameters pars(k,l,alpha);
 
+    Rcout << "SONO QUI" << std::endl;
+
     // Read data
     double *Xcp = REAL(Xcp_);
+    Rcout << "SONO QUI" << std::endl;
     unsigned int Xcpsize = LENGTH(Xcp_);
+    Rcout << "SONO QUI" << std::endl;
     pars.getXcp(Xcp,Xcpsize);
-
+    Rcout << "SONO QUI" << std::endl;
     // Read knots if knots_given
     if(knots_given)
     {
@@ -89,6 +94,7 @@ SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP knots_given_, Rmat data_, Rvec X
 
     return wrap(result);
 };
+}
 
 
 // int main(int argc, char* argv[]) {

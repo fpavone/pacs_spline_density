@@ -2,20 +2,17 @@
 #define STORE_DATA_1909_HPP
 
 #include <math.h>
-// #include <Eigen/Dense>
+#include <Eigen/Dense>
 // #include <Eigen/Sparse>
-#include <Eigen/Core>
+// #include <Eigen/Core>
 #include <iostream>
 #include <iterator>
 #include <vector>
 #include <algorithm>
 #include <functional>
 #include <string>
-#include "ctzeros.hpp"
+// #include "ctzeros.hpp"
 #include "density_estimation.hpp"
-#include <R.h>
-#include <Rinternals.h>
-#include <Rdefines.h>
 
 // NOTE: suppose data are stored as vector of vectors named data
 // NOTE: data are supposed not to be ordered (otherwise counting occurrences is easier)
@@ -29,6 +26,83 @@
 //NOTE: rewrite coda input parameters
 //NOTE: coda::BM modify by reference numbers
 //NOTE: better to keep in memory nclasses instead of computing numbers.size in for loop
+
+std::vector<double>
+divide(const std::vector<double> & vect, const double & D)
+{
+  assert(D>0 && " Error: dividing by zero..");
+  std::vector<double> out;
+  for(auto it:vect) out.push_back(it/D);
+  return out;
+};
+
+double
+sum(const std::vector<double> & vect)
+{
+  return std::accumulate(vect.begin(),vect.end(),0.0);
+};
+
+std::vector<double>
+uniform(const unsigned int & n){
+  std::vector<double> tmp;
+  tmp.insert(tmp.begin(),n,1.0/(double)(n));
+  return tmp;
+};
+
+double
+geom_mean(const std::vector<double> & vect)
+{
+  double out = 1.0;
+  for(const auto it:vect){
+    out=out*it;
+  }
+  return pow(out, 1.0/vect.size());;
+};
+
+void
+BM(std::vector<double> & numbers, const auto data)
+{
+  double s = 1.0;
+  const bool  is_strength_inverse = false;
+  std::vector<double> t = uniform(data.size());
+
+  // assert(s>=0 && " Error (BM): strength must be >=0..");
+  // assert(in.size()==t.size() && " Error(BM): different sizes of input..");
+
+  double n = data.sum();
+  double tmp = 0.0;
+
+  double t_tot = 0.0;
+
+  for(std::size_t i = 0; i < data.size(); i++)
+  {   //computing term of the summation
+    // assert(in[i]>=0 && " Error (BM): input must be >=0..");
+    // assert(t[i]>=0 && " Error (BM): input must be >=0..");
+
+    if(data(i)==0) tmp += t[i];
+
+    t_tot += t[i];
+  }
+
+  // assert()  NOTE: need to check that t_tot is "equal" to 1
+  for(std::size_t i = 0; i < data.size(); i++)
+  {  //applying BM method
+    if(data[i] == 0)
+    {
+      if(is_strength_inverse == false) numbers.push_back(t[i]*s/(n + s));
+      else numbers.push_back(t[i]/(s*n + 1));
+    }
+
+    else
+    {
+      if(is_strength_inverse == false) numbers.push_back(data[i]*(1 - s*tmp/(n+s))/n);
+      else numbers.push_back(data[i]*(1 - tmp/(s*n+1))/n);
+    }
+
+  }
+  return;
+}
+
 
 
 class myData {
@@ -44,10 +118,10 @@ private:
 
 public:
 
-  void getData(const auto input)
+  void getData(const auto row)
   {
     numbers.clear();
-    coda::BM(numbers,input);
+    BM(numbers,row);
   }
 
   // void readData(const std::string & fileD)
@@ -86,12 +160,12 @@ public:
     a = pow(a, 1.0/numbers.size());   // nclasses = x.size()
 
     // clr transformation
-    for (auto& y:numbers){
+    for (auto& y:numbers)
       y = log(y/a);
   }
 
   void
-  pacs(const myDensity & dens, auto bspline)  // bspline is the row of output matrix
+  pacs(myDensity & dens, auto bspline)  // bspline is the row of output matrix
   {
     dens.set_density(numbers);
     dens.solve(bspline);
