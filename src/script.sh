@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#rm *.so
-#rm *.o
+rm *.so
+rm *.o
 R CMD SHLIB *.cpp -o libpacs.so
-R
+Rscript gogo.r
