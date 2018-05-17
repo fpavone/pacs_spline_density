@@ -76,13 +76,17 @@ Rcout << "Parameters ok" << std::endl;
     dens.set_matrix();
     dens.print_all();
 
+    unsigned long int numPoints = 100; // NOTE: must be an input
+
     Eigen::MatrixXd bsplineMat(nrow,pars.getG());
+    Eigen::MatrixXd yvalueMat(nrow,numPoints);
 
     for(std::size_t i = 0; i < nrow; i++)
     {
       obj.getData(data.row(i));
       obj.transfData();
       obj.pacs(dens, bsplineMat.row(i));   //NOTE: check if eigen has problem with references
+      obj.plotData_parallel(dens, numPoints, bsplineMat.row(i), yvalueMat.row(i));
     }
 
 
@@ -95,7 +99,7 @@ Rcout << "Parameters ok" << std::endl;
     //     std::cout<<y<<"  ";
     //   std::cout<<"\n";
     // }
-    List result = List::create(bsplineMat);
+    List result = List::create(bsplineMat, yvalueMat);
 
     return wrap(result);
 };
