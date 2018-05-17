@@ -3,4 +3,4 @@
 rm *.so
 rm *.o
 R CMD SHLIB *.cpp -o libpacs.so
-Rscript gogo.r
+Rscript ../R/gogo.r
