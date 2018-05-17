@@ -60,7 +60,13 @@ public:
   getXcp
   (const double * inputXcp, const unsigned int & size);
 
-  unsigned int getG() {return G;} //inline ??
+  unsigned int getG() const{return G;}; //inline ??
+
+  double get_u() const { return u; };
+
+  double get_v() const { return v;};
+
+  unsigned int get_k() const{ return k;};
 };
 
 
@@ -137,6 +143,8 @@ public:
     //  std::cout << "B-SPLINE COEFFICIENTS b = DKc" << '\n' << b << '\n';
     //  std::cout << "PROVA P*c = p..?" << '\n' << Eigen::VectorXd(P*c) << '\n';
     };
+
+    std::vector<double> get_lambda() const{ return lambda; };
 
     // void save_matrix() const
     // {
