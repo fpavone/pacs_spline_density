@@ -80,6 +80,7 @@ Rcout << "Parameters ok" << std::endl;
 
     Eigen::MatrixXd bsplineMat(nrow,pars.getG());
     Eigen::MatrixXd yvalueMat(nrow,numPoints);
+    Eigen::MatrixXd yvalueMatClr(nrow,numPoints);
 
     for(std::size_t i = 0; i < nrow; i++)
     {
@@ -87,6 +88,7 @@ Rcout << "Parameters ok" << std::endl;
       obj.transfData();
       obj.pacs(dens, bsplineMat.row(i));   //NOTE: check if eigen has problem with references
       obj.plotData_parallel(dens, numPoints, bsplineMat.row(i), yvalueMat.row(i));
+      obj.plotData_parallel_Clr(dens, numPoints, bsplineMat.row(i), yvalueMatClr.row(i));
     }
 
 
@@ -99,7 +101,10 @@ Rcout << "Parameters ok" << std::endl;
     //     std::cout<<y<<"  ";
     //   std::cout<<"\n";
     // }
-    List result = List::create(bsplineMat, yvalueMat);
+    List result = List::create(Named("bspline") = bsplineMat,
+                               Named("Y") = yvalueMat,
+                               Named("Y_clr") = yvalueMatClr,
+                               Named("Numbers") = obj.getNumbers());
 
     return wrap(result);
 };

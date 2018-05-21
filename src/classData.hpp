@@ -48,6 +48,13 @@ public:
   transfData
   ();
 
+  std::vector<double>
+  getNumbers   //temporanea 
+  ()
+  {
+    return numbers;
+  }
+
   void
   pacs
   (myDensity & dens, Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline);
@@ -103,6 +110,42 @@ public:
       }
 
       antitData(yplot);
+
+      // for (int l = 0; l < yplot.size() ; ++l) {
+      //   antitData(yplot[h]);
+      // }
+  //  }
+  }
+
+  void
+  plotData_parallel_Clr
+  (const myDensity & dens, unsigned long int numPoints,
+    Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline,
+    Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> yplot)
+  {
+
+    double start = dens.get_u();
+    double end = dens.get_v();
+    unsigned int degree = dens.get_k();
+    unsigned int G = dens.getG();
+    // std::vector<double> knots;
+    // set_lambda(degree, knots, pars.get_knots());
+    const std::vector<double> knots = dens.get_lambda(); // NOTE: use a reference &?
+
+    fillGrid(start, end, numPoints);
+
+    Eigen::ArrayXd N;
+    // yplot.resize(bspline.size());
+  //  for (int row = 0; row < bspline.size(); ++row) {
+      for (int i = 0; i < grid.size(); ++i) {
+        int j = bspline::findspan(degree,grid[i],knots);
+        N = Eigen::ArrayXd::Constant(G, 0.0);
+        bspline::basisfun(j, grid[i], degree, knots, N);
+        long double fvalue = compute_fvalue(bspline, N);
+        yplot(i)=fvalue;
+      }
+
+    //  antitData(yplot);
 
       // for (int l = 0; l < yplot.size() ; ++l) {
       //   antitData(yplot[h]);
