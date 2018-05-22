@@ -5,7 +5,8 @@
 using vect = std::vector<double>;
 
 unsigned int
-bspline::findspan (int p, double t, const vect& U)
+bspline::findspan
+(int p, double t, const vect& U)
 {
 	unsigned int n = U.size();
 	unsigned int ret = 0;
@@ -24,7 +25,8 @@ bspline::findspan (int p, double t, const vect& U)
 };	//findspan
 
 void
-bspline::basisfun (unsigned int i, double t, int p, const vect& U, Eigen::ArrayXd& N)
+bspline::basisfun
+(unsigned int i, double t, int p, const vect& U, Eigen::ArrayXd& N)
 {
 
 	unsigned int j,r;

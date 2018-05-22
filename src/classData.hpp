@@ -8,7 +8,6 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
-//#include "zeros.hpp"
 #include "density_estimation.hpp"
 //#include "find_type.hpp"
 
@@ -30,17 +29,18 @@
 //      for pacs & gives compile-time problems..
 
 
-class myData {
+class myData
+{
 private:
-  std::vector<double> numbers; //where data are stored (one row at a time)
-//  unsigned int nclasses;
 
-  // Eigen::VectorXd bspline;
+  std::vector<double> numbers; //where data are stored (one row at a time)
+  std::vector<double> grid;
+  // unsigned int nclasses;
 
 public:
 
   void
-  getData
+  readData
   (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,
                                   0, Eigen::Stride<0, 0> >, 1, -1, false> & row);
 
@@ -49,11 +49,8 @@ public:
   ();
 
   std::vector<double>
-  getNumbers   //temporanea 
-  ()
-  {
-    return numbers;
-  }
+  getNumbers
+  ();
 
   void
   pacs
@@ -61,114 +58,28 @@ public:
   // bspline is the row of output matrix
 
   void
-  antitData (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> x)
-  {
-    // anti clr transformation
-    double a = exp(x.array()).sum();
-    for(unsigned int i = 0; i < x.size(); i++)
-     x[i] = exp(x[i])/a;
-  }
+  antitData
+  (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> x);
 
-  std::vector<double> grid;
-
-  void fillGrid(double start, double end, unsigned int numPoints){
-    double step = (end - start)/numPoints;
-    grid.resize(numPoints);
-    grid[0] = start;
-    for (unsigned int i = 1; i < numPoints-1 ; ++i) {
-      grid[i] = grid[i-1] + step;
-    }
-    grid[numPoints-1] = end;
-  };
+  void
+  fillGrid
+  (double start, double end, unsigned int numPoints);
 
   void
   plotData_parallel
   (const myDensity & dens, unsigned long int numPoints,
     Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline,
-    Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> yplot)
-  {
-
-    double start = dens.get_u();
-    double end = dens.get_v();
-    unsigned int degree = dens.get_k();
-    unsigned int G = dens.getG();
-    // std::vector<double> knots;
-    // set_lambda(degree, knots, pars.get_knots());
-    const std::vector<double> knots = dens.get_lambda(); // NOTE: use a reference &?
-
-    fillGrid(start, end, numPoints);
-
-    Eigen::ArrayXd N;
-    // yplot.resize(bspline.size());
-  //  for (int row = 0; row < bspline.size(); ++row) {
-      for (int i = 0; i < grid.size(); ++i) {
-        int j = bspline::findspan(degree,grid[i],knots);
-        N = Eigen::ArrayXd::Constant(G, 0.0);
-        bspline::basisfun(j, grid[i], degree, knots, N);
-        long double fvalue = compute_fvalue(bspline, N);
-        yplot(i)=fvalue;
-      }
-
-      antitData(yplot);
-
-      // for (int l = 0; l < yplot.size() ; ++l) {
-      //   antitData(yplot[h]);
-      // }
-  //  }
-  }
+    Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> yplot);
 
   void
   plotData_parallel_Clr
   (const myDensity & dens, unsigned long int numPoints,
     Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline,
-    Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> yplot)
-  {
-
-    double start = dens.get_u();
-    double end = dens.get_v();
-    unsigned int degree = dens.get_k();
-    unsigned int G = dens.getG();
-    // std::vector<double> knots;
-    // set_lambda(degree, knots, pars.get_knots());
-    const std::vector<double> knots = dens.get_lambda(); // NOTE: use a reference &?
-
-    fillGrid(start, end, numPoints);
-
-    Eigen::ArrayXd N;
-    // yplot.resize(bspline.size());
-  //  for (int row = 0; row < bspline.size(); ++row) {
-      for (int i = 0; i < grid.size(); ++i) {
-        int j = bspline::findspan(degree,grid[i],knots);
-        N = Eigen::ArrayXd::Constant(G, 0.0);
-        bspline::basisfun(j, grid[i], degree, knots, N);
-        long double fvalue = compute_fvalue(bspline, N);
-        yplot(i)=fvalue;
-      }
-
-    //  antitData(yplot);
-
-      // for (int l = 0; l < yplot.size() ; ++l) {
-      //   antitData(yplot[h]);
-      // }
-  //  }
-  }
+    Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> yplot);
 
   long double
   compute_fvalue
-  (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> vec1, Eigen::ArrayXd vec2 )
-  {
-    long double res = 0.0;
-    unsigned int n = vec1.size();
-    if(vec2.size() != n){
-      //gestisci errore
-      exit(1);
-    }
-    for (int i = 0; i < n; ++i) {
-      res += vec1[i]*vec2[i];
-    }
-    return res;
-  }
-
+  (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> vec1, Eigen::ArrayXd vec2);
 
 };
 
