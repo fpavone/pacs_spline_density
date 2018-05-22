@@ -60,7 +60,7 @@ myData::pacs
 {
   dens.set_density(numbers);
   dens.solve(bspline);
-  dens.print_sol();
+  // dens.print_sol();
 };
 
 void
