@@ -48,7 +48,7 @@ fun <- function(k,l,alpha,data,xcp,knots,num_points = 100)
 nrow <- dim(adata)[1]
 
 
-sol <- fun(ak,al,aalpha,as.data.frame(midy/100),midx,aknots)
+sol <- fun(ak,al,aalpha,midy/100,midx,aknots)
 
 
 
