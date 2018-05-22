@@ -49,7 +49,7 @@ myplot <- function(sol, data){
 
 myplot(sol,adata)
 
-plot(xx,sol$Y_clr, type = "l")
+plot(xx,sol$Y_clr, type = "l", ylim=c(min(sol$Numbers),max(sol$Numbers)))
 title(main = aalpha)
 points(axcp,sol$Numbers)
 
