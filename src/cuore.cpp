@@ -77,7 +77,9 @@ SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, S
   List result = List::create(Named("bspline") = bsplineMat,
                              Named("Y") = yvalueMat,
                              Named("Y_clr") = yvalueMatClr,
-                             Named("Numbers") = obj.getNumbers());
+                             Named("Numbers") = obj.getNumbers(),
+                             Named("Xcp") = Xcp_,
+                             Named("NumPoints") = numPoints_);
 
   return wrap(result);
 };
