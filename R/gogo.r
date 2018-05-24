@@ -23,7 +23,7 @@ aknots <- seq(midx[1],midx[12], length = 7)
 
 
 sol <- smoothingSplines(ak,al,aalpha,midy/100,midx,aknots)
-plot(sol)
+plot(sol, n = dim(adata)[1], by = 3)
 
 
 
@@ -32,14 +32,14 @@ save.image(file="sol.RData")
 
 ## CUMULATIVE PLOT
 # xx <- seq(midx[1],midx[12],length.out = 100)
-# 
+#
 # myplot <- function(sol, data){
 #   cumsol <- cumsum(sol$Y[nrow,])/sum(sol$Y[nrow,])
 #   cumdata <- cumsum(data[nrow,]/100)
 #   plot(xx,cumsol, type = "l")
 #   points(midx,cumdata)
 # }
-# 
+#
 # myplot(sol,adata)
 
 ## PLOT IN CLR SPACE WITH GIVEN DATA
@@ -47,4 +47,3 @@ save.image(file="sol.RData")
 # plot(xx,sol$Y_clr[nrow,],ylim=c(min(sol$Numbers),max(sol$Numbers)), type = "l")
 # title(main = aalpha)
 # points(midx,sol$Numbers,pch = 19 ,col = "tomato3")
-
