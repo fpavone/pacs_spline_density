@@ -67,6 +67,7 @@ SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, S
       obj.plotData_parallel(dens, numPoints, bsplineMat.row(i), yvalueMat.row(i));
       obj.plotData_parallel_Clr(dens, numPoints, bsplineMat.row(i), yvalueMatClr.row(i));
 
+      // Progress bar 
       std::cout << "[";
       int pos = barWidth * (double)count/nrow;
       for (int j = 0; j < barWidth; ++j)
