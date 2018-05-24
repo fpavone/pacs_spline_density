@@ -58,8 +58,8 @@ void
 myData::pacs
 (myDensity & dens, Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline)  // bspline is the row of output matrix
 {
-  dens.set_density(numbers);
-  dens.solve(bspline);
+  //dens.set_density(numbers);
+  dens.solve(bspline,numbers);
   // dens.print_sol();
 };
 

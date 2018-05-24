@@ -188,18 +188,21 @@ myDensity::set_matrix
         (C * DK).transpose() * weights.asDiagonal() * C * DK;
 }
 
-void
-myDensity::set_density
-(const std::vector<double>& ycp)
-{
-  Eigen::VectorXd newycp(Eigen::VectorXd::Map(ycp.data(),ycp.size()));
-  p.noalias() = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
-}
+// void
+// myDensity::set_density
+// (const std::vector<double>& ycp)
+// {
+//   Eigen::VectorXd newycp(Eigen::VectorXd::Map(ycp.data(),ycp.size()));
+//   p.noalias() = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
+// }
 
 void
 myDensity::solve
-(Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline)
+(Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline, const std::vector<double>& ycp)
 {
+  Eigen::VectorXd newycp(Eigen::VectorXd::Map(ycp.data(),ycp.size()));
+  p.noalias() = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
+
   Eigen::FullPivHouseholderQR<Eigen::MatrixXd> solverQR;
   solverQR.compute(P);
 

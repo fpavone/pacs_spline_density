@@ -118,13 +118,13 @@ public:
   set_matrix
   ();
 
-  void
-  set_density
-  (const std::vector<double>& ycp);
+  // void
+  // set_density
+  // (const std::vector<double>& ycp);
 
   void
   solve
-  (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline);
+  (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline, const std::vector<double>& ycp);
 
   void
   print_all
