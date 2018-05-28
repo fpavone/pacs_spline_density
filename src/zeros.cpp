@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
+#include <numeric>
 #include "zeros.hpp"
 
 std::vector<double>
@@ -44,13 +45,60 @@ help::geom_mean
   return pow(out, 1.0/vect.size());
 };
 
+
 void
 BM
 (std::vector<double> & numbers,
-  const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> >, 1, -1, false> & data)
+  const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> >, 1, -1, false> & data,
+  PRIOR p)
 {
-  double s = data.size();
-  const bool  is_strength_inverse = false;
+  if(p == PRIOR::DEFAULT)
+  {
+    if( data.sum() > (double) (data.size()*data.size()) )  // n > D^2
+        p = PRIOR::SQ;
+    else
+        p = PRIOR::BAYES_LAPLACE;
+  }
+
+  double s;
+
+  switch(p){
+    case PRIOR::PERKS :
+    {
+      s = 1;
+      BM(numbers, data, s);
+      break;
+    }
+    case PRIOR::JEFFREYS :
+    {
+      s = (double)(data.size())/2;
+      BM(numbers, data, s);
+      break;
+    }
+    case PRIOR::BAYES_LAPLACE :
+    {
+      s = (double)(data.size());
+      BM(numbers, data, s);
+      break;
+    }
+    case PRIOR::SQ :
+    {
+      s = sqrt(data.sum());
+      BM(numbers, data, s);
+      break;
+    }
+    default: {}
+  }
+
+  return;
+};
+
+void
+BM
+(std::vector<double> & numbers,
+  const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> >, 1, -1, false> & data,
+  const double & s, const bool is_strength_inverse)
+{
   std::vector<double> t = help::uniform(data.size());
 
   assert(s>=0 && " Error (BM): strength must be >=0..");
