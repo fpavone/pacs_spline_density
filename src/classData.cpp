@@ -11,13 +11,13 @@
 
 void
 myData::readData
-(const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,
-                                0, Eigen::Stride<0, 0> >, 1, -1, false> & row)
+(const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false> & row,
+       PRIOR prior)
 {
   numbers.clear();
 
   if( (row.array()!=0.0).any() )
-    BM(numbers,row);
+    BM(numbers, row, prior);
   else
   {
     for(unsigned int i = 0, n = row.size(); i < n; i++)

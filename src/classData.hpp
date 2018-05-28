@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <functional>
 #include "density_estimation.hpp"
+#include "zeros.hpp"
 //#include "find_type.hpp"
 
 // NOTE: suppose data are stored as vector of vectors named data
@@ -41,8 +42,8 @@ public:
 
   void
   readData
-  (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,
-                                  0, Eigen::Stride<0, 0> >, 1, -1, false> & row);
+  (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> >, 1, -1, false> & row,
+         PRIOR prior);
 
   void
   transfData
