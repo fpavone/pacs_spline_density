@@ -23,7 +23,7 @@ aknots <- seq(midx[1],midx[12], length = 7)
 
 
 sol <- smoothingSplines(ak,al,aalpha,midy/100,midx,aknots)
-plot(sol, n = dim(adata)[1], by = 3)
+plot(sol)
 
 
 
