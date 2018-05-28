@@ -1,11 +1,7 @@
-PKG_CPPFLAGS = -std=c++11 -I${MY_LOCAL_R_PATH}/library/Rcpp/include -I${MY_LOCAL_R_PATH}/library/RcppEigen/include -fopenmp
+PKG_CPPFLAGS = -I$(R_HOME)/library/Rcpp/include -I$(R_HOME)/library/RcppEigen/include
 
 PKG_CXXFLAGS = -Wno-sign-compare -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment -Wno-deprecated-declarations -Wno-unused-but-set-variable -Wno-maybe-uninitialized
 
+PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS)
 
-#PKG_CPPFLAGS = -std=c++11 -I/u/sw/pkgs/toolchains/gcc-glibc/5/pkgs/R/3.2.5/lib64/R/include -I/home/vagrant/R/x86_64-pc-linux-gnu-library/3.2/Rcpp/include -I/home/vagrant/R/x86_64-pc-linux-gnu-library/3.2/RcppEigen/include
-#PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS)
-#CXX_STD = CXX11
-# R CMD SHLIB *.cpp *.hpp -o lib.so -I${mkEigenInc} -I/u/sw/pkgs/toolchains/gcc-glibc/5/pkgs/R/3.2.5/lib64/R/include -std=c++11
-# -I${mkOctavePrefix}
-# -I${mkEigenInc}
+CXX_STD = CXX11
