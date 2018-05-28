@@ -1819,7 +1819,7 @@ double cpu_time ( )
 }
 //****************************************************************************80
 
-void dif_deriv ( int nd, double xd[], double yd[], int *ndp, double xdp[], 
+void dif_deriv ( int nd, double xd[], double yd[], int *ndp, double xdp[],
   double ydp[] )
 
 //****************************************************************************80
@@ -1952,7 +1952,7 @@ void dif_shift_x ( int nd, double xd[], double yd[], double xv )
 //    the number of entries in XD.
 //
 //    Input/output, double XD[ND], the X values used in the representation of
-//    the divided difference polynomial.  After a call to this routine, the 
+//    the divided difference polynomial.  After a call to this routine, the
 //    last entry of XD has been dropped, the other
 //    entries have shifted up one index, and XV has been inserted at the
 //    beginning of the array.
@@ -4489,8 +4489,8 @@ void hc_compute_weights_from_points ( int nhalf, double xhalf[], double w[] )
 //
 //    A quadrature rule is determined for the interpolant.
 //
-//    There will be N=2*NHALF weights.  If the quadrature rule is to be written 
-//    out, one would normally list each point twice, so that the number of points 
+//    There will be N=2*NHALF weights.  If the quadrature rule is to be written
+//    out, one would normally list each point twice, so that the number of points
 //    and weights are equal.  The listing of the same point value twice is an
 //    implicit indication that both function and derivative values should be
 //    used.
@@ -4513,7 +4513,7 @@ void hc_compute_weights_from_points ( int nhalf, double xhalf[], double w[] )
 //
 //    Input, double XHALF[NHALF], the points, without repetition.
 //
-//    Output, double W[2*NHALF], the weights.  The first two weights are 
+//    Output, double W[2*NHALF], the weights.  The first two weights are
 //    associated with the first point, and so on.
 //
 {
@@ -4525,7 +4525,7 @@ void hc_compute_weights_from_points ( int nhalf, double xhalf[], double w[] )
   for ( j = 1; j < nhalf - 1; j++ )
   {
     w[0+j*2] = 0.5 * ( xhalf[j+1] - xhalf[j-1] );
-    w[1+j*2] =       ( xhalf[j+1] - xhalf[j-1] ) 
+    w[1+j*2] =       ( xhalf[j+1] - xhalf[j-1] )
                    * ( xhalf[j+1] - 2.0 * xhalf[j] + xhalf[j-1] ) / 12.0;
   }
 
@@ -5594,7 +5594,7 @@ void hermite_genz_keister_lookup_points ( int n, double x[] )
 //    of successive orders O = 1, 3, 9, 19, and a final rule of order
 //    35, 37, 41 or 43.
 //
-//    The precisions of these rules are P = 1, 5, 15, 29, 
+//    The precisions of these rules are P = 1, 5, 15, 29,
 //    with the final rule of precision 51, 55, 63 or 67.
 //
 //    Three related families begin the same way, but end with a different final
@@ -5897,7 +5897,7 @@ void hermite_genz_keister_lookup_points_np ( int n, int np, double p[],
 //    of successive orders O = 1, 3, 9, 19, and a final rule of order
 //    35, 37, 41 or 43.
 //
-//    The precisions of these rules are P = 1, 5, 15, 29, 
+//    The precisions of these rules are P = 1, 5, 15, 29,
 //    with the final rule of precision 51, 55, 63 or 67.
 //
 //  Licensing:
@@ -5972,7 +5972,7 @@ void hermite_genz_keister_lookup_weights ( int n, double w[] )
 //    of successive orders O = 1, 3, 9, 19, and a final rule of order
 //    35, 37, 41 or 43.
 //
-//    The precisions of these rules are P = 1, 5, 15, 29, 
+//    The precisions of these rules are P = 1, 5, 15, 29,
 //    with the final rule of precision 51, 55, 63 or 67.
 //
 //    Three related families begin the same way, but end with a different final
@@ -6277,7 +6277,7 @@ void hermite_genz_keister_lookup_weights_np ( int n, int np, double p[],
 //    of successive orders O = 1, 3, 9, 19, and a final rule of order
 //    35, 37, 41 or 43.
 //
-//    The precisions of these rules are P = 1, 5, 15, 29, 
+//    The precisions of these rules are P = 1, 5, 15, 29,
 //    with the final rule of precision 51, 55, 63 or 67.
 //
 //  Licensing:
@@ -6348,7 +6348,7 @@ void hermite_gk18_lookup_points ( int n, double x[] )
 //
 //    A nested family of rules for the Hermite integration problem
 //    was produced by Genz and Keister.  The structure of the nested
-//    family was denoted by 1+2+6+10+18, that is, it comprised rules 
+//    family was denoted by 1+2+6+10+18, that is, it comprised rules
 //    of successive orders O = 1, 3, 9, 19, and 37.
 //
 //    The precisions of these rules are P = 1, 5, 15, 29, and 55.
@@ -6358,7 +6358,7 @@ void hermite_gk18_lookup_points ( int n, double x[] )
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -6510,7 +6510,7 @@ void hermite_gk22_lookup_points ( int n, double x[] )
 //
 //    A nested family of rules for the Hermite integration problem
 //    was produced by Genz and Keister.  The structure of the nested
-//    family was denoted by 1+2+6+10+16, that is, it comprised rules 
+//    family was denoted by 1+2+6+10+16, that is, it comprised rules
 //    of successive orders O = 1, 3, 9, 19, and 41.
 //
 //    The precisions of these rules are P = 1, 5, 15, 29, and 63.
@@ -6520,7 +6520,7 @@ void hermite_gk22_lookup_points ( int n, double x[] )
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -6671,7 +6671,7 @@ void hermite_gk24_lookup_points ( int n, double x[] )
 //
 //    A nested family of rules for the Hermite integration problem
 //    was produced by Genz and Keister.  The structure of the nested
-//    family was denoted by 1+2+6+10+16, that is, it comprised rules 
+//    family was denoted by 1+2+6+10+16, that is, it comprised rules
 //    of successive orders O = 1, 3, 9, 19, and 43.
 //
 //    The precisions of these rules are P = 1, 5, 15, 29, and 67.
@@ -6681,7 +6681,7 @@ void hermite_gk24_lookup_points ( int n, double x[] )
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -6871,7 +6871,7 @@ double hermite_integral ( int n )
 }
 //****************************************************************************80
 
-void hermite_interpolant ( int n, double x[], double y[], double yp[], 
+void hermite_interpolant ( int n, double x[], double y[], double yp[],
   double xd[], double yd[], double xdp[], double ydp[] )
 
 //****************************************************************************80
@@ -6907,7 +6907,7 @@ void hermite_interpolant ( int n, double x[], double y[], double yp[],
 //
 //  Parameters:
 //
-//    Input, int N, of items of data 
+//    Input, int N, of items of data
 //    ( X(I), Y(I), YP(I) ).
 //
 //    Input, double X[N], the abscissas.
@@ -6918,7 +6918,7 @@ void hermite_interpolant ( int n, double x[], double y[], double yp[],
 //    Output, double XD[2*N], YD[2*N], the divided difference table
 //    for the interpolant value.
 //
-//    Output, double XDP[2*N-1], YDP[2*N-1], the divided difference 
+//    Output, double XDP[2*N-1], YDP[2*N-1], the divided difference
 //    table for the interpolant derivative.
 //
 {
@@ -6934,7 +6934,7 @@ void hermite_interpolant ( int n, double x[], double y[], double yp[],
   for ( i = 0; i < n; i++ )
   {
     xd[0+i*2] = x[i];
-    xd[1+i*2] = x[i];   
+    xd[1+i*2] = x[i];
   }
 //
 //  Carry out the first step of differencing.
@@ -6967,7 +6967,7 @@ void hermite_interpolant ( int n, double x[], double y[], double yp[],
 }
 //****************************************************************************80
 
-void hermite_interpolant_rule ( int n, double a, double b, double x[], 
+void hermite_interpolant_rule ( int n, double a, double b, double x[],
   double w[] )
 
 //****************************************************************************80
@@ -6996,8 +6996,8 @@ void hermite_interpolant_rule ( int n, double a, double b, double x[],
 //
 //    Input, double X[N], the abscissas.
 //
-//    Output, double W[2*N], the quadrature 
-//    coefficients, given as pairs for function and derivative values 
+//    Output, double W[2*N], the quadrature
+//    coefficients, given as pairs for function and derivative values
 //    at each abscissa.
 //
 {
@@ -7069,7 +7069,7 @@ void hermite_interpolant_rule ( int n, double a, double b, double x[],
 }
 //****************************************************************************80
 
-void hermite_interpolant_value ( int nd, double xd[], double yd[], double xdp[], 
+void hermite_interpolant_value ( int nd, double xd[], double yd[], double xdp[],
   double ydp[], int nv, double xv[], double yv[], double yvp[] )
 
 //****************************************************************************80
@@ -9304,20 +9304,20 @@ void imtqlx ( int n, double d[], double e[], double z[] )
 //
 //  Discussion:
 //
-//    This routine is a slightly modified version of the EISPACK routine to 
-//    perform the implicit QL algorithm on a symmetric tridiagonal matrix. 
+//    This routine is a slightly modified version of the EISPACK routine to
+//    perform the implicit QL algorithm on a symmetric tridiagonal matrix.
 //
 //    The authors thank the authors of EISPACK for permission to use this
-//    routine. 
+//    routine.
 //
-//    It has been modified to produce the product Q' * Z, where Z is an input 
-//    vector and Q is the orthogonal matrix diagonalizing the input matrix.  
+//    It has been modified to produce the product Q' * Z, where Z is an input
+//    vector and Q is the orthogonal matrix diagonalizing the input matrix.
 //    The changes consist (essentially) of applying the orthogonal transformations
 //    directly to Z as they are generated.
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -9331,7 +9331,7 @@ void imtqlx ( int n, double d[], double e[], double z[] )
 //  Reference:
 //
 //    Sylvan Elhay, Jaroslav Kautsky,
-//    Algorithm 655: IQPACK, FORTRAN Subroutines for the Weights of 
+//    Algorithm 655: IQPACK, FORTRAN Subroutines for the Weights of
 //    Interpolatory Quadrature,
 //    ACM Transactions on Mathematical Software,
 //    Volume 13, Number 4, December 1987, pages 399-415.
@@ -9348,7 +9348,7 @@ void imtqlx ( int n, double d[], double e[], double z[] )
 //    Input/output, double D(N), the diagonal entries of the matrix.
 //    On output, the information in D has been overwritten.
 //
-//    Input/output, double E(N), the subdiagonal entries of the 
+//    Input/output, double E(N), the subdiagonal entries of the
 //    matrix, in entries E(1) through E(N-1).  On output, the information in
 //    E has been overwritten.
 //
@@ -9395,7 +9395,7 @@ void imtqlx ( int n, double d[], double e[], double z[] )
           break;
         }
 
-        if ( webbur::r8_abs ( e[m-1] ) <= 
+        if ( webbur::r8_abs ( e[m-1] ) <=
           prec * ( webbur::r8_abs ( d[m-1] ) + webbur::r8_abs ( d[m] ) ) )
         {
           break;
@@ -9489,7 +9489,7 @@ void imtqlx ( int n, double d[], double e[], double z[] )
 }
 //****************************************************************************80
 
-void jacobi_compute ( int n, double alpha, double beta, double x[], 
+void jacobi_compute ( int n, double alpha, double beta, double x[],
   double w[] )
 
 //****************************************************************************80
@@ -9510,7 +9510,7 @@ void jacobi_compute ( int n, double alpha, double beta, double x[],
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -9551,8 +9551,8 @@ void jacobi_compute ( int n, double alpha, double beta, double x[],
 //  Define the zero-th moment.
 //
   zemu = std::pow ( 2.0, alpha + beta + 1.0 )
-    * webbur::r8_gamma ( alpha + 1.0 ) 
-    * webbur::r8_gamma ( beta + 1.0 ) 
+    * webbur::r8_gamma ( alpha + 1.0 )
+    * webbur::r8_gamma ( beta + 1.0 )
     / webbur::r8_gamma ( 2.0 + alpha + beta );
 //
 //  Define the Jacobi matrix.
@@ -9561,8 +9561,8 @@ void jacobi_compute ( int n, double alpha, double beta, double x[],
 
   x[0] = ( beta - alpha ) / ( 2.0 + alpha + beta );
 
-  bj[0] = 4.0 * ( 1.0 + alpha ) * ( 1.0 + beta ) 
-    / ( ( 3.0 + alpha + beta ) 
+  bj[0] = 4.0 * ( 1.0 + alpha ) * ( 1.0 + beta )
+    / ( ( 3.0 + alpha + beta )
       * ( 2.0 + alpha + beta ) * ( 2.0 + alpha + beta ) );
 
   for ( i = 1; i < n; i++ )
@@ -9570,8 +9570,8 @@ void jacobi_compute ( int n, double alpha, double beta, double x[],
     i_r8 = ( double ) ( i + 1 );
     abi = 2.0 * i_r8 + alpha + beta;
     x[i] = ( beta + alpha ) * ( beta - alpha ) / ( ( abi - 2.0 ) * abi );
-    bj[i] = 4.0 * i_r8 * ( i_r8 + alpha ) * ( i_r8 + beta ) 
-      * ( i_r8 + alpha + beta ) 
+    bj[i] = 4.0 * i_r8 * ( i_r8 + alpha ) * ( i_r8 + beta )
+      * ( i_r8 + alpha + beta )
       / ( ( abi - 1.0 ) * ( abi + 1.0 ) * abi * abi );
   }
 
@@ -11781,7 +11781,7 @@ void legendre_compute ( int n, double x[], double w[] )
 
   for ( i = 0; i < n; i++ )
   {
-    bj[i] = ( double ) ( ( i + 1 ) * ( i + 1 ) ) 
+    bj[i] = ( double ) ( ( i + 1 ) * ( i + 1 ) )
           / ( double ) ( 4 * ( i + 1 ) * ( i + 1 ) - 1 );
     bj[i] = std::sqrt ( bj[i] );
   }
@@ -13795,7 +13795,7 @@ double *legendre_zeros ( int order )
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -13863,7 +13863,7 @@ double *legendre_zeros ( int order )
 
     t = ( double ) ( 4 * i - 1 ) * pi / ( double ) ( 4 * order + 2 );
 
-    x0 = std::cos ( t ) * ( 1.0 - ( 1.0 - 1.0 / ( double ) ( order ) ) 
+    x0 = std::cos ( t ) * ( 1.0 - ( 1.0 - 1.0 / ( double ) ( order ) )
       / ( double ) ( 8 * order * order ) );
 
     pkm1 = 1.0;
@@ -13895,7 +13895,7 @@ double *legendre_zeros ( int order )
 //
 //  Refine H using one step of Newton's method:
 //
-    p = pk + h * ( dpn + 0.5 * h * ( d2pn + h / 3.0 
+    p = pk + h * ( dpn + 0.5 * h * ( d2pn + h / 3.0
       * ( d3pn + 0.25 * h * d4pn ) ) );
 
     dp = dpn + h * ( d2pn + 0.5 * h * ( d3pn + h * d4pn / 3.0 ) );
@@ -13906,7 +13906,7 @@ double *legendre_zeros ( int order )
 
     xtab[mp1mi-1] = xtemp;
 
-    fx = d1 - h * e1 * ( pk + 0.5 * h * ( dpn + h / 3.0 
+    fx = d1 - h * e1 * ( pk + 0.5 * h * ( dpn + h / 3.0
       * ( d2pn + 0.25 * h * ( d3pn + 0.2 * h * d4pn ) ) ) );
   }
 
@@ -13937,7 +13937,7 @@ double *legendre_zeros ( int order )
 }
 //****************************************************************************80
 
-void level_growth_to_order ( int dim_num, int level[], int rule[], 
+void level_growth_to_order ( int dim_num, int level[], int rule[],
   int growth[], int order[] )
 
 //****************************************************************************80
@@ -13954,7 +13954,7 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
 //
 //    This is a revised version of LEVEL_GROWTH_TO_ORDER.
 //
-//    In particular, it revises the interpretation of the RULE vector as 
+//    In particular, it revises the interpretation of the RULE vector as
 //    far as the values 10, 11, and 12 are concerned.
 //
 //  Licensing:
@@ -15323,11 +15323,11 @@ int level_to_order_exp_cc ( int level, int growth )
 //        5     17     33     33
 //        6     17     33     65
 //        7     17     33    129
-//        8     17     33    257       
+//        8     17     33    257
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -15423,10 +15423,10 @@ int level_to_order_exp_f2 ( int level, int growth )
 //
 //    Rules of this type are assumed to be open (not including either endpoint)
 //    and having a precision behavior typical of Fejer Type 2
-//    rules, namely, the ORDER-point rule is exact for polynomials of degree 
-//    less than ORDER, and if ORDER is odd, then the exactness includes 
+//    rules, namely, the ORDER-point rule is exact for polynomials of degree
+//    less than ORDER, and if ORDER is odd, then the exactness includes
 //    polynomials of degree ORDER as well.
-// 
+//
 //    LEVEL  ORDER  ORDER  ORDER
 //           G = 0  G = 1  G = 2
 //
@@ -15438,11 +15438,11 @@ int level_to_order_exp_f2 ( int level, int growth )
 //        5     15     31     63
 //        6     15     31    127
 //        7     15     31    255
-//        8     31     63    511  
+//        8     31     63    511
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -15537,7 +15537,7 @@ int level_to_order_exp_gauss ( int level, int growth )
 //  Discussion:
 //
 //    Rules of this type are assumed to be open (not including either endpoint),
-//    and having a precision behavior typical of Gauss rules, namely, the 
+//    and having a precision behavior typical of Gauss rules, namely, the
 //    ORDER-point rule is exact for polynomials of degree less than 2 * ORDER.
 //
 //    LEVEL  ORDER  ORDER  ORDER
@@ -15555,7 +15555,7 @@ int level_to_order_exp_gauss ( int level, int growth )
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -15671,7 +15671,7 @@ int level_to_order_exp_gp ( int level, int growth )
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -15813,7 +15813,7 @@ int level_to_order_exp_hgk ( int level, int growth )
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -15934,7 +15934,7 @@ int level_to_order_linear_nn ( int level, int growth )
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -16019,7 +16019,7 @@ int level_to_order_linear_wn ( int level, int growth )
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -16488,7 +16488,7 @@ void ncoh_compute_points ( int n, double x[] )
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -16511,8 +16511,8 @@ void ncoh_compute_points ( int n, double x[] )
 
   for ( i = 0; i < n; i++ )
   {
-    x[i] = ( ( double ) ( 2 * n - 2 * i - 1 ) * x_min   
-           + ( double ) (         2 * i + 1 ) * x_max ) 
+    x[i] = ( ( double ) ( 2 * n - 2 * i - 1 ) * x_min
+           + ( double ) (         2 * i + 1 ) * x_max )
            / ( double ) ( 2 * n             );
   }
 
@@ -16535,7 +16535,7 @@ void ncoh_compute_weights ( int n, double w[] )
 //
 //  Licensing:
 //
-//    This code is distributed under the GNU LGPL license. 
+//    This code is distributed under the GNU LGPL license.
 //
 //  Modified:
 //
@@ -16581,7 +16581,7 @@ void patterson_lookup ( int n, double x[], double w[] )
 //
 //    Our convention is that the abscissas are numbered from left to right.
 //
-//    The rule is defined on [-1,1],    
+//    The rule is defined on [-1,1],
 //
 //  Licensing:
 //
@@ -16640,7 +16640,7 @@ void patterson_lookup_points ( int n, double x[] )
 //    The rule is defined on [-1,1],
 //
 //    These rules constitute a nested family.  The rules can integrate exactly
-//    any polynomial of degree 1, 5, 11, 23, 47, 95, 191, 383 or 767, 
+//    any polynomial of degree 1, 5, 11, 23, 47, 95, 191, 383 or 767,
 //    respectively.
 //
 //    The data for N = 511 was supplied by Dirk Laurie, and is derived
@@ -17845,7 +17845,7 @@ void patterson_lookup_weights ( int n, double w[] )
 //    The user must preallocate space for the output array W.
 //
 //    These rules constitute a nested family.  The rules can integrate exactly
-//    any polynomial of degree 1, 5, 11, 23, 47, 95, 191, 383 or 767, 
+//    any polynomial of degree 1, 5, 11, 23, 47, 95, 191, 383 or 767,
 //    respectively.
 //
 //    The data for N = 511 was supplied by Dirk Laurie, and is derived
@@ -23497,8 +23497,8 @@ double *r8vec_chebyshev_new ( int n, double a_first, double a_last )
         }
       }
 
-      a[i] = ( ( 1.0 - c ) * a_first  
-             + ( 1.0 + c ) * a_last ) 
+      a[i] = ( ( 1.0 - c ) * a_first
+             + ( 1.0 + c ) * a_last )
              /   2.0;
     }
   }
@@ -24140,7 +24140,7 @@ void r8vec_index_sorted_range ( int n, double r[], int indx[], double r_lo,
   if ( r_hi < r[indx[*i_hi]] )
   {
     *i_hi = *i_hi - 1;
-    if ( i_hi < 0 )
+    if ( *i_hi < 0 )   //NOTE: before i_hi, now *i_hi (MODIFIED)
     {
       *i_lo = *i_hi + 1;
     }
@@ -24535,8 +24535,8 @@ double *r8vec_legendre_new ( int n, double a_first, double a_last )
 
   for ( i = 0; i < n; i++ )
   {
-    a[i] = ( ( 1.0 - a[i] ) * a_first  
-           + ( 1.0 + a[i] ) * a_last ) 
+    a[i] = ( ( 1.0 - a[i] ) * a_first
+           + ( 1.0 + a[i] ) * a_last )
            /   2.0;
   }
   return a;
@@ -24589,8 +24589,8 @@ double *r8vec_linspace_new ( int n, double a_first, double a_last )
   {
     for ( i = 0; i < n; i++ )
     {
-      a[i] = ( ( double ) ( n - 1 - i ) * a_first 
-             + ( double ) (         i ) * a_last ) 
+      a[i] = ( ( double ) ( n - 1 - i ) * a_first
+             + ( double ) (         i ) * a_last )
              / ( double ) ( n - 1     );
     }
   }
