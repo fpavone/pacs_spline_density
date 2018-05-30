@@ -1,8 +1,8 @@
-dyn.load("libpacs.so")
+#dyn.load("libpacs.so")
 library(Rcpp)
 library(RcppEigen)
 library(tseries)
-source("../R/mypackage.R")
+#source("../R/mypackage.R")
 
 ## SCRIPT FOR DATA GIVEN BY PROF. MENAFOGLIO
 

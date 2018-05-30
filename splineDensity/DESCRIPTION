@@ -1,0 +1,23 @@
+Package: splineDensity
+Type: Package
+Title: Smoothing splines for density estimation
+Version: 0.0.0.23
+Authors@R: c(person("Alessia", "Di Blasi", role = c("aut", "cre"),
+	     				email = "alessia.diblasi@mail.polimi.it"),
+						 person("Federico", "Pavone", role = c("aut"),
+							email = "federico.pavone@mail.polimi.it"),
+						 person("Gianluca", "Zeni", role = c("aut"),
+							email = "gianluca.zeni@mail.polimi.it"))
+Description: What the package does (one paragraph).
+Depends: R (>= 3.5.0), 
+         Rcpp (>= 0.12.17), 
+         RcppEigen (>= 0.3.3.4.0),
+         ggplot2 (>= 2.2.1)
+LinkingTo: Rcpp,
+	         RcppEigen
+NeedsCompilation: yes
+SystemRequirements: C++11
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1

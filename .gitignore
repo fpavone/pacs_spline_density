@@ -8,3 +8,4 @@ main
 *.Rhistory
 *.RData
 *.pdf
+.Rproj.user
