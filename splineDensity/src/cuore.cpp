@@ -23,7 +23,7 @@ using namespace Rcpp;
 
 
 extern "C"{
-SEXP mymain(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP numPoints_, SEXP prior_)
+SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP numPoints_, SEXP prior_)
 {
   clock_t t;
   t = clock();

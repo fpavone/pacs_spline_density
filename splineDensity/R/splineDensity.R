@@ -23,11 +23,11 @@ smoothingSplines <- function(k,l,alpha,data,xcp,knots,num_points = 100, prior = 
     size <- knots
     step <- (v - u)/(size-1)
     knots_ <- seq(u,v, by = step)
-    obj <- .Call("mymain",as.integer(k),as.integer(l),alpha,
+    obj <- .Call("smoothingSplines_",as.integer(k),as.integer(l),alpha,
                  data,xcp,knots_,as.integer(num_points),as.integer(prior_num))
   }
   else
-   obj <- .Call("mymain",as.integer(k),as.integer(l),alpha,
+   obj <- .Call("smoothingSplines_",as.integer(k),as.integer(l),alpha,
                 data,xcp,knots,as.integer(num_points),as.integer(prior_num))
 
   class(obj) <- "smoothSpl"
