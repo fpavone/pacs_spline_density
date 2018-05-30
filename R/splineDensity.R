@@ -1,3 +1,21 @@
+#' @examples
+#' library(splineDensity)
+#' data(particle)
+#' ak <- 3
+#' al <- 2
+#' aalpha <- 10
+#' aknots_given <- 1
+#' axcp <- c(0.063,0.125,0.25,0.5,1,2,4,8,16,31.5,63,100)
+#' u <- log(0.001)
+#' v <- log(200)
+#' classes <- c(u,log(axcp))
+#' midx <- (classes[-1] + classes[-13])/2
+#' lenx <- (classes[-1] - classes[-13])/2
+#' midy <- adata/lenx
+#' aknots <- seq(midx[1],midx[12], length = 7)
+#' sol <- smoothingSplines(ak,al,aalpha,midy/100,midx,aknots)
+#' plot(sol)
+
 smoothingSplines <- function(k,l,alpha,data,xcp,knots,num_points = 100, prior = "default")
 {
   # Checking if data is a matrix
