@@ -1,3 +1,17 @@
+#' Estimate density from histogram as compositional data through bbsplines.
+#'
+#' @param k smoothing splines degree
+#' @param l order of derivative in the penalization term
+#' @param alpha weight for penalization
+#' @param data an object of class "matrix" containing data to be smoothed
+#' @param xcp control points
+#' @param knots either vector of knots for the splines or a integer for the number of knots
+#' @param num_points number of points of the grid where to evaluate the density estimated
+#' @param prior prior used for zero-replacements. This must be one of "perks", "jeffreys", "bayes_laplace", "sq" or "default"
+#' @return The sum of 
+#' @description asdasd
+#' @details qualcosa
+#' @references asdas
 #' @examples
 #' library(splineDensity)
 #' data(particle)
@@ -15,7 +29,8 @@
 #' aknots <- seq(midx[1],midx[12], length = 7)
 #' sol <- smoothingSplines(ak,al,aalpha,midy/100,midx,aknots)
 #' plot(sol)
-
+#' @useDynLib splineDensity
+#' @export
 smoothingSplines <- function(k,l,alpha,data,xcp,knots,num_points = 100, prior = "default")
 {
   # Checking if data is a matrix

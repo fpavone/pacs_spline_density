@@ -8,3 +8,4 @@ main
 *.Rhistory
 *.pdf
 .Rproj.user
+*.Rproj

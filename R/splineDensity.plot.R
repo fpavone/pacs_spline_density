@@ -1,3 +1,4 @@
+#' @export
 plot.smoothSpl <- function(obj, by = 1 , n = 10,...){
   xx <- seq(obj$Xcp[1],tail(obj$Xcp,n=1),length.out = obj$NumPoints)
   n <- min(n,dim(obj$Y)[1])
