@@ -12,13 +12,24 @@ Subfolder structure
 - data contains all .rda and .RData files useful for testings
 - tests contains basic R script to run tests
 
-To install the package, please make sure that you have the package [devtools](https://cran.r-project.org/web/packages/devtools/index.html) already intalled.
+To install the package, please make sure that you have the package [devtools](https://cran.r-project.org/web/packages/devtools/index.html) already installed.
 
 From the root folder then type
 
     R -e "library(devtools); install()" —silent
     R -e "library(devtools); document()" —silent
 
+or in another way download source code from the github repository, unzip the file and run from the terminal:
+
+    R CMD INSTALL <path name of the package to be installed> -l <path name of the R library tree>
+
+    (R CMD INSTALL /splineDensity -l /home/vagrant/R/x86_64-pc-linux-gnu-library/3.2)
+						.libPaths()
+
 Otherwise you can install directly from github:
 
     devtools::install_github("fpavone/pacs_spline_density", ref = "splineDensity")
+
+To run an example in R:
+    
+    example(smoothingSplines)
