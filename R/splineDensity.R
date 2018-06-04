@@ -8,7 +8,8 @@
 #' @param knots either vector of knots for the splines or a integer for the number of knots
 #' @param num_points number of points of the grid where to evaluate the density estimated
 #' @param prior prior used for zero-replacements. This must be one of "perks", "jeffreys", "bayes_laplace", "sq" or "default"
-#' @return The sum of 
+#' @param cores number of cores for parallel execution
+#' @return The sum of
 #' @description asdasd
 #' @details qualcosa
 #' @references asdas
@@ -31,7 +32,7 @@
 #' plot(sol)
 #' @useDynLib splineDensity
 #' @export
-smoothingSplines <- function(k,l,alpha,data,xcp,knots,num_points = 100, prior = "default")
+smoothingSplines <- function(k,l,alpha,data,xcp,knots,num_points = 100, prior = "default", cores = 1)
 {
   # Checking if data is a matrix
   if ( !is.matrix(data) )
@@ -57,11 +58,11 @@ smoothingSplines <- function(k,l,alpha,data,xcp,knots,num_points = 100, prior = 
     step <- (v - u)/(size-1)
     knots_ <- seq(u,v, by = step)
     obj <- .Call("smoothingSplines_",as.integer(k),as.integer(l),alpha,
-                 data,xcp,knots_,as.integer(num_points),as.integer(prior_num))
+                 data,xcp,knots_,as.integer(num_points),as.integer(prior_num), as.integer(cores))
   }
   else
    obj <- .Call("smoothingSplines_",as.integer(k),as.integer(l),alpha,
-                data,xcp,knots,as.integer(num_points),as.integer(prior_num))
+                data,xcp,knots,as.integer(num_points),as.integer(prior_num), as.integer(cores))
 
   class(obj) <- "smoothSpl"
   return(obj)
