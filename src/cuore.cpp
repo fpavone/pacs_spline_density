@@ -14,8 +14,8 @@
 #else
   #define omp_get_thread_num() 0
 #endif
-// #include <thread>
-// #include <chrono>
+#include "timer.h"
+#include <chrono>
 
 
 
@@ -23,10 +23,13 @@ using namespace Rcpp;
 
 
 extern "C"{
-SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP numPoints_, SEXP prior_)
+SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP numPoints_, SEXP prior_, SEXP nCPU_)
 {
-  clock_t t;
-  t = clock();
+  cns::timer<> t;
+  t.start();
+
+  omp_set_dynamic(0);         // Explicitly disable dynamic teams
+  omp_set_num_threads(INTEGER(nCPU_)[0]);
 
   // Read parameters
   unsigned int k = INTEGER(k_)[0];     // Spline degree
@@ -118,8 +121,8 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
                              Named("Xcp") = Xcp_,
                              Named("NumPoints") = numPoints_);
 
-  t = clock() - t;
-  std::cout << "It took "<< t <<" clocks, so " << ((double)t)/CLOCKS_PER_SEC << " second(s)."<< std::endl;
+  t.stop();
+  std::cout << "It took "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
 
   return wrap(result);
 };
