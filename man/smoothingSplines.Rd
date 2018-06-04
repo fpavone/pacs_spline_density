@@ -5,7 +5,7 @@
 \title{Estimate density from histogram as compositional data through bbsplines.}
 \usage{
 smoothingSplines(k, l, alpha, data, xcp, knots, num_points = 100,
-  prior = "default")
+  prior = "default", cores = 1, fast = 0)
 }
 \arguments{
 \item{k}{smoothing splines degree}
@@ -23,6 +23,10 @@ smoothingSplines(k, l, alpha, data, xcp, knots, num_points = 100,
 \item{num_points}{number of points of the grid where to evaluate the density estimated}
 
 \item{prior}{prior used for zero-replacements. This must be one of "perks", "jeffreys", "bayes_laplace", "sq" or "default"}
+
+\item{cores}{number of cores for parallel execution}
+
+\item{fast}{1 if maximal performance is required (print statements suppressed), 0 otherwise}
 }
 \value{
 The sum of
