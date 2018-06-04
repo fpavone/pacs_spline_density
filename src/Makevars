@@ -1,4 +1,4 @@
-PKG_CPPFLAGS = -I$(R_HOME)/library/Rcpp/include -I$(R_HOME)/library/RcppEigen/include
-PKG_CXXFLAGS = -Wno-sign-compare -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment -Wno-deprecated-declarations -Wno-unused-but-set-variable -Wno-maybe-uninitialized
-#PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS)
+PKG_CPPFLAGS = -I$(R_HOME)/library/Rcpp/include -I$(R_HOME)/library/RcppEigen/include -Ofast -fopenmp
+PKG_CXXFLAGS = -Wno-sign-compare -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment -Wno-deprecated-declarations -Wno-unused-but-set-variable -Wno-maybe-uninitialized -Wno-unknown-pragmas -Wno-unknown-warning-option
+PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS)
 CXX_STD = CXX11
