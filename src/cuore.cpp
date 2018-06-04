@@ -23,7 +23,7 @@ using namespace Rcpp;
 
 
 extern "C"{
-SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP numPoints_, SEXP prior_, SEXP nCPU_)
+SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP numPoints_, SEXP prior_, SEXP nCPU_, SEXP fast_)
 {
   cns::timer<> t;
   t.start();
@@ -32,6 +32,8 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
     omp_set_dynamic(0);         // Explicitly disable dynamic teams
     omp_set_num_threads(INTEGER(nCPU_)[0]);
   #endif
+
+  bool furious = INTEGER(fast_)[0];
 
   // Read parameters
   unsigned int k = INTEGER(k_)[0];     // Spline degree
@@ -85,6 +87,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
 
   int barWidth = 70; // for bar progress plot
   int count = 0;
+  int pos = 0;
 
   #pragma omp parallel private(obj) firstprivate(dens)// default(shared)
   {
@@ -98,18 +101,23 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
       obj.plotData_parallel_Clr(dens, numPoints, bsplineMat.row(i), yvalueMatClr.row(i));
 
       // Progress bar
-      std::cout << "[";
-      int pos = barWidth * (double)count/nrow;
-      for (int j = 0; j < barWidth; ++j)
+      if(!furious)
       {
-        if (j < pos) std::cout << "=";
-        else if (j == pos) std::cout << ">";
-        else std::cout << " ";
+        #pragma omp critical
+        {
+          std::cout << "[";
+          pos = barWidth * (double)count/nrow;
+          for (int j = 0; j < barWidth; ++j)
+          {
+            if (j < pos) std::cout << "=";
+            else if (j == pos) std::cout << ">";
+            else std::cout << " ";
+          }
+          std::cout << "] " << int((double)count/(nrow-1) * 100.0) << "%\r";
+          std::cout.flush();
+          count++;
+        }
       }
-      std::cout << "] " << int((double)count/(nrow-1) * 100.0) << "%\r";
-      std::cout.flush();
-      #pragma omp atomic // count is incremented by one thread at a time
-        count++;
     }
   }
 
