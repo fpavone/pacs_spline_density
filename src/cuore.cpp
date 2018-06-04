@@ -28,8 +28,10 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   cns::timer<> t;
   t.start();
 
-  omp_set_dynamic(0);         // Explicitly disable dynamic teams
-  omp_set_num_threads(INTEGER(nCPU_)[0]);
+  #ifdef _OPENMP
+    omp_set_dynamic(0);         // Explicitly disable dynamic teams
+    omp_set_num_threads(INTEGER(nCPU_)[0]);
+  #endif
 
   // Read parameters
   unsigned int k = INTEGER(k_)[0];     // Spline degree
@@ -76,7 +78,6 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   unsigned int nrow = data.rows();
 
   dens.set_matrix();
-  // dens.print_all();
 
   Eigen::MatrixXd bsplineMat(nrow,dens.get_G());
   Eigen::MatrixXd yvalueMat(nrow,numPoints);
@@ -85,7 +86,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   int barWidth = 70; // for bar progress plot
   int count = 0;
 
-  #pragma omp parallel private(obj)// default(shared)
+  #pragma omp parallel private(obj) firstprivate(dens)// default(shared)
   {
   #pragma omp for
     for(std::size_t i = 0; i < nrow; i++)
@@ -107,8 +108,8 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
       }
       std::cout << "] " << int((double)count/(nrow-1) * 100.0) << "%\r";
       std::cout.flush();
-      count++;
-      // std::this_thread::sleep_for(std::chrono::seconds(1));
+      #pragma omp atomic // count is incremented by one thread at a time
+        count++;
     }
   }
 
