@@ -201,7 +201,9 @@ myDensity::solve
 (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline, const std::vector<double>& ycp)
 {
   Eigen::VectorXd newycp(Eigen::VectorXd::Map(ycp.data(),ycp.size()));
+  Eigen::VectorXd p;
   p.noalias() = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
+  // p.noalias() = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
 
   Eigen::FullPivHouseholderQR<Eigen::MatrixXd> solverQR;
   solverQR.compute(P);

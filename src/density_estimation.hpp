@@ -74,7 +74,7 @@ private:
   Eigen::SparseMatrix<double> DK; // GxG
   Eigen::MatrixXd P; // matrix of the problem we have to solve - GxG
 
-  Eigen::VectorXd p; // known vector of the problem we have to solve - G
+  // Eigen::VectorXd p; // known vector of the problem we have to solve - G
   Eigen::VectorXd c; // solution of the problem: c = P^(-)p - G
   Eigen::VectorXd b; // B-spline coefficients - G
 
