@@ -49,6 +49,13 @@ public:
   readXcp
   (const double * inputXcp, const unsigned int & size);
 
+  void
+  set_alpha
+  (const double & opt_param)
+  {
+    alpha = opt_param;
+  }
+
   unsigned int
   get_G() const { return G; };
 
@@ -118,9 +125,13 @@ public:
   set_matrix
   ();
 
-  // void
-  // set_density
-  // (const std::vector<double>& ycp);
+  void
+  set_system
+  ();
+
+  double
+  eval_J
+  (const std::vector<double>& ycp);
 
   void
   solve

@@ -184,17 +184,26 @@ myDensity::set_matrix
   fill_M();
   fill_DK();
   fill_S();
+}
+
+void
+myDensity::set_system
+()
+{
   P.noalias() = 1.0 / alpha * (DK).transpose() * S.transpose() * M * S * (DK) +
         (C * DK).transpose() * weights.asDiagonal() * C * DK;
 }
 
-// void
-// myDensity::set_density
-// (const std::vector<double>& ycp)
-// {
-//   Eigen::VectorXd newycp(Eigen::VectorXd::Map(ycp.data(),ycp.size()));
-//   p.noalias() = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
-// }
+double
+myDensity::eval_J
+(const std::vector<double>& ycp)
+{
+  Eigen::VectorXd newycp(Eigen::VectorXd::Map(ycp.data(),ycp.size()));
+  double eval = 0.0;
+  eval = (DK*c).transpose() * S.transpose() * M * S * DK*c;
+  eval += alpha*(newycp - C*DK*c).transpose()*weights.asDiagonal()*(newycp - C*DK*c);
+  return eval;
+}
 
 void
 myDensity::solve
@@ -271,6 +280,7 @@ myDensity::print_all
     std::cout << "MATRIX M:" << '\n' << M << std::endl;
     std::cout << "MATRIX DK:" << '\n' << Eigen::MatrixXd(DK) << std::endl;
     std::cout << "MATRIX W:" << '\n' << Eigen::MatrixXd(weights.asDiagonal()) << std::endl;
+    std::cout << "\n Matrix P: " << '\n' << P << '\n';
 }
 
 void

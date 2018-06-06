@@ -80,6 +80,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   unsigned int nrow = data.rows();
 
   dens.set_matrix();
+  dens.set_system();
 
   Eigen::MatrixXd bsplineMat(nrow,dens.get_G());
   Eigen::MatrixXd yvalueMat(nrow,numPoints);
@@ -121,8 +122,6 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
     }
   }
 
-  std::cout << std::endl;
-
   List result = List::create(Named("bspline") = bsplineMat,
                              Named("Y") = yvalueMat,
                              Named("Y_clr") = yvalueMatClr,
@@ -131,7 +130,162 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
                              Named("NumPoints") = numPoints_);
 
   t.stop();
-  std::cout << "It took "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  std::cout << "\nIt took "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+
+  return wrap(result);
+};
+
+
+/**************************************************************/
+/**************************************************************/
+/******************* VALIDATION FUNCTION **********************/
+/**************************************************************/
+/**************************************************************/
+
+
+
+SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP numPoints_, SEXP prior_, SEXP nCPU_, SEXP fast_)
+{
+  cns::timer<> t;
+  t.start();
+
+  #ifdef _OPENMP
+    omp_set_dynamic(0);         // Explicitly disable dynamic teams
+    omp_set_num_threads(INTEGER(nCPU_)[0]);
+  #endif
+
+  bool furious = INTEGER(fast_)[0];
+
+  // Read parameters
+  unsigned int k = INTEGER(k_)[0];     // Spline degree
+  unsigned int l = INTEGER(l_)[0];
+  double * alpha = REAL(alpha_);  // penalization parameters vector
+  unsigned int alpha_size= LENGTH(alpha_);
+  unsigned int numPoints = INTEGER(numPoints_)[0]; // number of points of the grid for the density
+  unsigned int prior_num = INTEGER(prior_)[0];
+
+  PRIOR prior = PRIOR::DEFAULT;
+
+  switch(prior_num)
+  {
+    case 1: // "perks"
+      prior = PRIOR::PERKS;
+      break;
+    case 2: // "jeffreys"
+      prior = PRIOR::JEFFREYS;
+      break;
+    case 3: // "bayes_laplace"
+      prior = PRIOR::BAYES_LAPLACE;
+      break;
+    case 4:  // "sq"
+      prior = PRIOR::SQ;
+      break;
+    default: {};
+  }
+
+  myData obj;
+  myDensity dens(myParameters(k,l,alpha[0]));
+
+  // Read xcp
+  double *Xcp = REAL(Xcp_);
+  unsigned int Xcpsize = LENGTH(Xcp_);
+  dens.readXcp(Xcp,Xcpsize);
+
+  // Read knots
+  double *knots = REAL(knots_);
+  unsigned int knotsSize = LENGTH(knots_);
+  dens.readKnots(knots,knotsSize);
+
+  // Read data
+  Eigen::Map<Eigen::MatrixXd> data(as<Eigen::Map<Eigen::MatrixXd>> (data_));
+
+  unsigned int nrow = data.rows();
+
+  dens.set_matrix();
+
+  Eigen::MatrixXd bsplineMat(nrow,dens.get_G());
+  Eigen::MatrixXd yvalueMat(nrow,numPoints);
+  Eigen::MatrixXd yvalueMatClr(nrow,numPoints);
+
+  int barWidth = 70; // for bar progress plot
+  int count = 0;
+  int pos = 0;
+  unsigned int min_index = 0;
+  std::vector<double> Jvalues(alpha_size,0.0);
+  double Jopt = -1.0;
+
+  #pragma omp parallel private(obj) firstprivate(dens)// default(shared)
+  {
+    Eigen::MatrixXd threadBsplineMat(nrow,dens.get_G());
+    #pragma omp for
+    for(std::size_t j = 0; j < alpha_size; j++)
+    {
+      dens.set_alpha(alpha[j]);
+      dens.set_system();
+      for(std::size_t i = 0; i < nrow; i++)
+      {
+        obj.readData(data.row(i), prior);
+        obj.transfData();
+        obj.pacs(dens, threadBsplineMat.row(i));
+        Jvalues[j]+=dens.eval_J(obj.getNumbers())/nrow;
+      }
+      #pragma omp critical
+      if(Jvalues[j]<Jopt || Jopt<0)
+      {
+        Jopt = Jvalues[j];
+        bsplineMat = threadBsplineMat;
+        min_index = j;
+      }
+    }
+  }
+
+  // Printing out J[alpha]
+  for(std::size_t k = 0; k < alpha_size; k++)
+  {
+    Rcout << std::string((k==min_index)?" ***":" ") << "\talpha = "<< alpha[k] << "\tJ = " << Jvalues[k] << '\n';
+  }
+
+  // Once choosen optimal alpha, computing Y and Yclr
+  dens.set_alpha(alpha[min_index]);
+  dens.set_system();
+
+  #pragma omp parallel private(obj) firstprivate(dens)// default(shared)
+  {
+  #pragma omp for
+    for(std::size_t i = 0; i < nrow; i++)
+    {
+      obj.plotData_parallel(dens, numPoints, bsplineMat.row(i), yvalueMat.row(i));
+      obj.plotData_parallel_Clr(dens, numPoints, bsplineMat.row(i), yvalueMatClr.row(i));
+
+      // Progress bar
+      if(!furious)
+      {
+        #pragma omp critical
+        {
+          std::cout << "[";
+          pos = barWidth * (double)count/nrow;
+          for (int j = 0; j < barWidth; ++j)
+          {
+            if (j < pos) std::cout << "=";
+            else if (j == pos) std::cout << ">";
+            else std::cout << " ";
+          }
+          std::cout << "] " << int((double)count/(nrow-1) * 100.0) << "%\r";
+          std::cout.flush();
+          count++;
+        }
+      }
+    }
+  }
+
+  List result = List::create(Named("bspline") = bsplineMat,
+                             Named("Y") = yvalueMat,
+                             Named("Y_clr") = yvalueMatClr,
+                             Named("Xcp") = Xcp_,
+                             Named("NumPoints") = numPoints_);
+
+  t.stop();
+  std::cout << "\nIt took "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
 
   return wrap(result);
 };
