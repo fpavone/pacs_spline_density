@@ -17,6 +17,7 @@ myParameters::readKnots
 (const double * inputKnots, const unsigned int & size)
 {
   // read knots by copy
+  knots.clear();
   for(std::size_t i=0; i < size; i++)
     knots.push_back(inputKnots[i]);
 
@@ -36,6 +37,7 @@ myParameters::readXcp
 (const double * inputXcp, const unsigned int & size, const int & cancel)
 {
   // read xcp by copy, if specified skip column indexed by cancel (-1 means nothing to cancel)
+  xcp.clear();
   for(std::size_t i=0; i < size; i++)
     if(i!=cancel) xcp.push_back(inputXcp[i]);
 
@@ -158,6 +160,7 @@ void
 myDensity::set_lambda
 (const std::vector<double> & knots)
 {
+  lambda.clear();
   lambda.assign(k, knots[0]);
   lambda.insert(lambda.begin() + k, knots.begin(), knots.end());
   lambda.insert(lambda.end(), k ,knots.back());
@@ -168,6 +171,7 @@ void
 myDensity::set_lambda_der
 (const std::vector<double> & knots)
 {
+  lambda_der.clear();
   lambda_der.assign(k-l, knots[0]);
   lambda_der.insert(lambda_der.begin() + k-l, knots.begin(), knots.end());
   lambda_der.insert(lambda_der.end(), k-l ,knots.back());
@@ -200,8 +204,10 @@ myDensity::eval_J
 {
   Eigen::VectorXd newycp(Eigen::VectorXd::Map(ycp.data(),ycp.size()));
   double eval = 0.0;
+
   eval = (DK*c).transpose() * S.transpose() * M * S * DK*c;
   eval += alpha*(newycp - C*DK*c).transpose()*weights.asDiagonal()*(newycp - C*DK*c);
+  
   return eval;
 }
 
