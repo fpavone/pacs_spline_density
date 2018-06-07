@@ -145,7 +145,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
 
 
 
-SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP numPoints_, SEXP prior_, SEXP nCPU_, SEXP fast_)
+SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP prior_, SEXP nCPU_)
 {
   cns::timer<> t;
   t.start();
@@ -155,14 +155,11 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
     omp_set_num_threads(INTEGER(nCPU_)[0]);
   #endif
 
-  bool furious = INTEGER(fast_)[0];
-
   // Read parameters
   unsigned int k = INTEGER(k_)[0];     // Spline degree
   unsigned int l = INTEGER(l_)[0];
   double * alpha = REAL(alpha_);  // penalization parameters vector
   unsigned int alpha_size= LENGTH(alpha_);
-  unsigned int numPoints = INTEGER(numPoints_)[0]; // number of points of the grid for the density
   unsigned int prior_num = INTEGER(prior_)[0];
 
   PRIOR prior = PRIOR::DEFAULT;

@@ -2,24 +2,21 @@
 #'
 #' @param k smoothing splines degree
 #' @param l order of derivative in the penalization term
-#' @param alpha weight for penalization
+#' @param alpha vector of weights for penalization
 #' @param data an object of class "matrix" containing data to be smoothed
 #' @param xcp control points
 #' @param knots either vector of knots for the splines or a integer for the number of knots
-#' @param num_points number of points of the grid where to evaluate the density estimated
 #' @param prior prior used for zero-replacements. This must be one of "perks", "jeffreys", "bayes_laplace", "sq" or "default"
 #' @param cores number of cores for parallel execution
-#' @param fast 1 if maximal performance is required (print statements suppressed), 0 otherwise
 #' @return The sum of
 #' @description asdasd
 #' @details qualcosa
 #' @references asdas
 #' @examples
 #' library(splineDensity)
-#' data(particle)
 #' ak <- 3
 #' al <- 2
-#' aalpha <- 10
+#' aalpha <- 10^seq(-4,4,by=1)
 #' aknots_given <- 1
 #' axcp <- c(0.063,0.125,0.25,0.5,1,2,4,8,16,31.5,63,100)
 #' u <- log(0.001)
@@ -29,13 +26,12 @@
 #' lenx <- (classes[-1] - classes[-13])/2
 #' midy <- adata/lenx
 #' aknots <- seq(midx[1],midx[12], length = 7)
-#' sol <- smoothSplines(ak,al,aalpha,midy/100,midx,aknots)
-#' plot(sol)
+#' sol <- smoothSplinesVal(ak,al,aalpha,midy/100,midx,aknots,cores=1)
 #' @useDynLib splineDensity
 #' @export
 #' 
 
-smoothSplines <- function(k,l,alpha,data,xcp,knots,num_points = 100, prior = "default", cores = 1, fast = 0)
+smoothSplinesVal <- function(k,l,alpha,data,xcp,knots,prior = "default",cores = 1)
 {
   # Checking if data is a matrix
   if ( !is.matrix(data) )
@@ -60,14 +56,14 @@ smoothSplines <- function(k,l,alpha,data,xcp,knots,num_points = 100, prior = "de
     size <- knots
     step <- (v - u)/(size-1)
     knots_ <- seq(u,v, by = step)
-    obj <- .Call("smoothingSplines_",as.integer(k),as.integer(l),alpha,
-                 data,xcp,knots_,as.integer(num_points),as.integer(prior_num), as.integer(cores), as.integer(fast))
+    obj <- .Call("smoothingSplinesValidation_",as.integer(k),as.integer(l),alpha,
+                 data,xcp,knots_,as.integer(prior_num), as.integer(cores))
   }
   else
-    obj <- .Call("smoothingSplines_",as.integer(k),as.integer(l),alpha,
-                 data,xcp,knots,as.integer(num_points),as.integer(prior_num), as.integer(cores), as.integer(fast))
+    obj <- .Call("smoothingSplinesValidation_",as.integer(k),as.integer(l),alpha,
+                 data,xcp,knots,as.integer(prior_num), as.integer(cores))
   
-  class(obj) <- "smoothSpl"
+  class(obj) <- "smoothSplVal"
   return(obj)
 }
 
