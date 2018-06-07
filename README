@@ -14,6 +14,8 @@ Subfolder structure
 
 To install the package, please make sure that you have the package [devtools](https://cran.r-project.org/web/packages/devtools/index.html) already installed.
 
+If your compiler supports openMP parallelization modify the Makevars with a non-empty value for the OPENMP macro (default disabled).
+
 From the root folder then type
 
     R -e "library(devtools); install()" —silent
@@ -29,6 +31,8 @@ or in another way download source code from the github repository, unzip the fil
 Otherwise you can install directly from github:
 
     devtools::install_github("fpavone/pacs_spline_density", ref = "splineDensity")
+
+Be careful that this will not allow you to compile with enabled parallelization.
 
 To run an example in R:
     
