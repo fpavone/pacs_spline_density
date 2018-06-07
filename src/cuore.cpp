@@ -3,6 +3,7 @@
 #include "zeros.hpp"
 #include <vector>
 #include <string>
+#include <cmath>
 #include <iostream>
 #include <sstream>
 #include <iterator>
@@ -189,7 +190,7 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
   // Read xcp
   double *Xcp = REAL(Xcp_);
   unsigned int Xcpsize = LENGTH(Xcp_);
-  dens.readXcp(Xcp,Xcpsize);
+  // dens.readXcp(Xcp,Xcpsize);
 
   // Read knots
   double *knots = REAL(knots_);
@@ -200,41 +201,60 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
   Eigen::Map<Eigen::MatrixXd> data(as<Eigen::Map<Eigen::MatrixXd>> (data_));
 
   unsigned int nrow = data.rows();
-
-  dens.set_matrix();
-
-  Eigen::MatrixXd bsplineMat(nrow,dens.get_G());
-  Eigen::MatrixXd yvalueMat(nrow,numPoints);
-  Eigen::MatrixXd yvalueMatClr(nrow,numPoints);
+  unsigned int ncol = data.cols();
+  Rcout << "rows: " << nrow << '\n';
+  Rcout << "cols: " << ncol << '\n';
 
   int barWidth = 70; // for bar progress plot
   int count = 0;
   int pos = 0;
   unsigned int min_index = 0;
   std::vector<double> Jvalues(alpha_size,0.0);
-  double Jopt = -1.0;
+  std::vector<double> CVerror(alpha_size,0.0);
+  double CVopt = -1.0;
 
   #pragma omp parallel private(obj) firstprivate(dens)// default(shared)
   {
     Eigen::MatrixXd threadBsplineMat(nrow,dens.get_G());
+    Eigen::ArrayXd N;
+    int span;
+    long double fvalue;
+
     #pragma omp for
-    for(std::size_t j = 0; j < alpha_size; j++)
+    for(std::size_t z = 0; z < alpha_size; z++)
     {
-      dens.set_alpha(alpha[j]);
-      dens.set_system();
+      Rcout << "z: " << z << '\n';
+      dens.set_alpha(alpha[z]);
+      //dens.set_system();
       for(std::size_t i = 0; i < nrow; i++)
       {
-        obj.readData(data.row(i), prior);
-        obj.transfData();
-        obj.pacs(dens, threadBsplineMat.row(i));
-        Jvalues[j]+=dens.eval_J(obj.getNumbers())/nrow;
+        Rcout << "i: " << i << '\n';
+        for(std::size_t j = 0; j < ncol; j++)
+        {
+          // LOO-CV, leave out column j, fit spline and compute error
+          dens.readXcp(Xcp,Xcpsize,j);
+          dens.set_matrix();
+        //  dens.print_all();
+          dens.set_system();
+          obj.readData(data.row(i),prior,j);
+          obj.transfData();
+          obj.pacs(dens, threadBsplineMat.row(i));
+          Jvalues[k]+=dens.eval_J(obj.getNumbers())/nrow;
+
+          // computing error using spline coefficients, fvalue is the predicted value
+          // span = bspline::findspan(k,Xcp[j],dens.get_lambda());
+          // N = Eigen::ArrayXd::Constant(dens.get_G(), 0.0);
+          // bspline::basisfun(span,Xcp[j],k,dens.get_lambda(), N);
+          // fvalue = obj.compute_fvalue(threadBsplineMat.row(i), N);
+          // CVerror[z] += fabs(fvalue - data(i,j))/nrow;
+        }
       }
+      Rcout << "CRITICAL" << '\n';
       #pragma omp critical
-      if(Jvalues[j]<Jopt || Jopt<0)
+      if(CVerror[z]<CVopt || CVopt<0)
       {
-        Jopt = Jvalues[j];
-        bsplineMat = threadBsplineMat;
-        min_index = j;
+        CVopt = CVerror[z];
+        min_index = z;
       }
     }
   }
@@ -242,47 +262,16 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
   // Printing out J[alpha]
   for(std::size_t k = 0; k < alpha_size; k++)
   {
-    Rcout << std::string((k==min_index)?" ***":" ") << "\talpha = "<< alpha[k] << "\tJ = " << Jvalues[k] << '\n';
+    Rcout << std::string((k==min_index)?" ***":" ") << "\talpha = "<< alpha[k] << "\tJ = " << Jvalues[k]
+          << "\t CV-error: " << CVerror[k] << '\n';
   }
 
-  // Once choosen optimal alpha, computing Y and Yclr
-  dens.set_alpha(alpha[min_index]);
-  dens.set_system();
 
-  #pragma omp parallel private(obj) firstprivate(dens)// default(shared)
-  {
-  #pragma omp for
-    for(std::size_t i = 0; i < nrow; i++)
-    {
-      obj.plotData_parallel(dens, numPoints, bsplineMat.row(i), yvalueMat.row(i));
-      obj.plotData_parallel_Clr(dens, numPoints, bsplineMat.row(i), yvalueMatClr.row(i));
 
-      // Progress bar
-      if(!furious)
-      {
-        #pragma omp critical
-        {
-          std::cout << "[";
-          pos = barWidth * (double)count/nrow;
-          for (int j = 0; j < barWidth; ++j)
-          {
-            if (j < pos) std::cout << "=";
-            else if (j == pos) std::cout << ">";
-            else std::cout << " ";
-          }
-          std::cout << "] " << int((double)count/(nrow-1) * 100.0) << "%\r";
-          std::cout.flush();
-          count++;
-        }
-      }
-    }
-  }
+  List result = List::create(Named("alpha") = alpha_);
+                      //       Named("Jvalues") = allocVector(REALSXP, Jvalues),
+                      //       Named("CVerror") = allocVector(REALSXP, CVerror));
 
-  List result = List::create(Named("bspline") = bsplineMat,
-                             Named("Y") = yvalueMat,
-                             Named("Y_clr") = yvalueMatClr,
-                             Named("Xcp") = Xcp_,
-                             Named("NumPoints") = numPoints_);
 
   t.stop();
   std::cout << "\nIt took "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;

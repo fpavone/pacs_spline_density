@@ -33,14 +33,14 @@ myParameters::readKnots
 
 void
 myParameters::readXcp
-(const double * inputXcp, const unsigned int & size)
+(const double * inputXcp, const unsigned int & size, const int & cancel)
 {
-  // read xcp by copy
+  // read xcp by copy, if specified skip column indexed by cancel (-1 means nothing to cancel)
   for(std::size_t i=0; i < size; i++)
-    xcp.push_back(inputXcp[i]);
+    if(i!=cancel) xcp.push_back(inputXcp[i]);
 
   n = xcp.size();
-
+  //
   // std::cout << "xcp:\n " << "\n";
   //
   // for(const auto &x:xcp)

@@ -47,7 +47,7 @@ public:
 
   void
   readXcp
-  (const double * inputXcp, const unsigned int & size);
+  (const double * inputXcp, const unsigned int & size, const int & cancel = -1);
 
   void
   set_alpha

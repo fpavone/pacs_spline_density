@@ -43,7 +43,7 @@ public:
   void
   readData
   (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> >, 1, -1, false> & row,
-         PRIOR prior);
+         PRIOR prior, const int & cancel = -1);
 
   void
   transfData

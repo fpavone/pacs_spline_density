@@ -12,7 +12,7 @@
 void
 myData::readData
 (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false> & row,
-       PRIOR prior)
+       PRIOR prior, const int & cancel)
 {
   numbers.clear();
 
@@ -23,6 +23,8 @@ myData::readData
     for(unsigned int i = 0, n = row.size(); i < n; i++)
       numbers.push_back(row(i));
   }
+
+  if(cancel!=-1) numbers.erase(numbers.begin() + cancel);
 
   // std::cout << "numbers:\n " << "\n";
   //
