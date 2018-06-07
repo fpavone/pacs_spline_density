@@ -67,6 +67,9 @@ public:
 
   unsigned int
   get_k() const{ return k;};
+
+  unsigned int
+  get_n() const{ return n;};
 };
 
 
