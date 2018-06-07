@@ -2,7 +2,7 @@
 #     SplineDensity package Makevars        #
 #############################################
 
-OPENMP = 2				# if non-blank, compile with openMP enable
+OPENMP = 2		  	# if non-blank, compile with openMP enable
 
 PKG_CPPFLAGS = -I$(R_HOME)/library/Rcpp/include -I$(R_HOME)/library/RcppEigen/include -Ofast
 
