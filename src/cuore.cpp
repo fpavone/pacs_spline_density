@@ -206,8 +206,10 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
   int count = 0;
   int pos = 0;
   unsigned int min_index = 0;
-  std::vector<double> Jvalues(alpha_size,0.0);
-  std::vector<double> CVerror(alpha_size,0.0);
+  //std::vector<double> Jvalues(alpha_size,0.0);
+  Eigen::VectorXd Jvalues = Eigen::VectorXd::Zero(alpha_size);
+  //std::vector<double> CVerror(alpha_size,0.0);
+  Eigen::VectorXd CVerror = Eigen::VectorXd::Zero(alpha_size,0.0);
   double CVopt = -1.0;
 
   #pragma omp parallel private(obj) firstprivate(dens)// default(shared)
@@ -232,20 +234,20 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
           obj.readData(data.row(i),prior,j);
           obj.transfData();
           obj.pacs(dens, threadBsplineMat.row(i));
-          Jvalues[z]+=dens.eval_J(obj.getNumbers())/nrow;
+          Jvalues(z)+=dens.eval_J(obj.getNumbers())/nrow;
 
           // computing error using spline coefficients, fvalue is the predicted value
           span = bspline::findspan(k,Xcp[j],dens.get_lambda());
           N = Eigen::ArrayXd::Constant(dens.get_G(), 0.0);
           bspline::basisfun(span,Xcp[j],k,dens.get_lambda(), N);
           fvalue = obj.compute_fvalue(threadBsplineMat.row(i), N);
-          CVerror[z] += fabs(fvalue - data(i,j))/nrow;
+          CVerror(z) += fabs(fvalue - data(i,j))/nrow;
         }
       }
       #pragma omp critical
-      if(CVerror[z]<CVopt || CVopt<0)
+      if(CVerror(z)<CVopt || CVopt<0)
       {
-        CVopt = CVerror[z];
+        CVopt = CVerror(z);
         min_index = z;
       }
     }
@@ -254,15 +256,15 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
   // Printing out J[alpha]
   for(std::size_t k = 0; k < alpha_size; k++)
   {
-    Rcout << std::string((k==min_index)?" ***":" ") << "\talpha = "<< alpha[k] << "\tJ = " << Jvalues[k]
-          << "\t CV-error: " << CVerror[k] << '\n';
+    Rcout << std::string((k==min_index)?" ***":" ") << "\talpha = "<< alpha[k] << "\tJ = " << Jvalues(k)
+          << "\t CV-error: " << CVerror(k) << '\n';
   }
 
 
 
-  List result = List::create(Named("alpha") = alpha_);
-                      //       Named("Jvalues") = allocVector(REALSXP, Jvalues),
-                      //       Named("CVerror") = allocVector(REALSXP, CVerror));
+  List result = List::create(Named("alpha") = alpha_,
+                             Named("Jvalues") = Jvalues,
+                             Named("CVerror") = CVerror);
 
 
   t.stop();
