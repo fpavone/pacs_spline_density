@@ -190,7 +190,6 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
   // Read xcp
   double *Xcp = REAL(Xcp_);
   unsigned int Xcpsize = LENGTH(Xcp_);
-  // dens.readXcp(Xcp,Xcpsize);
 
   // Read knots
   double *knots = REAL(knots_);
@@ -202,8 +201,6 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
 
   unsigned int nrow = data.rows();
   unsigned int ncol = data.cols();
-  Rcout << "rows: " << nrow << '\n';
-  Rcout << "cols: " << ncol << '\n';
 
   int barWidth = 70; // for bar progress plot
   int count = 0;
@@ -223,33 +220,28 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
     #pragma omp for
     for(std::size_t z = 0; z < alpha_size; z++)
     {
-      Rcout << "z: " << z << '\n';
       dens.set_alpha(alpha[z]);
-      //dens.set_system();
       for(std::size_t i = 0; i < nrow; i++)
       {
-        Rcout << "i: " << i << '\n';
-        for(std::size_t j = 0; j < ncol; j++)
+        for(std::size_t j = 1; j < ncol-1; j++)    // we do not leave out extremals, otherwise we have to change the knots
         {
           // LOO-CV, leave out column j, fit spline and compute error
           dens.readXcp(Xcp,Xcpsize,j);
           dens.set_matrix();
-        //  dens.print_all();
           dens.set_system();
           obj.readData(data.row(i),prior,j);
           obj.transfData();
           obj.pacs(dens, threadBsplineMat.row(i));
-          Jvalues[k]+=dens.eval_J(obj.getNumbers())/nrow;
+          Jvalues[z]+=dens.eval_J(obj.getNumbers())/nrow;
 
           // computing error using spline coefficients, fvalue is the predicted value
-          // span = bspline::findspan(k,Xcp[j],dens.get_lambda());
-          // N = Eigen::ArrayXd::Constant(dens.get_G(), 0.0);
-          // bspline::basisfun(span,Xcp[j],k,dens.get_lambda(), N);
-          // fvalue = obj.compute_fvalue(threadBsplineMat.row(i), N);
-          // CVerror[z] += fabs(fvalue - data(i,j))/nrow;
+          span = bspline::findspan(k,Xcp[j],dens.get_lambda());
+          N = Eigen::ArrayXd::Constant(dens.get_G(), 0.0);
+          bspline::basisfun(span,Xcp[j],k,dens.get_lambda(), N);
+          fvalue = obj.compute_fvalue(threadBsplineMat.row(i), N);
+          CVerror[z] += fabs(fvalue - data(i,j))/nrow;
         }
       }
-      Rcout << "CRITICAL" << '\n';
       #pragma omp critical
       if(CVerror[z]<CVopt || CVopt<0)
       {
