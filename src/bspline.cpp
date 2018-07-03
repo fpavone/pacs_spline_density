@@ -5,11 +5,9 @@
 using vect = std::vector<double>;
 
 
-// Find the knot span of the parametric point u.
+// Find the knot span of the parametric point t.
 //
 // INPUT:
-//
-//   n - number of control points - 1 //NOTE!!!!!!
 //   p - spline degree
 //   t - parametric point
 //   U - knot sequence

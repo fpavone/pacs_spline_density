@@ -69,7 +69,7 @@ void
 myData::antitData
 (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> x)
 {
-  //NOTE: RIGUARDARE!!!!!!
+  // NOTE: RIGUARDARE!!!!!!
   // anti clr transformation
   // Using rectangular integration in continuous setting
   double den = 0;
@@ -160,7 +160,7 @@ myData::compute_fvalue
   long double res = 0.0;
   unsigned int n = vec1.size();
   if(vec2.size() != n){
-    //NOTE:gestisci errore
+    //NOTE: gestisci errore
     exit(1);
   }
   for (int i = 0; i < n; ++i) {

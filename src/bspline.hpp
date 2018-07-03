@@ -6,27 +6,25 @@ namespace bspline{
   using vect = std::vector<double>;
 
   /*!
-	@brief	Find the knot span of the parametric point u.
+	@brief	Find the knot span of the parametric point t.
 
 	@note	This is NOT	Algorithm A2.1 from 'The NURBS BOOK' pg68
 			as that algorithm only works for nonperiodic
 			knot vectors, nonetheless the results should
 			be EXACTLY the same if U is nonperiodic
 
-	@param n Number of control points - 1
 	@param p Spline degree
 	@param t Parametric point
 	@param U Knot sequence
 	@return	Knot span
 
-	@todo	This implementation has linear, rather than log complexity
   */
   unsigned int
   findspan
   (int p, double t, const vect &U);
 
   /*!
-  	@brief	Compute the functions of the basis
+  	@brief	Compute the functions of the basis in the parametric point t
 
   	@note	Algorithm A2.2 from 'The NURBS BOOK' pg70.
 

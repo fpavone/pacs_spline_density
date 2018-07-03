@@ -30,6 +30,12 @@ namespace help
 
 
 
+
+enum class PRIOR{PERKS,          // s = 1, t = 1/D
+                 JEFFREYS,       // s = D/2, t = 1/D
+                 BAYES_LAPLACE,  // s = D, t = 1/D
+                 SQ,             // s = sqrt(n), t = 1/D
+                 DEFAULT};       // if sqrt(n)> D --> SQ, otherwise BAYES_LAPLACE
 /*
   BM function:
     Input vector must be not scaled!
@@ -46,12 +52,6 @@ namespace help
               Peter Filzmoser and Javier Palarea-Albaladejo
     Periodical: Statistical Modelling 2015; 15(2): 134–158
   */
-
-enum class PRIOR{PERKS,          // s = 1, t = 1/D
-                 JEFFREYS,       // s = D/2, t = 1/D
-                 BAYES_LAPLACE,  // s = D, t = 1/D
-                 SQ,             // s = sqrt(n), t = 1/D
-                 DEFAULT};       // if sqrt(n)> D --> SQ, otherwise BAYES_LAPLACE
 
 void
 BM
