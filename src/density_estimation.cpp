@@ -246,8 +246,8 @@ myDensity::solve
     }
     default:   // case > 2
     {
-      Rcout << "\n WARNING: kernel dimension of the problem exceeds 2," << '\n';
-      Rcout << " using Andrey Tychonoff regularization.." << std::endl;
+      std::cout << "\n WARNING: kernel dimension of the problem exceeds 2," << '\n';
+      std::cout << " using Andrey Tychonoff regularization.." << '\n';
       double tychlambda2 = 0.01;
       solverQR.compute(P.transpose()*P + tychlambda2*Eigen::MatrixXd::Identity(G,G));
       c = solverQR.solve(P.transpose()*p);
@@ -258,7 +258,7 @@ myDensity::solve
   relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
 
   if(relative_error > tol)
-    Rcout << "\n WARNING: found least-square solution..." << std::endl;
+    std::cout << "\n WARNING: found least-square solution..." << std::endl;
   /*
     Least-square solution: we look for a solution in the col space projecting the b (in Ax=b)
   */
