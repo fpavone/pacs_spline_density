@@ -99,8 +99,8 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
       obj.readData(data.row(i), prior);
       obj.transfData();
       obj.pacs(dens, bsplineMat.row(i));
-      obj.plotData_parallel(dens, numPoints, bsplineMat.row(i), yvalueMat.row(i));
-      obj.plotData_parallel_Clr(dens, numPoints, bsplineMat.row(i), yvalueMatClr.row(i));
+      obj.plotData(dens, numPoints, bsplineMat.row(i), yvalueMat.row(i));
+      obj.plotData_Clr(dens, numPoints, bsplineMat.row(i), yvalueMatClr.row(i));
 
       // Progress bar
       if(!furious)
