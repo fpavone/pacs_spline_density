@@ -18,8 +18,8 @@ If your compiler supports openMP parallelization modify the Makevars with a non-
 
 From the root folder then type
 
-    R -e "library(devtools); install()" —silent
-    R -e "library(devtools); document()" —silent
+    R -e "library(devtools); install()" —-silent
+    R -e "library(devtools); document()" —-silent
 
 or in another way download source code from the github repository, unzip the file and run from the terminal:
 
