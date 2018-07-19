@@ -1,2 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^src/Doxyfile
+^src/html$
+^src/Latex$
