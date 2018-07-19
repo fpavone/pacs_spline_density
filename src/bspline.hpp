@@ -3,8 +3,6 @@
 #include <vector>
 #include <Eigen/Dense>
 namespace bspline{
-  using vect = std::vector<double>;
-
   /*!
 	@brief	Find the knot span of the parametric point t.
 
@@ -21,7 +19,7 @@ namespace bspline{
   */
   unsigned int
   findspan
-  (int p, double t, const vect &U);
+  (int p, double t, const std::vector<double> &U);
 
   /*!
   	@brief	Compute the functions of the basis in the parametric point t
@@ -36,7 +34,7 @@ namespace bspline{
   */
   void
   basisfun
-  (unsigned int i, double t, int p, const vect &U, Eigen::ArrayXd &N);
+  (unsigned int i, double t, int p, const std::vector<double> &U, Eigen::ArrayXd &N);
 }
 
 #endif

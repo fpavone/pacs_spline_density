@@ -26,10 +26,7 @@ myData::readData
 
   if(cancel!=-1) numbers.erase(numbers.begin() + cancel);
 
-  // std::cout << "numbers:\n " << "\n";
-  //
-  // for(const auto &x:numbers)
-  //   std::cout << x << "\n";
+  howmanyclasses = numbers.size();
 };
 
 void
@@ -37,16 +34,15 @@ myData::transfData
 ()
 {
   // clr transformation of prop_data in transf_data
-  double a = 1.0;
+  double a = 0.0;
 
   // computing geometric mean
   for (const auto& y:numbers)
-    a *= y;
-  a = pow(a, 1.0/numbers.size());   // nclasses = x.size()
+    a += log(y);
 
   // clr transformation
   for (auto& y:numbers)
-    y = log(y/a);
+    y = log(y) - a/howmanyclasses;
 };
 
 std::vector<double>
@@ -58,19 +54,15 @@ myData::getNumbers
 
 void
 myData::pacs
-(myDensity & dens, Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline)  // bspline is the row of output matrix
+(myDensity & dens, Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline)
 {
-  //dens.set_density(numbers);
   dens.solve(bspline,numbers);
-  // dens.print_sol();
 };
 
 void
 myData::antitData
 (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> x)
 {
-  // NOTE: RIGUARDARE!!!!!!
-  // anti clr transformation
   // Using rectangular integration in continuous setting
   double den = 0;
   double len = (grid.back() - grid.front())/(grid.size()-1);
@@ -96,7 +88,7 @@ myData::fillGrid
 };
 
 void
-myData::plotData_parallel
+myData::plotData
 (const myDensity & dens, unsigned long int numPoints,
   Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline,
   Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> yplot)
@@ -106,7 +98,7 @@ myData::plotData_parallel
   double end = dens.get_v();
   unsigned int degree = dens.get_k();
   unsigned int G = dens.get_G();
-  const std::vector<double> knots = dens.get_lambda(); // NOTE: use a reference &?
+  const std::vector<double> knots = dens.get_lambda(); 
 
   fillGrid(start, end, numPoints);
 
@@ -126,7 +118,7 @@ myData::plotData_parallel
 };
 
 void
-myData::plotData_parallel_Clr
+myData::plotData_Clr
 (const myDensity & dens, unsigned long int numPoints,
   Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline,
   Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> yplot)
@@ -136,7 +128,7 @@ myData::plotData_parallel_Clr
   double end = dens.get_v();
   unsigned int degree = dens.get_k();
   unsigned int G = dens.get_G();
-  const std::vector<double> knots = dens.get_lambda(); // NOTE: use a reference &?
+  const std::vector<double> knots = dens.get_lambda();
 
   fillGrid(start, end, numPoints);
 
@@ -160,7 +152,8 @@ myData::compute_fvalue
   long double res = 0.0;
   unsigned int n = vec1.size();
   if(vec2.size() != n){
-    //NOTE: gestisci errore
+    std::cerr << "Error in compute_fvalue function. Check dimensions of the vectors.."
+              << std::endl;
     exit(1);
   }
   for (int i = 0; i < n; ++i) {

@@ -28,7 +28,15 @@ namespace help
   (const std::vector<double> & vect);
 }
 
-
+/*!
+@brief Bayesian treatment of zeros observations
+@details 
+@note
+  Reference: "Bayesian-multiplicative treatment of count zeros in compositional data sets"
+  Authors: Josep-Antoni Martín-Fernández, Karel Hron, Matthias Templ,
+            Peter Filzmoser and Javier Palarea-Albaladejo
+  Periodical: Statistical Modelling 2015; 15(2): 134–158
+*/
 
 
 enum class PRIOR{PERKS,          // s = 1, t = 1/D
@@ -36,29 +44,33 @@ enum class PRIOR{PERKS,          // s = 1, t = 1/D
                  BAYES_LAPLACE,  // s = D, t = 1/D
                  SQ,             // s = sqrt(n), t = 1/D
                  DEFAULT};       // if sqrt(n)> D --> SQ, otherwise BAYES_LAPLACE
-/*
-  BM function:
-    Input vector must be not scaled!
-    - D: dimension of the vector
-    - n: total mass of the vector
-    - s: strength of the prior information
-    Additionally to input vector, you may want to pass:
-    1) strength of the prior
-    2) strength + prior estimates
-    3) choose a method from PRIOR class (default is PRIOR::DEFAULT)
-    example: BM(input, coda::PRIOR::BAYES::LAPLACE;
-    Reference: "Bayesian-multiplicative treatment of count zeros in compositional data sets"
-    Authors: Josep-Antoni Martín-Fernández, Karel Hron, Matthias Templ,
-              Peter Filzmoser and Javier Palarea-Albaladejo
-    Periodical: Statistical Modelling 2015; 15(2): 134–158
-  */
 
+
+/*!
+@brief	Apply Bayesian count zero-replacement algorithm
+@details Read one row and apply Bayesian-multiplicative treatment of count zeros if necessary.
+@see BM()
+@param numbers Vector where the result is stored.
+@param data Data to be processed.
+@param p Prior setting.
+@see PRIOR
+*/
 void
 BM
 (std::vector<double> & numbers,
  const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> >, 1, -1, false> & data,
  PRIOR p = PRIOR::DEFAULT);
 
+ /*!
+ @brief	Apply Bayesian count zero-replacement algorithm (general version)
+ @details Read one row and apply Bayesian-multiplicative treatment of count zeros if necessary.
+ @see BM()
+ @param numbers Vector where the result is stored.
+ @param data Data to be processed.
+ @param p Prior setting.
+ @param is_strength_inverse Boolean for the strength of the prior.
+ @see PRIOR
+ */
 void
 BM
 (std::vector<double> & numbers,

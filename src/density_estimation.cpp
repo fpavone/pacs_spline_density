@@ -1,9 +1,9 @@
-// #include <Eigen/Eigenvalues>
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
 #include <iostream>
 #include <iterator>
 #include <vector>
+#include <Rcpp.h>
 #include "bspline.hpp"
 #include "sandia_rules.hpp"
 #include "gauss_points_weights.hpp"
@@ -25,11 +25,6 @@ myParameters::readKnots
   G = g+k+1;
   u = knots.front();
   v = knots.back();
-
-  // std::cout << "knots:\n " << "\n";
-  //
-  // for(const auto &x:knots)
-  //   std::cout << x << "\n";
 }
 
 void
@@ -42,11 +37,6 @@ myParameters::readXcp
     if(i!=cancel) xcp.push_back(inputXcp[i]);
 
   n = xcp.size();
-  //
-  // std::cout << "xcp:\n " << "\n";
-  //
-  // for(const auto &x:xcp)
-  //   std::cout << x << "\n";
 }
 
 
@@ -96,7 +86,6 @@ myDensity::fill_M
         M(j, y) += w[i] * N(j) * N(y);
     }
   }
-    //NOTE:I need Gauss point weights
 }
 
 void
@@ -207,7 +196,7 @@ myDensity::eval_J
 
   eval = (DK*c).transpose() * S.transpose() * M * S * DK*c;
   eval += alpha*(newycp - C*DK*c).transpose()*weights.asDiagonal()*(newycp - C*DK*c);
-  
+
   return eval;
 }
 
@@ -257,8 +246,8 @@ myDensity::solve
     }
     default:   // case > 2
     {
-      std::cout << "\n WARNING: kernel dimension of the problem exceeds 2," << '\n';
-      std::cout << " using Andrey Tychonoff regularization.." << std::endl;
+      Rcout << "\n WARNING: kernel dimension of the problem exceeds 2," << '\n';
+      Rcout << " using Andrey Tychonoff regularization.." << std::endl;
       double tychlambda2 = 0.01;
       solverQR.compute(P.transpose()*P + tychlambda2*Eigen::MatrixXd::Identity(G,G));
       c = solverQR.solve(P.transpose()*p);
@@ -269,7 +258,7 @@ myDensity::solve
   relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
 
   if(relative_error > tol)
-    std::cout << "\n WARNING: found least-square solution..." << std::endl;
+    Rcout << "\n WARNING: found least-square solution..." << std::endl;
   /*
     Least-square solution: we look for a solution in the col space projecting the b (in Ax=b)
   */
@@ -295,7 +284,4 @@ myDensity::print_sol
 {
   std::cout << "\n Matrix P: " << '\n' << P << '\n';
   std::cout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
-  // Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(P);
-  // std::cout << "\n P positive definite? \n " << es.eigenvalues() << std::endl;
-  // std::cout << "\n Eigenvectors: \n " << es.eigenvectors() << std::endl;
 };

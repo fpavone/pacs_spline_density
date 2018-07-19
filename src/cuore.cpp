@@ -126,7 +126,6 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   List result = List::create(Named("bspline") = bsplineMat,
                              Named("Y") = yvalueMat,
                              Named("Y_clr") = yvalueMatClr,
-                             // Named("Numbers") = obj.getNumbers(),
                              Named("Xcp") = Xcp_,
                              Named("NumPoints") = numPoints_);
 
@@ -203,9 +202,7 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
   int count = 0;
   int pos = 0;
   unsigned int min_index = 0;
-  //std::vector<double> Jvalues(alpha_size,0.0);
   Eigen::VectorXd Jvalues = Eigen::VectorXd::Zero(alpha_size);
-  //std::vector<double> CVerror(alpha_size,0.0);
   Eigen::VectorXd CVerror = Eigen::VectorXd::Zero(alpha_size,0.0);
   double CVopt = -1.0;
 

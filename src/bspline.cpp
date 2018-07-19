@@ -1,9 +1,7 @@
 #include "bspline.hpp"
 #include <iostream>
+#include <vector>
 #include <cassert>
-
-using vect = std::vector<double>;
-
 
 // Find the knot span of the parametric point t.
 //
@@ -25,7 +23,7 @@ using vect = std::vector<double>;
 
 unsigned int
 bspline::findspan
-(int p, double t, const vect& U)
+(int p, double t, const std::vector<double>& U)
 // ret is the index of the last knot at the left of the point t
 {
 	unsigned int n = U.size();
@@ -50,7 +48,7 @@ bspline::findspan
 
 void
 bspline::basisfun
-(unsigned int i, double t, int p, const vect& U, Eigen::ArrayXd& N)
+(unsigned int i, double t, int p, const std::vector<double>& U, Eigen::ArrayXd& N)
 /*
 Evaluates basis splines which include x=t in the span and save values in N
 */
@@ -68,7 +66,7 @@ Evaluates basis splines which include x=t in the span and save values in N
 		N[U.size()-p-2]= 1.0;
 	}
 	else{
-		vect P(p + 1,1.0);
+		std::vector<double> P(p + 1,1.0);
 		for (unsigned int j = 1; j <= p; j++) {
 			left[j] = t - U[i + 1 - j];
 			right[j] = U[i + j] - t;
