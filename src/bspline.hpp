@@ -2,6 +2,9 @@
 #define HH_BSPLINE_HH
 #include <vector>
 #include <Eigen/Dense>
+/*! \file
+  @brief Compute bsplines functions
+*/
 namespace bspline{
   /*!
 	@brief	Find the knot span of the parametric point t.
