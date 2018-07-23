@@ -3,8 +3,11 @@ plot.smoothSpl <- function(obj, by = 1 , n = 10, index = NULL, ...){
   xx <- seq(obj$Xcp[1],tail(obj$Xcp,n=1),length.out = obj$NumPoints)
   n <- min(n,dim(obj$Y)[1])
   cols <- rainbow(min(n,30))
-  if(is.null(index)) whitch <- seq(1,n,by=by)
-  else whitch <- index
+  if(is.null(index)) {
+    whitch <- seq(1,n,by=by)
+  } else {
+    whitch <- index
+  }
   # Plotting in the clr space fitted curves
   plot.default(xx,obj$Y_clr[1,],ylim=c(min(obj$Y_clr[whitch,]),max(obj$Y_clr[whitch,])),
                type = "n", xlab = "", ylab = "")
