@@ -79,7 +79,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   Eigen::Map<Eigen::MatrixXd> data(as<Eigen::Map<Eigen::MatrixXd>> (data_));
 
   unsigned int nrow = data.rows();
-  furious = furious && (nrow > 100); // if not useful, progress bar will not be shown
+  furious = furious || (nrow < 100); // if not useful, progress bar will not be shown
 
   dens.set_matrix();
   dens.set_system();
