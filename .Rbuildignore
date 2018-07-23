@@ -3,3 +3,4 @@
 ^src/Doxyfile
 ^src/html$
 ^src/latex$
+^dtv_22$
