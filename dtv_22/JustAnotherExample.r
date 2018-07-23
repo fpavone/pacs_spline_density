@@ -68,28 +68,21 @@ ggplot(data=iris,aes(x=SepalLengthCm,group=Species,fill=Species)) +
 #---------------------------
 #    Now using our code
 #---------------------------
+
+# preparing histograms - to feed our algorithm
 SepalLengthCm <- iris$Sepal.Length
 Species <- iris$Species
 
 iris1 <- SepalLengthCm[iris$Species==levels(iris$Species)[1]]
-h1 <- hist(iris1, freq = FALSE, nclass = 12, plot = F)
-
-lines(density(iris1))
-
-xx <- seq(ssol$Xcp[1],tail(ssol$Xcp,n=1),length.out = ssol$NumPoints)
-lines(xx,ssol$Y[1,], col = 'red')
-
-
+h1 <- hist(iris1, nclass = 12, plot = F)
 
 iris2 <- SepalLengthCm[iris$Species==levels(iris$Species)[2]]
-h2 <- hist(iris2, freq = FALSE, nclass = 12)
+h2 <- hist(iris2, nclass = 12, plot = F)
 
 iris3 <- SepalLengthCm[iris$Species==levels(iris$Species)[3]]
-h3 <- hist(iris3, freq = FALSE, nclass = 12)
+h3 <- hist(iris3, nclass = 12, plot = F)
 
-
-
-
+# setting parameters
 library(splineDensity)
 
 k <- 3
@@ -98,17 +91,44 @@ alpha <- 100
 # uu <- 4.25
 # vv <- 5.85
 
-mmidx <- h1$mids
-mmidy <- matrix(c(h1$density, h1$density),nrow=2, ncol = 15, byrow=T)
+#### Iris: level 1
+midx1 <- h1$mids
+midy1 <- matrix(h1$density, nrow=1, ncol = length(h1$density), byrow=T)
 knots <- 7 # or as an alternative,  seq(4, 6, length = 7)
-ssol <- smoothingSplines(k,l,alpha, mmidy,mmidx,knots)
-plot(ssol)
-
+sol1 <- smoothSplines(k,l,alpha,midy1,midx1,knots)
+plot(sol1)
 
 h1 <- hist(iris1, freq = FALSE, nclass = 12)
 lines(density(iris1))
-xx <- seq(ssol$Xcp[1],tail(ssol$Xcp,n=1),length.out = ssol$NumPoints)
-lines(xx,ssol$Y[1,], col = 'red')
+xx1 <- seq(sol1$Xcp[1],tail(sol1$Xcp,n=1),length.out = sol1$NumPoints)
+lines(xx1,sol1$Y[1,], col = 'red')
+
+#### Iris: level 2
+midx2 <- h2$mids
+midy2 <- matrix(h2$density, nrow=1, ncol = length(h2$density), byrow=T)
+knots <- 7 # or as an alternative,  seq(4, 6, length = 7)
+sol2 <- smoothSplines(k,l,alpha,midy2,midx2,knots)
+plot(sol2)
+
+h2 <- hist(iris2, freq = FALSE, nclass = 12)
+lines(density(iris2))
+xx2 <- seq(sol2$Xcp[1],tail(sol2$Xcp,n=1),length.out = sol2$NumPoints)
+lines(xx2,sol2$Y[1,], col = 'red')
+
+#### Iris: level 3
+midx3 <- h3$mids
+midy3 <- matrix(h3$density, nrow=1, ncol = length(h3$density), byrow=T)
+knots <- 7 # or as an alternative,  seq(4, 6, length = 7)
+sol3 <- smoothSplines(k,l,alpha,midy3,midx3,knots)
+plot(sol3)
+
+h3 <- hist(iris3, freq = FALSE, nclass = 12)
+lines(density(iris3))
+xx3 <- seq(sol3$Xcp[1],tail(sol3$Xcp,n=1),length.out = sol3$NumPoints)
+lines(xx3,sol3$Y[1,], col = 'blue')
+
+solCv <- smoothSplinesVal(k,l,10^(-5:5), midy3, midx3, knots)
+
 
 # just for completeness, the lines of code of the example
 # modified for taking into account a prescribed number of rows
