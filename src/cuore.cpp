@@ -79,6 +79,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   Eigen::Map<Eigen::MatrixXd> data(as<Eigen::Map<Eigen::MatrixXd>> (data_));
 
   unsigned int nrow = data.rows();
+  furious = furious && (nrow > 100); // if not useful, progress bar will not be shown
 
   dens.set_matrix();
   dens.set_system();
@@ -87,7 +88,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   Eigen::MatrixXd yvalueMat(nrow,numPoints);
   Eigen::MatrixXd yvalueMatClr(nrow,numPoints);
 
-  int barWidth = 70; // for bar progress plot
+  int barWidth = 70; // for progress bar plot
   int count = 0;
   int pos = 0;
 
