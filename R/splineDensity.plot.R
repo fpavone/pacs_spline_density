@@ -10,7 +10,7 @@ plot.smoothSpl <- function(obj, by = 1 , n = 10, index = NULL, ...){
                type = "n", xlab = "", ylab = "")
   title("Smoothing splines in clr-transformed space")
   for(i in whitch){
-    lines(xx,obj$Y_clr[i,], col = cols[i%%length(cols)])
+    lines(xx,obj$Y_clr[i,], col = cols[i%%length(cols) + 1])
   }
 
   # Plotting densities in orginal space
@@ -19,6 +19,6 @@ plot.smoothSpl <- function(obj, by = 1 , n = 10, index = NULL, ...){
                type = "n", xlab = "", ylab = "")
   title("Density")
   for(i in whitch){
-    lines(xx,obj$Y[i,], col = cols[i%%length(cols)])
+    lines(xx,obj$Y[i,], col = cols[i%%length(cols) + 1])
   }
 }
