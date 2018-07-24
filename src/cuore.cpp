@@ -136,11 +136,11 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
                              Named("NumPoints") = numPoints_);
   t5.stop();
   t1.stop();
-  std::cout << "\ntotal It took "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
-  std::cout << "\nparameters "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
-  std::cout << "\ndata "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
-  std::cout << "\ncomputations "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
-  std::cout << "\nwriting "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  std::cout << "\ntotal It took "<< t1.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  std::cout << "\nparameters "<< t2.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  std::cout << "\ndata "<< t3.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  std::cout << "\ncomputations "<< t4.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  std::cout << "\nwriting "<< t5.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
 
   return wrap(result);
 };
