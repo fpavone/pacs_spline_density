@@ -32,6 +32,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
 
   #ifdef _OPENMP
     omp_set_dynamic(0);         // Explicitly disable dynamic teams
+    std::cout << "_OPENMP: " << INTEGER(nCPU_)[0] << '\n';
     omp_set_num_threads(INTEGER(nCPU_)[0]);
   #endif
   std::cout << "Number of threads: " << omp_get_num_threads() << '\n';
