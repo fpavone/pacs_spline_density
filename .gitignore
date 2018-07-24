@@ -9,3 +9,10 @@ main
 *.pdf
 .Rproj.user
 *.Rproj
+*.aux
+*.log
+*.bbl
+*.blg
+*.out
+*.synctex.gz
+*.toc
