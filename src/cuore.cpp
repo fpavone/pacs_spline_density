@@ -26,16 +26,13 @@ using namespace Rcpp;
 extern "C"{
 SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP numPoints_, SEXP prior_, SEXP nCPU_, SEXP fast_)
 {
-  cns::timer<> t1,t2,t3,t4,t5;
+  cns::timer<> t1,t4,t5;
   t1.start();
-  t2.start();
 
   #ifdef _OPENMP
     omp_set_dynamic(0);         // Explicitly disable dynamic teams
-    std::cout << "_OPENMP: " << INTEGER(nCPU_)[0] << '\n';
     omp_set_num_threads(INTEGER(nCPU_)[0]);
   #endif
-  std::cout << "Number of threads: " << omp_get_num_threads() << '\n';
 
   bool furious = INTEGER(fast_)[0];
 
@@ -77,12 +74,9 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   double *knots = REAL(knots_);
   unsigned int knotsSize = LENGTH(knots_);
   dens.readKnots(knots,knotsSize);
-  t2.stop();
 
-  t3.start();
   // Read data
   Eigen::Map<Eigen::MatrixXd> data(as<Eigen::Map<Eigen::MatrixXd>> (data_));
-  t3.stop();
   unsigned int nrow = data.rows();
   furious = furious || (nrow < 100); // if not useful, progress bar will not be shown
   t4.start();
@@ -137,11 +131,9 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
                              Named("NumPoints") = numPoints_);
   t5.stop();
   t1.stop();
-  std::cout << "\ntotal It took "<< t1.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
-  std::cout << "\nparameters "<< t2.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
-  std::cout << "\ndata "<< t3.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  std::cout << "\nIt took "<< t1.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
   std::cout << "\ncomputations "<< t4.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
-  std::cout << "\nwriting "<< t5.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  std::cout << "\nwriting "<< t5.elapsed<std::chrono::milliseconds>() <<" milliseconds. "  << '\n\n'<< std::endl;
 
   return wrap(result);
 };
@@ -157,7 +149,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
 
 SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP prior_, SEXP nCPU_)
 {
-  cns::timer<> t;
+  cns::timer<> t,t2;
   t.start();
 
   #ifdef _OPENMP
@@ -216,7 +208,7 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
   Eigen::VectorXd Jvalues = Eigen::VectorXd::Zero(alpha_size);
   Eigen::VectorXd CVerror = Eigen::VectorXd::Zero(alpha_size,0.0);
   double CVopt = -1.0;
-
+  t2.start();
   #pragma omp parallel private(obj) firstprivate(dens)// default(shared)
   {
     Eigen::MatrixXd threadBsplineMat(nrow,dens.get_G());
@@ -249,14 +241,15 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
           CVerror(z) += fabs(fvalue - data(i,j))/nrow;
         }
       }
-      #pragma omp critical
-      if(CVerror(z)<CVopt || CVopt<0)
-      {
-        CVopt = CVerror(z);
-        min_index = z;
-      }
+      // #pragma omp critical
+      // if(CVerror(z)<CVopt || CVopt<0)
+      // {
+      //   CVopt = CVerror(z);
+      //   min_index = z;
+      // }
     }
   }
+  t2.stop();
 
   // Printing out J[alpha]
   for(std::size_t k = 0; k < alpha_size; k++)
@@ -274,6 +267,7 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
 
   t.stop();
   std::cout << "\nIt took "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  std::cout << "\ncomputations "<< t2.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
 
   return wrap(result);
 };
