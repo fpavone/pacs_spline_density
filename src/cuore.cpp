@@ -26,13 +26,15 @@ using namespace Rcpp;
 extern "C"{
 SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP numPoints_, SEXP prior_, SEXP nCPU_, SEXP fast_)
 {
-  cns::timer<> t;
-  t.start();
+  cns::timer<> t1,t2,t3,t4,t5;
+  t1.start();
+  t2.start();
 
   #ifdef _OPENMP
     omp_set_dynamic(0);         // Explicitly disable dynamic teams
     omp_set_num_threads(INTEGER(nCPU_)[0]);
   #endif
+  std::cout << "Number of threads: " << omp_get_num_threads() << '\n';
 
   bool furious = INTEGER(fast_)[0];
 
@@ -74,13 +76,15 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   double *knots = REAL(knots_);
   unsigned int knotsSize = LENGTH(knots_);
   dens.readKnots(knots,knotsSize);
+  t2.stop();
 
+  t3.start();
   // Read data
   Eigen::Map<Eigen::MatrixXd> data(as<Eigen::Map<Eigen::MatrixXd>> (data_));
-
+  t3.stop();
   unsigned int nrow = data.rows();
   furious = furious || (nrow < 100); // if not useful, progress bar will not be shown
-
+  t4.start();
   dens.set_matrix();
   dens.set_system();
 
@@ -123,15 +127,20 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
       }
     }
   }
-
+  t4.stop();
+  t5.start();
   List result = List::create(Named("bspline") = bsplineMat,
                              Named("Y") = yvalueMat,
                              Named("Y_clr") = yvalueMatClr,
                              Named("Xcp") = Xcp_,
                              Named("NumPoints") = numPoints_);
-
-  t.stop();
-  std::cout << "\nIt took "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  t5.stop();
+  t1.stop();
+  std::cout << "\ntotal It took "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  std::cout << "\nparameters "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  std::cout << "\ndata "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  std::cout << "\ncomputations "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  std::cout << "\nwriting "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
 
   return wrap(result);
 };
