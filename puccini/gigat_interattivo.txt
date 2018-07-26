@@ -1,0 +1,104 @@
+[1] 1
+[1] 1e+06
+
+It took 31705 milliseconds. 
+
+computations 30862 milliseconds. 
+
+writing 842 milliseconds. 2570
+[1] 1
+[1] 1000
+ ***	alpha = 1e-06	J = 0.00012501	 CV-error: 4.57853
+ 	alpha = 1e-05	J = 0.00124945	 CV-error: 4.57725
+ 	alpha = 0.0001	J = 0.0124326	 CV-error: 4.56616
+ 	alpha = 0.001	J = 0.120345	 CV-error: 4.56896
+ 	alpha = 0.01	J = 1.13463	 CV-error: 4.83343
+ 	alpha = 0.1	J = 10.5822	 CV-error: 5.25357
+ 	alpha = 1	J = 86.6669	 CV-error: 6.39979
+ 	alpha = 10	J = 645.287	 CV-error: 7.4492
+ 	alpha = 100	J = 3830.79	 CV-error: 8.32917
+ 	alpha = 1000	J = 23029.8	 CV-error: 8.90661
+ 	alpha = 10000	J = 196118	 CV-error: 10.4719
+ 	alpha = 100000	J = 1.91035e+06	 CV-error: 11.2667
+
+It took 6444 milliseconds. 
+
+computations 6444 milliseconds. 
+[1] 2
+[1] 1e+06
+
+It took 42588 milliseconds. 
+
+computations 41902 milliseconds. 
+
+writing 685 milliseconds. 2570
+[1] 2
+[1] 1000
+ ***	alpha = 1e-06	J = 9.24878e-05	 CV-error: 4.53934
+ 	alpha = 1e-05	J = 0.000924324	 CV-error: 4.53807
+ 	alpha = 0.0001	J = 0.00919078	 CV-error: 4.5272
+ 	alpha = 0.001	J = 0.0885318	 CV-error: 4.5356
+ 	alpha = 0.01	J = 0.826328	 CV-error: 4.80256
+ 	alpha = 0.1	J = 7.5589	 CV-error: 5.20344
+ 	alpha = 1	J = 57.6369	 CV-error: 6.30498
+ 	alpha = 10	J = 399.101	 CV-error: 7.31421
+ 	alpha = 100	J = 2558.65	 CV-error: 8.1469
+ 	alpha = 1000	J = 16698.8	 CV-error: 8.77362
+ 	alpha = 10000	J = 142551	 CV-error: 10.3863
+ 	alpha = 100000	J = 1.3846e+06	 CV-error: 11.1961
+
+It took 11728 milliseconds. 
+
+computations 11728 milliseconds. 
+[1] 3
+[1] 1e+06
+
+It took 38517 milliseconds. 
+
+computations 37805 milliseconds. 
+
+writing 711 milliseconds. 2570
+[1] 3
+[1] 1000
+ ***	alpha = 1e-06	J = 0.000105296	 CV-error: 4.53613
+ 	alpha = 1e-05	J = 0.00105238	 CV-error: 4.53478
+ 	alpha = 0.0001	J = 0.0104695	 CV-error: 4.5231
+ 	alpha = 0.001	J = 0.101199	 CV-error: 4.52362
+ 	alpha = 0.01	J = 0.951128	 CV-error: 4.78035
+ 	alpha = 0.1	J = 8.80224	 CV-error: 5.19614
+ 	alpha = 1	J = 69.9552	 CV-error: 6.33205
+ 	alpha = 10	J = 505.859	 CV-error: 7.36254
+ 	alpha = 100	J = 3110.28	 CV-error: 8.20761
+ 	alpha = 1000	J = 19464	 CV-error: 8.80442
+ 	alpha = 10000	J = 166079	 CV-error: 10.4088
+ 	alpha = 100000	J = 1.61547e+06	 CV-error: 11.2167
+
+It took 9675 milliseconds. 
+
+computations 9673 milliseconds. 
+[1] 4
+[1] 1e+06
+
+It took 29464 milliseconds. 
+
+computations 28795 milliseconds. 
+
+writing 669 milliseconds. 2570
+[1] 4
+[1] 1000
+ ***	alpha = 1e-06	J = 0.000101129	 CV-error: 4.55065
+ 	alpha = 1e-05	J = 0.00101071	 CV-error: 4.54962
+ 	alpha = 0.0001	J = 0.0100517	 CV-error: 4.54106
+ 	alpha = 0.001	J = 0.0969536	 CV-error: 4.56507
+ 	alpha = 0.01	J = 0.90762	 CV-error: 4.85299
+ 	alpha = 0.1	J = 8.36331	 CV-error: 5.25153
+ 	alpha = 1	J = 65.3828	 CV-error: 6.34065
+ 	alpha = 10	J = 463.124	 CV-error: 7.35642
+ 	alpha = 100	J = 2911.94	 CV-error: 8.23366
+ 	alpha = 1000	J = 18639.8	 CV-error: 8.89754
+ 	alpha = 10000	J = 158981	 CV-error: 10.5575
+ 	alpha = 100000	J = 1.54464e+06	 CV-error: 11.3922
+
+It took 8146 milliseconds. 
+
+computations 8146 milliseconds. 
