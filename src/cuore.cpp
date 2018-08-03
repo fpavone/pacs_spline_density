@@ -241,14 +241,17 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
           CVerror(z) += fabs(fvalue - data(i,j))/nrow;
         }
       }
-      // #pragma omp critical
-      // if(CVerror(z)<CVopt || CVopt<0)
-      // {
-      //   CVopt = CVerror(z);
-      //   min_index = z;
-      // }
     }
   }
+  for(std::size_t z = 0; z < nrow; z++)
+  {
+    if(CVerror(z)<CVopt || CVopt<0)
+    {
+      CVopt = CVerror(z);
+      min_index = z;
+    }
+  }
+
   t2.stop();
 
   // Printing out J[alpha]
