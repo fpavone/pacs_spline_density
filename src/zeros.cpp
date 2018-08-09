@@ -102,7 +102,7 @@ BM
   std::vector<double> t = help::uniform(data.size());
 
   assert(s>=0 && " Error (BM): strength must be >=0..");
-  assert(in.size()==t.size() && " Error(BM): different sizes of input..");
+  assert(data.size()==t.size() && " Error(BM): different sizes of input..");
 
   double n = data.sum();
   double tmp = 0.0;
@@ -111,7 +111,7 @@ BM
 
   for(std::size_t i = 0; i < data.size(); i++)
   {   //computing term of the summation
-    assert(in[i]>=0 && " Error (BM): input must be >=0..");
+    assert(data[i]>=0 && " Error (BM): input must be >=0..");
     assert(t[i]>=0 && " Error (BM): input must be >=0..");
 
     if(data(i)==0)
