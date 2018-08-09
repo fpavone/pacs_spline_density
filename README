@@ -38,4 +38,4 @@ Be careful that this will not allow you to compile with enabled parallelization.
 
 To run an example in R:
     
-    example(smoothingSplines)
+    example(smoothSplines)
