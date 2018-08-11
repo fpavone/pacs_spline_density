@@ -61,6 +61,7 @@ ggplot(data=iris,aes(x=SepalLengthCm,group=Species,fill=Species)) +
 
 # same plot, overlappping
 ggplot(data=iris,aes(x=SepalLengthCm,group=Species,fill=Species)) +
+  labs(x="Sepal Length     [cm]")+
   geom_histogram(position="identity",alpha=0.5,binwidth=0.2) +
   theme_bw()
 
@@ -87,7 +88,7 @@ library(splineDensity)
 
 k <- 3
 l <- 2
-alpha <- 100
+alpha <- 1000
 # uu <- 4.25
 # vv <- 5.85
 
@@ -97,11 +98,17 @@ midy1 <- matrix(h1$density, nrow=1, ncol = length(h1$density), byrow=T)
 knots <- 7 # or as an alternative,  seq(4, 6, length = 7)
 sol1 <- smoothSplines(k,l,alpha,midy1,midx1,knots)
 plot(sol1)
-
-h1 <- hist(iris1, freq = FALSE, nclass = 12)
-lines(density(iris1))
+alpha
+alpha
+h1 <- hist(iris1, freq = FALSE, nclass = 12, xlab = "Sepal Length     [cm]", 
+           main = "")
+alpha
+lines(density(iris1), col = "black", lwd = 1.5)
 xx1 <- seq(sol1$Xcp[1],tail(sol1$Xcp,n=1),length.out = sol1$NumPoints)
-lines(xx1,sol1$Y[1,], col = 'red')
+lines(xx1,sol1$Y[1,], col = 'red', lwd = 2)
+minor.tick(nx=4, tick.ratio=0.75)
+legend(list(x=4.3,y=1.6), legend= "alpha = 1000    ")
+# legend(list(x=5.45,y=1.5), legend= c("real", "smoothed"), lty=c(1,1), col=c("black","red") )
 
 #### Iris: level 2
 midx2 <- h2$mids
@@ -110,10 +117,11 @@ knots <- 7 # or as an alternative,  seq(4, 6, length = 7)
 sol2 <- smoothSplines(k,l,alpha,midy2,midx2,knots)
 plot(sol2)
 
-h2 <- hist(iris2, freq = FALSE, nclass = 12)
-lines(density(iris2))
+h2 <- hist(iris2, freq = FALSE, nclass = 12, xlab = "Sepal Length     [cm]", 
+           main = "")
+lines(density(iris2), col = "black", lwd = 1.5)
 xx2 <- seq(sol2$Xcp[1],tail(sol2$Xcp,n=1),length.out = sol2$NumPoints)
-lines(xx2,sol2$Y[1,], col = 'red')
+lines(xx2,sol2$Y[1,], col = 'forestgreen', lwd = 2)
 
 #### Iris: level 3
 midx3 <- h3$mids
@@ -122,10 +130,11 @@ knots <- 7 # or as an alternative,  seq(4, 6, length = 7)
 sol3 <- smoothSplines(k,l,alpha,midy3,midx3,knots)
 plot(sol3)
 
-h3 <- hist(iris3, freq = FALSE, nclass = 12)
-lines(density(iris3))
+h3 <- hist(iris3, freq = FALSE, nclass = 12, xlab = "Sepal Length     [cm]", 
+           main = "")
+lines(density(iris3), lwd = 1.5)
 xx3 <- seq(sol3$Xcp[1],tail(sol3$Xcp,n=1),length.out = sol3$NumPoints)
-lines(xx3,sol3$Y[1,], col = 'blue')
+lines(xx3,sol3$Y[1,], col = 'blue', lwd = 2)
 
 solCv <- smoothSplinesVal(k,l,10^(-5:5), midy3, midx3, knots)
 
