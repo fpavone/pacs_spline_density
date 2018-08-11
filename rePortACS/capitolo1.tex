@@ -1,6 +1,33 @@
-\chapter{chapter oooone}
+\chapter{}
 \newtheorem*{definition}{Definition}
 \label{Introduzione}
 % \thispagestyle{empty}
-
 \noindent 
+\section{Introduction to the problem}
+Analysing large-scale database systems, one of the first things to do is to summarize information in a density function, that is, Borel measurable, positive functions on a support I with a unit integral constraint. In this way, the intrinsic variability in the data is preserved and statistical analysis can be done according to the already existing methodologies. \\
+$\text{L}^2$ metric is not appropriate to tackle this problem because of the unit-integral constraint and because density functions take into account relative contributions of Borel sets on real line to the overall probability on the support of the variables. \\
+On the contrary, Bayes spaces with separable Hilbert space properties seem to fit perfectly. 
+A mapping between this two spaces follows from the property that the logarithm of probability density functions is square-integrable (**[11]**): considering the finite interval support case I, where Lebesgue measure is used , the simplest isomorphism from the Bayes space to the standard $\text{L}^2$ space is  the centred logratio (clr) transformation, defined as 
+\begin{center}
+	\begin{math}
+	clr[f(x)]= f_c(x) ln(f(x)) - \frac{1}{\eta}\int_{I} ln(f(x))\, dx
+	\end{math}
+\end{center}
+where $f(x)$ is a density function, $\eta$ is the length of the interval I.
+The antitranformation is defined as: 
+\begin{center}
+	\begin{math}
+	clr^{-1}[f(x)]= \frac{exp(f_c(x))}{\int_{I} f_c(x)\, dx}.
+	\end{math}
+\end{center}
+ The following condition has to be considered in the analysis:
+ \begin{center}
+ 	\begin{math}
+ 	\int_{I} clr[f(x)]\, dx = 0.
+ 	\end{math}
+ \end{center}
+%However, in practice the aggregation of individual observations to a discretized form of histogram data is done and a smoothed version of the distribution has to be found.
+
+\section{Why B-spline }
+
+See p.119 J. Ramsay and B.W. Silverman, Functional Data Analysis, 2nd ed., Springer, New York, 2005
