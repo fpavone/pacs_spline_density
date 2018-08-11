@@ -88,7 +88,7 @@ library(splineDensity)
 
 k <- 3
 l <- 2
-alpha <- 1000
+alpha <- 10000
 # uu <- 4.25
 # vv <- 5.85
 
@@ -120,6 +120,7 @@ plot(sol2)
 h2 <- hist(iris2, freq = FALSE, nclass = 12, xlab = "Sepal Length     [cm]", 
            main = "")
 lines(density(iris2), col = "black", lwd = 1.5)
+minor.tick(nx=4, tick.ratio=0.75)
 xx2 <- seq(sol2$Xcp[1],tail(sol2$Xcp,n=1),length.out = sol2$NumPoints)
 lines(xx2,sol2$Y[1,], col = 'forestgreen', lwd = 2)
 
@@ -135,6 +136,7 @@ h3 <- hist(iris3, freq = FALSE, nclass = 12, xlab = "Sepal Length     [cm]",
 lines(density(iris3), lwd = 1.5)
 xx3 <- seq(sol3$Xcp[1],tail(sol3$Xcp,n=1),length.out = sol3$NumPoints)
 lines(xx3,sol3$Y[1,], col = 'blue', lwd = 2)
+minor.tick(nx=4, tick.ratio=0.75)
 
 solCv <- smoothSplinesVal(k,l,10^(-5:5), midy3, midx3, knots)
 
