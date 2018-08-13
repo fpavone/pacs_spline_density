@@ -1,33 +1,38 @@
-\chapter{}
+\chapter{Description of the problem to solve}
 \newtheorem*{definition}{Definition}
-\label{Introduzione}
+\label{problem}
 % \thispagestyle{empty}
+
 \noindent 
-\section{Introduction to the problem}
-Analysing large-scale database systems, one of the first things to do is to summarize information in a density function, that is, Borel measurable, positive functions on a support I with a unit integral constraint. In this way, the intrinsic variability in the data is preserved and statistical analysis can be done according to the already existing methodologies. \\
-$\text{L}^2$ metric is not appropriate to tackle this problem because of the unit-integral constraint and because density functions take into account relative contributions of Borel sets on real line to the overall probability on the support of the variables. \\
-On the contrary, Bayes spaces with separable Hilbert space properties seem to fit perfectly. 
-Hence the general idea to tackle this problem is to to express the data in the $\text{L}^2$ space  and to perform the computations there. For this reason a mapping  from the Bayes space to the standard $\text{L}^2$ space is needed and it follows from the property that the logarithm of probability density functions is square-integrable (**[11]**): considering the finite interval support case I, where Lebesgue measure is used , the simplest isomorphism is the centred logratio (clr) transformation, defined as 
-\begin{center}
-	\begin{math}
-	clr[f(x)]= f_c(x) ln(f(x)) - \frac{1}{\eta}\int_{I} ln(f(x))\, dx
-	\end{math}
-\end{center}
+\section{Introduction}
+In the analysis of large-scale database systems, information is frequently summarized using a density function, that is, Borel measurable, positive functions on a support $\text{I}$ with a unit integral constraint. 
+% In this way, the intrinsic variability in the data is preserved and statistical analysis can be done according to the already existing methodologies. \\
+
+Even though it might seem that density functions are just a special case of functional data, standard FDA methods appear to be inappropriate for their treatment, as they do not consider the particular constrained nature of the data. 
+This problem is well known in the finite dimensional setting, where specific techniques have been worked out to deal with compositional data, i.e., multivariate data carrying only relative information, usually represented in proportions or percentages. 
+Those techniques are mainly based on a geometric perspective grounded on the Aitchison geometry in the simplex, which properly incorporates the compositional nature of the data (see the 'old but gold' pioneer \citep{aitchinson:bayes}). 
+
+In this context, probability density functions have recently been interpreted as functional compositional data, i.e., functional data carrying only relative information.
+To handle this kind of data, the Aitchison geometry has been recently extended to the so called Bayes spaces: a Hilbert space structure for $\sigma$-finite measures, including probability measures, has been worked out, as in \citep{vdboogaart:bayes}.
+
+In order to resort to standard statistical analysis of density functions, a mapping from the Bayes space to the standard $\textit{L}^2$ space is needed. 
+% Hence the general idea to tackle this problem is to to express the data in the $\textit{L}^2$ space  and to perform the computations there.
+
+An isometric isomorphism between the Bayes space and the Hilbert space $\textit{L}^2$ of (equivalence classes of) square-integrable real functions on the support $\text{I}$ is defined by the centred log-ratio (clr) transformation, explicitly 
+% It follows from the property that the logarithm of probability density functions is square-integrable (**[11]**): considering the finite interval support case I, where Lebesgue measure is used, the simplest isomorphism is the centred logratio (clr) transformation, defined as 
+\[	clr[f(x)] = f_c(x) = ln(f(x)) - \frac{1}{\eta}\int_{I} ln(f(x))\, dx 	\]
 where $f(x)$ is a density function, $\eta$ is the length of the interval I.
+
 The antitranformation is defined as: 
-\begin{center}
-	\begin{math}
-	clr^{-1}[f(x)]= \frac{exp(f_c(x))}{\int_{I} f_c(x)\, dx}.
-	\end{math}
-\end{center}
- The following condition has to be considered in the analysis:
- \begin{center}
- 	\begin{math}
- 	\int_{I} clr[f(x)]\, dx = 0.
- 	\end{math}
- \end{center}
+\[  clr^{-1}[f(x)]= \frac{exp(f_c(x))}{\int_{I} f_c(x)\, dx}. 	\]
+It's immediate to notice that the following constraint holds:
+\[	\int_{I} clr[f(x)]\, dx = 0. 			\]
+This additional condition needs to be taken into account for computation and analysis on clr-transformed density functions.
 
+%%% NOTE (hope to be rigth)
+% Remember what dr. Menafoglio told us about the problem: starting from discretized data, we could smooth and then transform them, in order to use them alongside with the unit integral constraint. But it would be uneasy to deal with a constraint on the b-spline coeffients. 
+% Therefore, what we do is transform and and smooth in such a way that the constraint is automatically satisfied. It requires a little bit more of calculus but that's a big advantage
 
-\section{Why B-spline }
+\section{Why B-spline}
 In practice the aggregation of individual observations to a discretized form of histogram data is done and a smoothed version of the distribution has to be found.
 Spline functions are often choosed for the approximation of non-periodic functional data since they allow fast computation and flexibility. The most famous system of spline for this kind of problem is the smoothing B-spline basis system developed by de Boor. This is because the resulting coefficients of basis functions can be directly used for statistical analysis. %2005_Book_FunctionalDataAnalysis
