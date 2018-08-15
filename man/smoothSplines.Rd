@@ -61,6 +61,7 @@ lenx <- (classes[-1] - classes[-13])/2
 midy <- adata/lenx
 aknots <- seq(midx[1],midx[12], length = 7)
 sol <- smoothSplines(k=3,l=2,alpha=10,midy/100,midx,aknots)
+plot(sol)
 }
 \references{
 J. Machalova, K. Hron & G.S. Monti (2016): 

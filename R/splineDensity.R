@@ -41,6 +41,7 @@
 #' midy <- adata/lenx
 #' aknots <- seq(midx[1],midx[12], length = 7)
 #' sol <- smoothSplines(k=3,l=2,alpha=10,midy/100,midx,aknots)
+#' plot(sol)
 #' @useDynLib splineDensity
 #' @export 
 #' 

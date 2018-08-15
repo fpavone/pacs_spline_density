@@ -1,4 +1,4 @@
-#' Estimate density from histogram
+#' Estimate density from histogram - for different \code{alpha}
 #'
 #' @param k smoothing splines degree
 #' @param l order of derivative in the penalization term
@@ -8,9 +8,14 @@
 #' @param knots either vector of knots for the splines or a integer for the number of equispaced knots
 #' @param prior prior used for zero-replacements. This must be one of "perks", "jeffreys", "bayes_laplace", "sq" or "default"
 #' @param cores number of cores for parallel execution
-#' @return The sum of
-#' @description asdasd
-#' @details qualcosa
+#' @return A list of three objects:
+#' \item{\code{alpha}}{the values of \code{alpha}}
+#' \item{\code{J}}{the values of the functional evaluated in the minimizing}
+#' \item{\code{CV-error}}{the values of the leave-one-out CV-error}
+#' @description As \code{\link{smoothSplines}}, \code{smoothSplinesVal} computes the density function that 'best' fits
+#' discretized distributional data, using B-spline basis functions, for different \code{alpha}. \cr
+#' Comparing and choosing an appropriate \code{alpha} is the ultimate goal.
+#' @details See \code{\link{smoothSplines}} for the description of the algorithm.
 #' @references J. Machalova, K. Hron & G.S. Monti (2016): 
 #' Preprocessing of centred logratio transformed density functions 
 #' using smoothing splines. Journal of Applied Statistics, 43:8, 1419-1435.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/splineDensity.smoothingSplinesValidation.R
 \name{smoothSplinesVal}
 \alias{smoothSplinesVal}
-\title{Estimate density from histogram}
+\title{Estimate density from histogram - for different \code{alpha}}
 \usage{
 smoothSplinesVal(k, l, alpha, data, xcp, knots, prior = "default",
   cores = 1)
@@ -25,13 +25,18 @@ smoothSplinesVal(k, l, alpha, data, xcp, knots, prior = "default",
 \item{cores}{number of cores for parallel execution}
 }
 \value{
-The sum of
+A list of three objects:
+\item{\code{alpha}}{the values of \code{alpha}}
+\item{\code{J}}{the values of the functional evaluated in the minimizing}
+\item{\code{CV-error}}{the values of the leave-one-out CV-error}
 }
 \description{
-asdasd
+As \code{\link{smoothSplines}}, \code{smoothSplinesVal} computes the density function that 'best' fits
+discretized distributional data, using B-spline basis functions, for different \code{alpha}. \cr
+Comparing and choosing an appropriate \code{alpha} is the ultimate goal.
 }
 \details{
-qualcosa
+See \code{\link{smoothSplines}} for the description of the algorithm.
 }
 \examples{
 axcp <- c(0.063,0.125,0.25,0.5,1,2,4,8,16,31.5,63,100)
