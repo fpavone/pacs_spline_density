@@ -36,3 +36,11 @@ This additional condition needs to be taken into account for computation and ana
 \section{Why B-spline}
 In practice the aggregation of individual observations to a discretized form of histogram data is done and a smoothed version of the distribution has to be found.
 Spline functions are often choosed for the approximation of non-periodic functional data since they allow fast computation and flexibility. The most famous system of spline for this kind of problem is the smoothing B-spline basis system developed by de Boor. This is because the resulting coefficients of basis functions can be directly used for statistical analysis. %2005_Book_FunctionalDataAnalysis
+
+\section{B-spline representation}
+Let $\Delta\lambda := \lambda_0=u < \lambda_1< \dots < \lambda_g < v = \lambda_{g+1} $ be a sequence of knots, $S_k^{\Delta\lambda}[u,v]$ the vector space of polynomial splines of degree $k > 0$ defined on the interval $[u,v]$ using $\Delta\lambda$, $dim(S_k^{\Delta\lambda}[u,v]) = g + k + 1$.  A spline in this space has the following form:
+\begin{center}
+	\begin{math}
+	s_k(x)=\sum\limits_{i=-k}^{g}b_iB_i^{k+1}(x)
+	\end{math}
+\end{center}
