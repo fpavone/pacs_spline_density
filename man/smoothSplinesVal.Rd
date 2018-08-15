@@ -2,7 +2,7 @@
 % Please edit documentation in R/splineDensity.smoothingSplinesValidation.R
 \name{smoothSplinesVal}
 \alias{smoothSplinesVal}
-\title{Estimate density from histogram as compositional data through bbsplines.}
+\title{Estimate density from histogram}
 \usage{
 smoothSplinesVal(k, l, alpha, data, xcp, knots, prior = "default",
   cores = 1)

@@ -1,51 +1,47 @@
-\chapter{Tutorial}
-\label{tutorial}
+\chapter{Installation}
+\label{installation}
 % \thispagestyle{empty}
 
-% NOTE
-EHI WE HAVE TO TEST THESE COMMANDS TO BE SURE THEY ALL WORK!!!
-
 \noindent 
-There are different ways for installing the R package splineDensity we created on your machine.
+The source code of this R package can be found and downloaded from \url{https://github.com/fpavone/pacs_spline_density} in the branch \textit{ROpenMP}. 
+There are different ways of installing it on your machine.
 
-The first one requires the use of devtools, a popoular R package, it will also take care of installing all dependencies and install the splineDensity package in the same directories of all the other R packages installed. 
-
-Once the source code is downloaded from \url{https://github.com/fpavone/pacs_spline_density/tree/ROpenMP} and unzipped, it is enough to run from the package root folder:
+The first one requires the use of \verb|devtools|, a popoular R package. It will also take care of installing all dependencies (Rcpp and RcppEigen) and install the splineDensity package in the same directories of all the other R packages installed.  \\
+In R, use the command 
+\begin{Verbatim}[commandchars=\\\{\}]
+install_github("fpavone/pacs_spline_density",ref="ROpenMP")
+\end{Verbatim}
+Using \verb|devtools|, it's possible to install the package from the terminal.
+Once the source code is downloaded and unzipped, it is enough to run from the package root folder the following commands:
 \begin{Verbatim}[commandchars=\\\{\}]
    R -e \textcolor{red}{"library(devtools); install()"} --silent
 \end{Verbatim}
-To build the documentation in Roxygen then:
+To build the documentation in Roxygen, then:
 \begin{Verbatim}[commandchars=\\\{\}]
    R -e \textcolor{red}{"library(devtools); document()"} --silent
 \end{Verbatim}
 
 This second command will create a subfolder named man where the .Rd files will be stored. This will be useful when calling for "help" from R (e.g., ?smoothSplines).
 
-As an alternative, to complete the installation does not require any additional package, but will throw errors if the packages required for the functioning of splineDensity are not installed.
-From the terminal, run:
+As an alternative, the second way to complete the installation does not require any additional package, but will throw errors if the packages required for the functioning of splineDensity are not installed.
+From the terminal, you need to run:
 \begin{verbatim}
    R CMD BUILD <path to folder splineDensity>
-   R CMD INSTALL -l <path name of the R library tree> <path 
-     name of the package to be installed>
+   R CMD INSTALL -l <path name of the R library tree> 
+      <path name of the package to be installed>
 \end{verbatim}
 
-In a different way, without downloading anything explicitly, simply run:
-\begin{Verbatim}[commandchars=\\\{\}]
-   R -e \textcolor{red}{"library(devtools);} 
-\textcolor{red}{install_github("fpavone/pacs_spline_density",ref="ROpenMP")"} --silent
-\end{Verbatim}
-
-To test the successful installation of the package, it is possible to run one of the examples in the subdirectory tests either from terminal
+To test the successful installation of the package, it is possible to run one of the examples in the subdirectory tests, either from terminal
 \begin{verbatim}
    Rscript <what-else-test.R>
 \end{verbatim}
-or loading the script directly in R.
+or directly in R.
 
-To build the Doxygen documentation of the C++ code instead, navigate to the \textit{src} folder and type 
+To build the \verb|Doxygen| documentation of the C++ code instead, you need to navigate to the \textit{src} folder and type 
 \begin{verbatim}
    doxygen -g <config-file>
 \end{verbatim}
-This will create a configuration file (if \verb|<config-file>| is missing, it will be named \textit{Doxyfile}), that can be edited to customize the output. \\
+This will create a configuration file (if \verb|<config-file>| is missing, by default it will be named \textit{Doxyfile}), that can be edited to customize the output. \\
 To run Doxygen then type:
 \begin{verbatim}
    doxygen <config-file>
@@ -58,7 +54,7 @@ To get the Reference Manual, then go to the \textit{latex} subfolder that has be
 
 \section{How to enable openMp parallelization}
 If your compiler supports openMP parallelization, once you have downloaded the splineDensity package, look for the \textit{Makevars} in the \textit{src} subfolder.\\
-Set the \verb|OPENMP| macro defined in it to a non-empty value to activate the parallelization, e.g. \verb|OPENMP = 2|. By default, the option is disabled.
+Set the \verb|OPENMP| macro defined in it to a non-empty value to activate the parallelization, e.g. \verb|OPENMP = 1|. By default, the option is disabled.
 
 Now, follow the instructions as above to install the package. \\
 Once finished, you have the opportunity to exploit the benefits that only a parallel implementation can provide.

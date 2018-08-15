@@ -2,7 +2,7 @@
 % Please edit documentation in R/splineDensity.R
 \name{smoothSplines}
 \alias{smoothSplines}
-\title{Estimate density from histogram as compositional data through bbsplines.}
+\title{Estimate density from histogram}
 \usage{
 smoothSplines(k, l, alpha, data, xcp, knots, num_points = 100,
   prior = "default", cores = 1, fast = 0)
@@ -14,28 +14,28 @@ smoothSplines(k, l, alpha, data, xcp, knots, num_points = 100,
 
 \item{alpha}{weight for penalization}
 
-\item{data}{an object of class "matrix" containing data to be smoothed}
+\item{data}{an object of class "matrix" containing data to be smoothed, row by row}
 
-\item{xcp}{control points}
+\item{xcp}{vector of control points}
 
-\item{knots}{either vector of knots for the splines or a integer for the number of knots}
+\item{knots}{either vector of knots for the splines or a integer for the number of equispaced knots}
 
 \item{num_points}{number of points of the grid where to evaluate the density estimated}
 
 \item{prior}{prior used for zero-replacements. This must be one of "perks", "jeffreys", "bayes_laplace", "sq" or "default"}
 
-\item{cores}{number of cores for parallel execution}
+\item{cores}{number of cores for parallel execution, if the option was enabled before installing the ppackage}
 
 \item{fast}{1 if maximal performance is required (print statements suppressed), 0 otherwise}
 }
 \value{
-The sum of
+An object of class "smoothSpl"
 }
 \description{
-asdasd
+s
 }
 \details{
-qualcosa
+d
 }
 \examples{
 library(splineDensity)
@@ -53,8 +53,9 @@ lenx <- (classes[-1] - classes[-13])/2
 midy <- adata/lenx
 aknots <- seq(midx[1],midx[12], length = 7)
 sol <- smoothSplines(ak,al,aalpha,midy/100,midx,aknots)
-plot(sol)
 }
 \references{
-asdas
+J. Machalová, K. Hron & G.S. Monti (2016): 
+Preprocessing of centred logratio transformed density functions 
+using smoothing splines. Journal of Applied Statistics, 43:8, 1419-1435.
 }

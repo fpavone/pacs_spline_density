@@ -1,19 +1,23 @@
-#' Estimate density from histogram as compositional data through bbsplines.
+#' Estimate density from histogram
 #'
 #' @param k smoothing splines degree
 #' @param l order of derivative in the penalization term
 #' @param alpha weight for penalization
-#' @param data an object of class "matrix" containing data to be smoothed
-#' @param xcp control points
-#' @param knots either vector of knots for the splines or a integer for the number of knots
+#' @param data an object of class "matrix" containing data to be smoothed, row by row
+#' @param xcp vector of control points
+#' @param knots either vector of knots for the splines or a integer for the number of equispaced knots
 #' @param num_points number of points of the grid where to evaluate the density estimated
 #' @param prior prior used for zero-replacements. This must be one of "perks", "jeffreys", "bayes_laplace", "sq" or "default"
-#' @param cores number of cores for parallel execution
+#' @param cores number of cores for parallel execution, if the option was enabled before installing the ppackage
 #' @param fast 1 if maximal performance is required (print statements suppressed), 0 otherwise
-#' @return The sum of
-#' @description asdasd
-#' @details qualcosa
-#' @references asdas
+#' @return An object of class "smoothSpl"
+#' @description Given raw (discretized) distributional observations, smoothSplines computes the density
+#' function that 'best' fits data, in a trade-off between smooth and least squares approximation. 
+#' @details The original discretized densities are not directly smoothed. The centred logratio transformation is
+#' first applied, as defined
+#' @references J. Machalová, K. Hron & G.S. Monti (2016): 
+#' Preprocessing of centred logratio transformed density functions 
+#' using smoothing splines. Journal of Applied Statistics, 43:8, 1419-1435.
 #' @examples
 #' library(splineDensity)
 #' data(particle)
@@ -30,9 +34,8 @@
 #' midy <- adata/lenx
 #' aknots <- seq(midx[1],midx[12], length = 7)
 #' sol <- smoothSplines(ak,al,aalpha,midy/100,midx,aknots)
-#' 
 #' @useDynLib splineDensity
-#' @export
+#' @export 
 #' 
 
 smoothSplines <- function(k,l,alpha,data,xcp,knots,num_points = 100, prior = "default", cores = 1, fast = 0)

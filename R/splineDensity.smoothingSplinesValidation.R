@@ -1,4 +1,4 @@
-#' Estimate density from histogram as compositional data through bbsplines.
+#' Estimate density from histogram
 #'
 #' @param k smoothing splines degree
 #' @param l order of derivative in the penalization term
