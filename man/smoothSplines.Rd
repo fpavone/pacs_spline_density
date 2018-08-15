@@ -24,38 +24,46 @@ smoothSplines(k, l, alpha, data, xcp, knots, num_points = 100,
 
 \item{prior}{prior used for zero-replacements. This must be one of "perks", "jeffreys", "bayes_laplace", "sq" or "default"}
 
-\item{cores}{number of cores for parallel execution, if the option was enabled before installing the ppackage}
+\item{cores}{number of cores for parallel execution, if the option was enabled before installing the package}
 
 \item{fast}{1 if maximal performance is required (print statements suppressed), 0 otherwise}
 }
 \value{
-An object of class "smoothSpl"
+An object of class \code{smoothSpl}, containing among the other the following variables:
+\item{\code{bspline}}{each row is the vector of B-spline coefficients}
+\item{\code{Y}}{the values of the smoothed curve, for the grid given}
+\item{\code{Y_clr}}{the values of the smoothed curve, in the clr setting, for the grid given}
 }
 \description{
-s
+Given raw (discretized) distributional observations, \code{smoothSplines} computes the density
+function that 'best' fits data, in a trade-off between smooth and least squares approximation, using B-spline basis functions.
 }
 \details{
-d
+The original discretized densities are not directly smoothed, but instead the centred logratio transformation is
+first applied, to deal with the unit integral constraint related to density functions. \cr
+Then the constrained variational problem is set. This minimization problem for the optimal 
+density is a compromise between staying close to the given data, at the corresponding \code{xcp},
+and obtaining a smooth function.
+The non-smoothness measure takes into account the \code{l}th derivative, while the fidelity term is weigthed by \code{alpha}. \cr
+The solution is a natural spline. The vector of its coefficients is obtained by the minimum norm solution of a linear system.
+The resulting splines can be either back-transformed to the original Bayes space of density
+functions (in order to provide their smoothed counterparts for vizualization and interpretation
+purposes), or retained for further statistical analysis in the clr space.
 }
 \examples{
-library(splineDensity)
 data(particle)
-ak <- 3
-al <- 2
-aalpha <- 10
-aknots_given <- 1
-axcp <- c(0.063,0.125,0.25,0.5,1,2,4,8,16,31.5,63,100)
+x_cp <- c(0.063,0.125,0.25,0.5,1,2,4,8,16,31.5,63,100)
 u <- log(0.001)
 v <- log(200)
-classes <- c(u,log(axcp))
+classes <- c(u,log(x_cp))
 midx <- (classes[-1] + classes[-13])/2
 lenx <- (classes[-1] - classes[-13])/2
 midy <- adata/lenx
 aknots <- seq(midx[1],midx[12], length = 7)
-sol <- smoothSplines(ak,al,aalpha,midy/100,midx,aknots)
+sol <- smoothSplines(k=3,l=2,alpha=10,midy/100,midx,aknots)
 }
 \references{
-J. Machalová, K. Hron & G.S. Monti (2016): 
+J. Machalova, K. Hron & G.S. Monti (2016): 
 Preprocessing of centred logratio transformed density functions 
 using smoothing splines. Journal of Applied Statistics, 43:8, 1419-1435.
 }

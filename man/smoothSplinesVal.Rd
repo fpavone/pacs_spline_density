@@ -14,11 +14,11 @@ smoothSplinesVal(k, l, alpha, data, xcp, knots, prior = "default",
 
 \item{alpha}{vector of weights for penalization}
 
-\item{data}{an object of class "matrix" containing data to be smoothed}
+\item{data}{an object of class "matrix" containing data to be smoothed, row by row}
 
-\item{xcp}{control points}
+\item{xcp}{vector of control points}
 
-\item{knots}{either vector of knots for the splines or a integer for the number of knots}
+\item{knots}{either vector of knots for the splines or a integer for the number of equispaced knots}
 
 \item{prior}{prior used for zero-replacements. This must be one of "perks", "jeffreys", "bayes_laplace", "sq" or "default"}
 
@@ -34,11 +34,6 @@ asdasd
 qualcosa
 }
 \examples{
-library(splineDensity)
-ak <- 3
-al <- 2
-aalpha <- 10^seq(-4,4,by=1)
-aknots_given <- 1
 axcp <- c(0.063,0.125,0.25,0.5,1,2,4,8,16,31.5,63,100)
 u <- log(0.001)
 v <- log(200)
@@ -47,8 +42,10 @@ midx <- (classes[-1] + classes[-13])/2
 lenx <- (classes[-1] - classes[-13])/2
 midy <- adata/lenx
 aknots <- seq(midx[1],midx[12], length = 7)
-sol <- smoothSplinesVal(ak,al,aalpha,midy/100,midx,aknots,cores=1)
+sol <- smoothSplinesVal(k=3,l=2,alpha=10^seq(-4,4,by=1),midy/100,midx,aknots,cores=1)
 }
 \references{
-asdas
+J. Machalova, K. Hron & G.S. Monti (2016): 
+Preprocessing of centred logratio transformed density functions 
+using smoothing splines. Journal of Applied Statistics, 43:8, 1419-1435.
 }

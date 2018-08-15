@@ -5,6 +5,12 @@ chapter 4)
 - WE HAVE TO TEST THESE COMMANDS TO BE SURE THEY ALL WORK!!!
 - DO WE HAVE TO PUT A SECTION "INSTALLING R PACKAGES" TO DEAL WITH DEVTOOLS?
 
+do not miss to write about
+- zero bayesian replacement
+- Rcpp and RcppEigen (impossible not to cite Dirk)
+- Rvalgrind
+- linear system minimum solution
+
 ------------------
 - TO DO:
 ------------------
