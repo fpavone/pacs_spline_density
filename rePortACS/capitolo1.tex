@@ -35,12 +35,45 @@ This additional condition needs to be taken into account for computation and ana
 
 \section{Why B-spline}
 In practice the aggregation of individual observations to a discretized form of histogram data is done and a smoothed version of the distribution has to be found.
-Spline functions are often choosed for the approximation of non-periodic functional data since they allow fast computation and flexibility. The most famous system of spline for this kind of problem is the smoothing B-spline basis system developed by de Boor. This is because the resulting coefficients of basis functions can be directly used for statistical analysis. %2005_Book_FunctionalDataAnalysis
+Spline functions are often chosen for the approximation of non-periodic functional data since they allow fast computation and flexibility. The most famous system of spline for this kind of problem is the smoothing B-spline basis system developed by de Boor. This is because the resulting coefficients of basis functions can be directly used for statistical analysis. %2005_Book_FunctionalDataAnalysis
 
 \section{B-spline representation}
-Let $\Delta\lambda := \lambda_0=u < \lambda_1< \dots < \lambda_g < v = \lambda_{g+1} $ be a sequence of knots, $S_k^{\Delta\lambda}[u,v]$ the vector space of polynomial splines of degree $k > 0$ defined on the interval $[u,v]$ using $\Delta\lambda$, $dim(S_k^{\Delta\lambda}[u,v]) = g + k + 1$.  A spline in this space has the following form:
-\begin{center}
-	\begin{math}
-	s_k(x)=\sum\limits_{i=-k}^{g}b_iB_i^{k+1}(x)
-	\end{math}
-\end{center}
+Let $\Delta\lambda := \lambda_0=u < \lambda_1< \dots < \lambda_g < v = \lambda_{g+1} $ be a sequence of knots, $S_k^{\Delta\lambda}[u,v]$ the vector space of polynomial splines of degree $k > 0$ defined on the interval $[u,v]$ using $\Delta\lambda$, $dim(S_k^{\Delta\lambda}[u,v]) = g + k + 1$. \\
+A spline in this space has the following form:
+\[  s_k(\textbf{x})=\sum\limits_{i=-k}^{g}b_iB_i^{k+1}(\textbf{x}) \]
+where ${B_i^{k+1}}$ are B-splines of degree k and form a basis in $S_k^{\Delta\lambda}[u,v]$. For this representation additional knots are required:
+\[  \lambda_{-k}= \dots = \lambda_{-1} = \lambda_0,  \ \ \ \ \lambda_{g+1}= \dots = \lambda_{g+k+1}. \]
+%%% NOTE: maybe we can skip the upper part
+In matrix notation, the spline can be rewritten as:
+\[  s_k(\textbf{x})=  \textbf{C}_{k+1}(\textbf{x})\textbf{b}, \]
+where $ \textbf{C}_{k+1}(\textbf{x})$ is the \textit{collocation matrix} and it is defined as
+\[  \textbf{C}_{k+1}(\textbf{x}) =
+\begin{bmatrix}
+B_{-k}^{k+1}(x_1)  & \dots  & B_{g}^{k+1}(x_1) \\
+\vdots & \ddots & \vdots \\
+B_{-k}^{k+1}(x_n) &  \dots  & B_{g}^{k+1}(x_n)
+\end{bmatrix} \in \mathbb{R}^{n, g+k+1} \]
+and  $\textbf{b}= [ b_{-k}, \dots, b_{g}]^T$ is \textit{the vector of B-spline coefficients of} $s_k(\textbf{x})$.\\
+Moreover, using properties of B-splines, it is possible to write the derivative of order $l$ of the spline $s_k(\textbf{x})$ as
+\[  s_k^{(l)}(\textbf{x})=  \textbf{C}_{k+1-l}(\textbf{x})\textbf{b}^{(l)}, \]
+where $\textbf{b}^{(l)}$ can be computed recursively:
+\[ \textbf{b}^{(l)} = \textbf{D}_l \textbf{L}_l \textbf{b}^{(l-1)}   =  \textbf{D}_l \textbf{L}_l \dots \textbf{D}_1 \textbf{L}_1\textbf{b} = \textbf{S}_l\textbf{b}, \]
+\[ \textbf{D}_j =  (k+1-j) \text{diag}(d_{-k+j},\dots, d_g)    \]
+\[ \text{with} \ d_i = \frac{1}{\lambda_{i+k+1-j}-\lambda_i}   \forall i = -k+j,\dots, g,  \]
+\[ \textbf{L}_j =  \begin{bmatrix}
+-1  & 1 &  &\\
+ & \ddots & \ddots&\\
+ & & -1&1
+\end{bmatrix}  \in \mathbb{R}^{g+k+1-j,g+k+2-j}.\]
+
+\section{The optimal smoothing problem}
+Our goal is to find a function $f(x)$ that is a smooth approximation, close enough to the given data points $(x_i,y_i)$. Hence $f(x)$ has to fulfil the following optimization problem:
+\begin{equation*} 
+\begin{aligned}
+& \underset{f}{\text{minimize}}
+& & \int_{x_1}^{x_n} [f^{(l)}(x)]^2 \,dx \\
+& \text{subject to}
+& & \sum\limits_{i=1}^{n}[w_i(y_i-f(x_i))]^2 \le S
+\end{aligned}
+\end{equation*}
+where the constraint takes into account data accuracy.
