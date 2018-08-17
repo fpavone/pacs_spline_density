@@ -76,4 +76,59 @@ Our goal is to find a function $f(x)$ that is a smooth approximation, close enou
 & & \sum\limits_{i=1}^{n}[w_i(y_i-f(x_i))]^2 \le S
 \end{aligned}
 \end{equation*}
-where the constraint takes into account data accuracy.
+where the objective function is a measure of non-smoothness of $f(x)$ and the constraint is a measure of the closeness of fit that takes into account data accuracy using weights.
+The solution is known to be a natural spline $s_k(\textbf{x})$ of degree $k=2l-1$.
+It follows that for $l \ge 2$  
+\[s_k^{(l+j)}(\textbf{x}_1)=s_k^{(l+j)}(\textbf{x}_n)=0, \ \ \ j=0,1,\dots,l-2.\]
+In order to find $\textbf{b}$, we can plug this result into the dual problem:
+\begin{equation*} 
+\begin{aligned}
+& \underset{f}{\text{minimize}}
+& &  J_l(f) \\
+\end{aligned}
+\end{equation*}
+$\text{where} \ J_l(f) :=\int_{x_1}^{x_n} [f^{(l)}(x)]^2 \,dx + \alpha \sum\limits_{i=1}^{n}[w_i(y_i-f(x_i))]^2$.\\
+Assuming data $(x_i,y_i), \ u\le x_i \le v$, weights $w_i \ge 0, \ i=1, \dots, n$, sequence of knots $\Delta\lambda$, $n \ge g+1 $ and $\alpha \in (0,1)$ are given, % If $\alpha is not given, find it throgh crossvalidation 
+and rewriting the functional $J_l(f)$ in matrix notation, we find:
+\[J_l(\textbf{b}) = \textbf{b}^\top \textbf{N}_{kl}\textbf{b} + \alpha [\textbf{y}-\textbf{C}_{k+1}(\textbf{x})\textbf{b}]^\top \textbf{W} [\textbf{y}-\textbf{C}_{k+1}(\textbf{x})\textbf{b}]\]
+where $\textbf{N}_{kl} =  \textbf{S}_l^\top \textbf{M}_{kl}\textbf{S}_l$ is positive semidefinite, 
+\[  \textbf{M}_{kl} =
+\begin{bmatrix}
+(B_{-k+l}^{k+1-l}, B_{-k+l}^{k+1-l}) & \dots  & (B_{g}^{k+1-l}, B_{-k+l}^{k+1-l}) \\
+\vdots & \ddots & \vdots \\
+(B_{-k+l}^{k+1-l}, B_{g}^{k+1-l}) &  \dots  & (B_{g}^{k+1-l}, B_{g}^{k+1-l})
+\end{bmatrix} \in \mathbb{R}^{g+k+1-l, g+k+1-l} \]
+and \[(B_{i}^{k+1-l}, B_{j}^{k+1-l}) = \int_u^v B_{i}^{k+1-l}(x)B_{j}^{k+1-l}(x) \, dx.\]
+$\textbf{M}_{kl}$ is positive definite because each element is the scalar product in $L^2([u,v])$ of basis functions. \\
+In the case of  smoothed clr-transformed density functions, we have to add the condition
+\[\int_u^v s_k(x) \, dx = 0.\] 
+From B-spline properties we know that 
+\[  s_k(\textbf{x})=\sum\limits_{i=-k}^{g}b_iB_i^{k+1}(\textbf{x}) \]
+is the derivative of the spline
+\[  s_{k+1}(\textbf{x})=\sum\limits_{i=-k-1}^{g}c_iB_i^{k+2}(\textbf{x}) \]
+if
+\[b_i = (k+1)\frac{c_i-c_{i-1}}{\lambda_{i+k+1}-\lambda_{i}} \forall i = -k, \dots, g.\]
+Hence 
+\[ 0 = \int_u^v s_k(x) \, dx = [s_{k+1}(x)]_u^v = s_{k+1}(\lambda_{g+1})-s_{k+1}(\lambda_{0}) = c_g-c_{-k-1},\]
+so that $c_g = c_{-k-1}$.\\
+Finally we have identified a relationship between $\textbf{b}$ and $\textbf{c}$:
+\[\textbf{b} = \textbf{D}\textbf{K}\textbf{c}\] 
+where $ \textbf{D} = \textbf{D}_0$ and
+\[  \textbf{K} =
+\begin{bmatrix}
+1 &0&0& \dots  & -1 \\
+-1 &1&0& \dots  & 0 \\
+0 &-1&1& \dots  & 0 \\
+\vdots &\vdots & \ddots & \ddots& \vdots \\
+0 &0 & \dots&-1  & 1
+\end{bmatrix} \in \mathbb{R}^{g+k+1, g+k+1}. \]
+Hence the functional to minimize can be rewritten depending on $\textbf{c}$
+\[J_l(\textbf{c}) = (\textbf{D}\textbf{K}\textbf{c})^\top \textbf{N}_{kl}\textbf{D}\textbf{K}\textbf{c} + \alpha [\textbf{y}-\textbf{C}_{k+1}(\textbf{x})\textbf{D}\textbf{K}\textbf{c}]^\top \textbf{W} [\textbf{y}-\textbf{C}_{k+1}(\textbf{x})\textbf{D}\textbf{K}\textbf{c}]\]
+In order to find the minimum, we set the derivative of $J_l(\textbf{c})$ w.r.t. $\textbf{c}$ to 0 e we obtain
+\[ [\alpha^{-1}(\textbf{D}\textbf{K})^\top \textbf{N}_{kl} \textbf{D}\textbf{K}+ (\textbf{C}_{k+1}(\textbf{x})\textbf{D}\textbf{K})^\top\textbf{W}\textbf{C}_{k+1}(\textbf{x})\textbf{D}\textbf{K}]\textbf{c} = (\textbf{C}_{k+1}(\textbf{x})\textbf{D}\textbf{K})^\top \textbf{W}\textbf{y}.\]
+If $\alpha^{-1}(\textbf{D}\textbf{K})^\top \textbf{N}_{kl} \textbf{D}\textbf{K}+ (\textbf{C}_{k+1}(\textbf{x})\textbf{D}\textbf{K})^\top\textbf{W}\textbf{C}_{k+1}(\textbf{x})\textbf{D}\textbf{K}$ is invertible, then there exists a unique solution 
+\[\textbf{c}^\star = [\alpha^{-1}(\textbf{D}\textbf{K})^\top \textbf{N}_{kl} \textbf{D}\textbf{K}+ (\textbf{C}_{k+1}(\textbf{x})\textbf{D}\textbf{K})^\top\textbf{W}\textbf{C}_{k+1}(\textbf{x})\textbf{D}\textbf{K}]^{-1}\textbf{K}^\top\textbf{D}^\top\textbf{C}_{k+1}^\top \textbf{W}\textbf{y},\]
+otherwise we can find a minimum norm solution
+\[\textbf{c}^\star = [\alpha^{-1}(\textbf{D}\textbf{K})^\top \textbf{N}_{kl} \textbf{D}\textbf{K}+ (\textbf{C}_{k+1}(\textbf{x})\textbf{D}\textbf{K})^\top\textbf{W}\textbf{C}_{k+1}(\textbf{x})\textbf{D}\textbf{K}]_{m}^{-}\textbf{K}^\top\textbf{D}^\top\textbf{C}_{k+1}^\top \textbf{W}\textbf{y}.\]
+In both cases the vector of B-spline coefficients is obtained by
+\[\textbf{b}^\star = \textbf{D}\textbf{K}\textbf{c}^\star.\] 
