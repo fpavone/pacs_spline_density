@@ -10,10 +10,10 @@
 #include "density_estimation.hpp"
 
 
-/************* myParameters class ***************/
+/************* parametersManager class ***************/
 
 void
-myParameters::readKnots
+parametersManager::readKnots
 (const double * inputKnots, const unsigned int & size)
 {
   // read knots by copy
@@ -28,7 +28,7 @@ myParameters::readKnots
 }
 
 void
-myParameters::readXcp
+parametersManager::readXcp
 (const double * inputXcp, const unsigned int & size, const int & cancel)
 {
   // read xcp by copy, if specified skip column indexed by cancel (-1 means nothing to cancel)

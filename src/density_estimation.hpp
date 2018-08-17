@@ -19,7 +19,7 @@ constexpr double tol = 1e-04;
 @brief	Parameter class manager
 @note These parameters are related to the problem itself, not to each single row.
 */
-class myParameters
+class parametersManager
 {
 protected:
 
@@ -37,7 +37,7 @@ protected:
   std::vector<double> xcp; /*! control points */
 
 public:
-  myParameters
+  parametersManager
   (const unsigned int kk, const unsigned int ll, const double opt_param):
     k(kk), l(ll), alpha(opt_param) {};
 
@@ -84,7 +84,7 @@ public:
 @brief	Parameter class manager
 @note These are the whole set of parameters
 */
-class myDensity: public myParameters
+class myDensity: public parametersManager
 {
 private:
 
@@ -133,7 +133,7 @@ private:
 public:
 
   myDensity
-  (const myParameters & input): myParameters(input)
+  (const parametersManager & input): parametersManager(input)
   {};
 
   /*!
