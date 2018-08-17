@@ -16,7 +16,7 @@
 @note Data are assumed to be already without extreme observations
 */
 
-class myData
+class dataManager
 {
 private:
 

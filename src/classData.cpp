@@ -10,7 +10,7 @@
 #include "classData.hpp"
 
 void
-myData::readData
+dataManager::readData
 (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false> & row,
        PRIOR prior, const int & cancel)
 {
@@ -30,7 +30,7 @@ myData::readData
 };
 
 void
-myData::transfData
+dataManager::transfData
 ()
 {
   // clr transformation of prop_data in transf_data
@@ -46,21 +46,21 @@ myData::transfData
 };
 
 std::vector<double>
-myData::getNumbers
+dataManager::getNumbers
 ()
 {
   return numbers;
 }
 
 void
-myData::pacs
+dataManager::pacs
 (myDensity & dens, Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline)
 {
   dens.solve(bspline,numbers);
 };
 
 void
-myData::antitData
+dataManager::antitData
 (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> x)
 {
   // Using rectangular integration in continuous setting
@@ -75,7 +75,7 @@ myData::antitData
 };
 
 void
-myData::fillGrid
+dataManager::fillGrid
 (double start, double end, unsigned int numPoints)
 {
   double step = (end - start)/numPoints;
@@ -88,7 +88,7 @@ myData::fillGrid
 };
 
 void
-myData::plotData
+dataManager::plotData
 (const myDensity & dens, unsigned long int numPoints,
   Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline,
   Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> yplot)
@@ -118,7 +118,7 @@ myData::plotData
 };
 
 void
-myData::plotData_Clr
+dataManager::plotData_Clr
 (const myDensity & dens, unsigned long int numPoints,
   Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline,
   Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> yplot)
@@ -146,7 +146,7 @@ myData::plotData_Clr
 };
 
 long double
-myData::compute_fvalue
+dataManager::compute_fvalue
 (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> vec1, Eigen::ArrayXd vec2 )
 {
   long double res = 0.0;
