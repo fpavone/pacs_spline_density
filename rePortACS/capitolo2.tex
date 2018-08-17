@@ -1,8 +1,36 @@
 \chapter{Code Structure}
-\label{capitolo2}
+\label{code}
 % \thispagestyle{empty}
 
 \noindent 
+\section{Overview}
+We briefly explain here what kind of data are expected as input, the general workflow and the output of the software. In section \ref{c++}] more detailed implementation is discussed with focus on the R interface in section \ref{R} and the shared-memory parallelization in \ref{openmp}.
 
+\subsection{Input data}
+User provides a dataset of observation, each row a statistical unit, all belonging to the same statistical model and have the same length. Those are the data for our problem and they fulfil hypothesis of compositional data observation, e.g. sum constrain. Using the histogram example, each row consist of a histogram and all the histogram come from the same underlying model, e.g. proportion of annual income aggregated in classes for different region of a given country as in [articolo smoothing spline]. The values of a given row correspond to the "height" of each class of the histogram
+
+User provides also what in splines lexicon are called the \textit{control points}, i.e. the middle point abscissa of each class of the histogram. Those abscissa are the same for all the rows of the dataset.
+
+Strictly related to the optimal smoothing problem, spline degree \textit{k}, penalization order \textit{l}, smoothness tuning parameter \textit{$\alpha$} and spline knots must be provided. Spline knots can be passed as a given vector or they can be builded by default equispaced given the size.
+
+\subsection{Workflow}
+Parameters of the spline problem, including knots and control points, are stored in \verb|myDensity| class. This class contains all the fixed information of the problem, common to every row of the dataset to be processed. Through corresponding methods all the matrix requested to build the linear system described previously are computed and stored using \verb|Eigen| in such class.
+
+\verb|myData| class deals with data. It reads a data-row, perform the zeros treatment and through the \verb|pacs| method solve the b-spline problem calling the \verb|solve| method of the \verb|myDensity| object. The result is written in a proper \verb|Eigen| structure. Using the \verb|plotData| method the resulting spline is finally evaluated in a given grid of point.
+
+The reason of this structure of the code is due to the parallelization and it will be better understood in section \ref{openmp}.
+
+\subsection{Output}
+Output consist in b-spline coefficients for each statistical unit and possibly a grid of values in which resulting b-splines are evaluated at. Size of the grid can be given as input parameter otherwise it is handled by default.
+
+\section{C++ structures} \label{c++}
+
+\section{openMP parallelization} \label{openmp}
+
+\section{R interface} \label{R}
+
+
+% struttura generale del codice: cosa in input, cosa in output
 % scelta di salvare le matrici con eigen sparse, dimensione matrici
 % problema zero-forcing
+% myDensity figlia di myParameters (che è "astratta")
