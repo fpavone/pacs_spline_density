@@ -54,7 +54,7 @@ dataManager::getNumbers
 
 void
 dataManager::pacs
-(myDensity & dens, Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline)
+(densityEstimator & dens, Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline)
 {
   dens.solve(bspline,numbers);
 };
@@ -89,7 +89,7 @@ dataManager::fillGrid
 
 void
 dataManager::plotData
-(const myDensity & dens, unsigned long int numPoints,
+(const densityEstimator & dens, unsigned long int numPoints,
   Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline,
   Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> yplot)
 {
@@ -119,7 +119,7 @@ dataManager::plotData
 
 void
 dataManager::plotData_Clr
-(const myDensity & dens, unsigned long int numPoints,
+(const densityEstimator & dens, unsigned long int numPoints,
   Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline,
   Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> yplot)
 {

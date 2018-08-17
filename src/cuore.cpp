@@ -63,7 +63,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   }
 
   dataManager obj;
-  myDensity dens(parametersManager(k,l,alpha));
+  densityEstimator dens(parametersManager(k,l,alpha));
 
   // Read xcp
   double *Xcp = REAL(Xcp_);
@@ -184,7 +184,7 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
   }
 
   dataManager obj;
-  myDensity dens(parametersManager(k,l,alpha[0]));
+  densityEstimator dens(parametersManager(k,l,alpha[0]));
 
   // Read xcp
   double *Xcp = REAL(Xcp_);

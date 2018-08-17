@@ -12,7 +12,7 @@
 
 constexpr double tol = 1e-04;
 
-// NOTE: in myDensity::solve() there is the following note:
+// NOTE: in densityEstimator::solve() there is the following note:
 //        NOTE: QR should do this automatically without giving any warning (CHECK)
 
 /*!
@@ -84,7 +84,7 @@ public:
 @brief	Parameter class manager
 @note These are the whole set of parameters
 */
-class myDensity: public parametersManager
+class densityEstimator: public parametersManager
 {
 private:
 
@@ -132,7 +132,7 @@ private:
 
 public:
 
-  myDensity
+  densityEstimator
   (const parametersManager & input): parametersManager(input)
   {};
 
