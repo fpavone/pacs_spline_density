@@ -16,7 +16,7 @@
 @note Data are assumed to be already without extreme observations
 */
 
-class myData
+class dataManager
 {
 private:
 
@@ -60,14 +60,14 @@ public:
 
   /*!
   @brief It's the unique and final solution of the problem.
-  @details Call the solve method of the myDensity object.
-  @param dens (Input) myDensity object where parameters for the method are stored.
-  @see myDensity
+  @details Call the solve method of the densityEstimator object.
+  @param dens (Input) densityEstimator object where parameters for the method are stored.
+  @see densityEstimator
   @param bspline (Output) Row of output matrix where coefficients of the bspline are saved.
   */
   void
   pacs
-  (myDensity & dens, Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline);
+  (densityEstimator & dens, Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline);
 
   /*!
 	@brief	Anti-transform data using the inverse of centered log-ratio (clr) function
@@ -98,7 +98,7 @@ public:
   */
   void
   plotData
-  (const myDensity & dens, unsigned long int numPoints,
+  (const densityEstimator & dens, unsigned long int numPoints,
     Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline,
     Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> yplot);
 
@@ -111,7 +111,7 @@ public:
   */
   void
   plotData_Clr
-  (const myDensity & dens, unsigned long int numPoints,
+  (const densityEstimator & dens, unsigned long int numPoints,
     Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline,
     Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> yplot);
 

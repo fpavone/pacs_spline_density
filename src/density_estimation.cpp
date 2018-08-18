@@ -10,10 +10,10 @@
 #include "density_estimation.hpp"
 
 
-/************* myParameters class ***************/
+/************* parametersManager class ***************/
 
 void
-myParameters::readKnots
+parametersManager::readKnots
 (const double * inputKnots, const unsigned int & size)
 {
   // read knots by copy
@@ -28,7 +28,7 @@ myParameters::readKnots
 }
 
 void
-myParameters::readXcp
+parametersManager::readXcp
 (const double * inputXcp, const unsigned int & size, const int & cancel)
 {
   // read xcp by copy, if specified skip column indexed by cancel (-1 means nothing to cancel)
@@ -41,10 +41,10 @@ myParameters::readXcp
 
 
 
-/************* myDensity class ***************/
+/************* densityEstimator class ***************/
 
 void
-myDensity::fill_C
+densityEstimator::fill_C
 (const std::vector<double>& cp)
 {
   C.resize(n,G);
@@ -59,7 +59,7 @@ myDensity::fill_C
 }
 
 void
-myDensity::fill_M
+densityEstimator::fill_M
 ()
 {
   M.resize(G-l,G-l);
@@ -89,7 +89,7 @@ myDensity::fill_M
 }
 
 void
-myDensity::fill_DK
+densityEstimator::fill_DK
 ()
 {
   using Trip = Eigen::Triplet<double>;
@@ -109,7 +109,7 @@ myDensity::fill_DK
 }
 
 void
-myDensity::fill_S
+densityEstimator::fill_S
 ()
 {
   using Trip = Eigen::Triplet<double>;
@@ -146,7 +146,7 @@ myDensity::fill_S
 
 
 void
-myDensity::set_lambda
+densityEstimator::set_lambda
 (const std::vector<double> & knots)
 {
   lambda.clear();
@@ -157,7 +157,7 @@ myDensity::set_lambda
 
 
 void
-myDensity::set_lambda_der
+densityEstimator::set_lambda_der
 (const std::vector<double> & knots)
 {
   lambda_der.clear();
@@ -167,7 +167,7 @@ myDensity::set_lambda_der
 }
 
 void
-myDensity::set_matrix
+densityEstimator::set_matrix
 ()
 {
   weights = Eigen::VectorXd::Constant(n,1.0);
@@ -180,7 +180,7 @@ myDensity::set_matrix
 }
 
 void
-myDensity::set_system
+densityEstimator::set_system
 ()
 {
   P.noalias() = 1.0 / alpha * (DK).transpose() * S.transpose() * M * S * (DK) +
@@ -188,7 +188,7 @@ myDensity::set_system
 }
 
 double
-myDensity::eval_J
+densityEstimator::eval_J
 (const std::vector<double>& ycp)
 {
   Eigen::VectorXd newycp(Eigen::VectorXd::Map(ycp.data(),ycp.size()));
@@ -201,7 +201,7 @@ myDensity::eval_J
 }
 
 void
-myDensity::solve
+densityEstimator::solve
 (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline, const std::vector<double>& ycp)
 {
   Eigen::VectorXd newycp(Eigen::VectorXd::Map(ycp.data(),ycp.size()));
@@ -268,7 +268,7 @@ myDensity::solve
 };
 
 void
-myDensity::print_all
+densityEstimator::print_all
 () const
 {
     std::cout << "MATRIX C:" << '\n' << C << std::endl;
@@ -279,7 +279,7 @@ myDensity::print_all
 }
 
 void
-myDensity::print_sol
+densityEstimator::print_sol
 () const
 {
   std::cout << "\n Matrix P: " << '\n' << P << '\n';

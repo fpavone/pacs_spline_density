@@ -12,14 +12,14 @@
 
 constexpr double tol = 1e-04;
 
-// NOTE: in myDensity::solve() there is the following note:
+// NOTE: in densityEstimator::solve() there is the following note:
 //        NOTE: QR should do this automatically without giving any warning (CHECK)
 
 /*!
 @brief	Parameter class manager
 @note These parameters are related to the problem itself, not to each single row.
 */
-class myParameters
+class parametersManager
 {
 protected:
 
@@ -37,7 +37,7 @@ protected:
   std::vector<double> xcp; /*! control points */
 
 public:
-  myParameters
+  parametersManager
   (const unsigned int kk, const unsigned int ll, const double opt_param):
     k(kk), l(ll), alpha(opt_param) {};
 
@@ -84,7 +84,7 @@ public:
 @brief	Parameter class manager
 @note These are the whole set of parameters
 */
-class myDensity: public myParameters
+class densityEstimator: public parametersManager
 {
 private:
 
@@ -132,8 +132,8 @@ private:
 
 public:
 
-  myDensity
-  (const myParameters & input): myParameters(input)
+  densityEstimator
+  (const parametersManager & input): parametersManager(input)
   {};
 
   /*!
