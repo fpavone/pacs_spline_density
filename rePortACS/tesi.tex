@@ -23,6 +23,7 @@
 % \usepackage[export]{adjustbox}
 \usepackage{wrapfig} 
 \usepackage{fancyref}
+\usepackage{listings}
 
 \graphicspath{ {pictures/} }
 % \usepackage{showkeys}
@@ -45,6 +46,26 @@
 \pagestyle{empty}
 
 \begin{document}
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+ % frame=L,
+  xleftmargin=\parindent,
+  language=C++,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  % keyword highlighting
+  classoffset=1, % starting new class
+  morekeywords={readData,transfData,row,plotData,plotData_Clr,pacs},
+  keywordstyle=\bfseries\color{blue},
+  commentstyle=\itshape\color{purple!40!black},
+  classoffset=0,
+  stringstyle=\color{orange},
+}
+\lstset{numbers=left, numberstyle=\tiny,escapechar=@,style=customc}
+
 \include{frontespizio}
 \thispagestyle{empty} \normalfont %\cleardoublepage
 \pagenumbering{arabic}

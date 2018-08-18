@@ -13,10 +13,10 @@ User provides also what in splines lexicon are called the \textit{control points
 
 Strictly related to the optimal smoothing problem, spline degree \textit{k}, penalization order \textit{l}, smoothness tuning parameter \textit{$\alpha$} and spline knots must be provided. Spline knots can be passed as a given vector or they can be builded by default equispaced given the size.
 
-\subsection{Workflow}
-Parameters of the spline problem, including knots and control points, are stored in \verb|myDensity| class. This class contains all the fixed information of the problem, common to every row of the dataset to be processed. Through corresponding methods all the matrix requested to build the linear system described previously are computed and stored using \verb|Eigen| in such class.
+\subsection{Workflow} \label{workflow}
+Parameters of the spline problem, including knots and control points, are stored in \verb|densityEstimator| class. This class contains all the fixed information of the problem, common to every row of the dataset to be processed. Through corresponding methods all the matrix requested to build the linear system described previously are computed and stored using \verb|Eigen| in such class.
 
-\verb|myData| class deals with data. It reads a data-row, perform the zeros treatment and through the \verb|pacs| method solve the b-spline problem calling the \verb|solve| method of the \verb|myDensity| object. The result is written in a proper \verb|Eigen| structure. Using the \verb|plotData| method the resulting spline is finally evaluated in a given grid of point.
+\verb|dataManager| class deals with data. It reads a data-row, perform the zeros treatment and through the \verb|pacs| method solve the b-spline problem calling the \verb|solve| method of the \verb|densityEstimator| object. The result is written in a proper \verb|Eigen| structure. Using the \verb|plotData| method the resulting spline is finally evaluated in a given grid of point.
 
 The reason of this structure of the code is due to the parallelization and it will be better understood in section \ref{openmp}.
 
@@ -24,13 +24,73 @@ The reason of this structure of the code is due to the parallelization and it wi
 Output consist in b-spline coefficients for each statistical unit and possibly a grid of values in which resulting b-splines are evaluated at. Size of the grid can be given as input parameter otherwise it is handled by default.
 
 \section{C++ structures} \label{c++}
+\subsection{\texttt{densityEstimator}, \texttt{paramtersManager} and \texttt{dataManager} classes}
 
-\section{openMP parallelization} \label{openmp}
+\subsection{Eigen library}
+
+\subsection{Solve method}
+As already discussed in section \ref{optimal}, the smoothing problem could not have a solution, in such case a minimum norm solution should be provided.
+We decided to rely on the \verb|FullPivHouseholderQR| solver provided by the Eigen library, which apply Householder rank-revealing QR decomposition with full pivoting. This decomposition performs a very prudent full pivoting in order to be rank-revealing and achieve optimal numerical stability. 
+
+Rank-revealing property is very important in case we want to find a solution when the problem is not solvable. Kernel knowledge allows us to analytically find a minimum norm solution in case its dimension is 1 or 2:
+
+\[ A\bm{x}=\bm{b} \]
+
+If dim(Ker($A$))$=1$,
+	
+\[ \bm{k}\in\text{Ker{A}} \quad \text{and} \quad \bm{\hat{x}} \quad \text{found solution} \]
+\[ c=\frac{<\bm{\hat{x}},\bm{k}>}{\| \bm{k} \|} \]
+\[ \bm{x}_{\text{min}} = \bm{\hat{x}} - c\bm{k} \]
+
+else if dim(Ker($A$))$=2$,
+% inserire conti sulla soluzione a norma minima
+\[  \text{inserire conti} \]
+
+Otherwise, when kernel dimension is greater than 2 we decided to apply Tychonoff regularization ($\lambda=0.01$) to the matrix problem in order to achieve full rank and find a solution. Obviously in such case we will be solving an approximation of our problem:
+
+\[  \hat{A}=A + \lambda I \]
+\[  \text{new problem} \quad \hat{A}\bm{x}=\bm{b} \]
+
+All that is done by the \verb|solve| method of the \verb|densityEstimator| object through a \verb|switch| statement over the kernel dimension.
 
 \section{R interface} \label{R}
+
+\section{OpenMP parallelization} \label{openmp}
+In section \ref{workflow} was mentioned the fact that we perform the same operation over each row of the given data set in a \verb|for| loop. Precisely the matrix associated to the linear system is fixed and what changes is the constant term, which depends on the data. So after constructing the problem matrix, we loop over the row in the following way:
+
+\begin{lstlisting}
+for(std::size_t i = 0; i < nrow; i++)
+{
+  obj.readData(data.row(i), prior);
+  obj.transfData();
+  obj.pacs(dens,bsplineMat.row(i));
+  obj.plotData(dens, numPoints, bsplineMat.row(i), yvalueMat.row(i));
+  obj.plotData_Clr(dens, numPoints, bsplineMat.row(i), yvalueMatClr.row(i));
+}
+\end{lstlisting}
+
+This commands are easily parallelizable in shared memory framework as OpenMP, it is enough to ask each thread to solve the problem for a subset of rows. OpenMP gives also the possibility to make same objects private to each thread through the \verb|private| keyword. If those objects exists before the \verb|#pragma| statement then the \verb|firstprivate| keyword should be used to initialize them with their values. In a simple way the previous code become the following:
+
+\begin{lstlisting}
+@ \textcolor{magenta}{\#pragma omp parallel private(obj) firstprivate(dens)} @
+  {
+@ \textcolor{magenta}{\#pragma omp for} @
+    for(std::size_t i = 0; i < nrow; i++)
+    {
+      obj.readData(data.row(i), prior);
+      obj.transfData();
+      obj.pacs(dens, bsplineMat.row(i));
+      obj.plotData(dens, numPoints, bsplineMat.row(i), yvalueMat.row(i));
+      obj.plotData_Clr(dens, numPoints, bsplineMat.row(i), yvalueMatClr.row(i));
+   }
+ }
+\end{lstlisting}
+
+
+\section{Cross-validation function} 
 
 
 % struttura generale del codice: cosa in input, cosa in output
 % scelta di salvare le matrici con eigen sparse, dimensione matrici
 % problema zero-forcing
-% myDensity figlia di myParameters (che è "astratta")
+% densityEstimator figlia di parametersManager (che è "astratta")
