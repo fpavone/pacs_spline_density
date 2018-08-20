@@ -48,8 +48,8 @@ add <- function(a, b) { .Call("add", a, b)
 
 After we compile our C++ code in a dynamic library via command line with \verb|R CMD SHLIB| or using the compiler directly, we can load the library in the R environment using \verb|dyn.oad()|. After our object is loaded we can directly use the C++ function with \verb|.Call("add",a,b)|, e.g. defining an R function named "add".
 
-In the C++ code all kind of object that come from R or should be return to R are of the \verb|SEXP| type. They can be then converted in C++ types through some specific functions defined in the R header files as \verb|REAL()| or \verb|INTEGER()|. The power of this interface is that all R variables are not passed by copy, but by a particular kind of pointer (the \verb|SEXP| type). As a consequence to prevent that R garbage collection destroys objects which should be returned, it is important to use the \verb|PROTECT()| function. Finally all the code that R should be able to use (e.g. the defined function) must be included in the \verb|extern "C"| scope.
-
+In the C++ code all kind of object that come from R or should be return to R are of the \verb|SEXP| type. The power of this interface is that all R variables are not passed by copy, but by a particular kind of pointer (the \verb|SEXP| type). As a consequence to prevent that R garbage collection destroys objects which should be returned, it is important to use the \verb|PROTECT()| function. Finally all the code that R should be able to use (e.g. the defined function) must be included in the \verb|extern "C"| scope. \verb|SEXP| object can be copied in C++ objects through some specific functions defined in the R header files as \verb|REAL()| or \verb|INTEGER()|. 
+ 
 \medskip
 
 We decided also to rely on \emph{Rcpp}/\emph{RcppEigen} libraries [cit] which easily allow to interface R matrixes with \verb|Eigen| structures combining the \verb|Eigen::Map| method with the \verb|Rcpp::as| function, e.g.:
