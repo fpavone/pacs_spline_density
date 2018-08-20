@@ -23,10 +23,51 @@ The reason of this structure of the code is due to the parallelization and it wi
 \subsection{Output}
 Output consist in b-spline coefficients for each statistical unit and possibly a grid of values in which resulting b-splines are evaluated at. Size of the grid can be given as input parameter otherwise it is handled by default.
 
-\section{C++ structures} \label{c++}
-\subsection{\texttt{densityEstimator}, \texttt{paramtersManager} and \texttt{dataManager} classes}
+\section{R/C++ interface} \label{R}
+Code structures, implementation choices and C++ programming style reflect the necessity to develop an efficient implementation of the discussed density estimation method united with the flexibility and the comfort of the R environment for further analysis. All of that is done via the R package facility with our \verb|splineDensity| package available in the git repository (see section \ref{installation}). 
 
-\subsection{Eigen library}
+The interface used to execute C++ code in R is \verb|.Call| described in [cit]. Let us provide a simple example of how it works, this is our C++ example:
+
+\begin{lstlisting}
+#include <R.h>
+#include <Rinternals.h>
+extern "C"{
+SEXP add(SEXP a, SEXP b) {
+SEXP result = PROTECT(allocVector(REALSXP , 1)); REAL(result)[0] = asReal(a) + asReal(b); UNPROTECT (1);
+return result;
+} }
+\end{lstlisting}
+
+and this is what we run in R:
+
+\begin{lstlisting}
+dyn.load("mysharedlib.so")
+add <- function(a, b) { .Call("add", a, b)
+}
+\end{lstlisting}
+
+After we compile our C++ code in a dynamic library via command line with \verb|R CMD SHLIB| or using the compiler directly, we can load the library in the R environment using \verb|dyn.oad()|. After our object is loaded we can directly use the C++ function with \verb|.Call("add",a,b)|, e.g. defining an R function named "add".
+
+In the C++ code all kind of object that come from R or should be return to R are of the \verb|SEXP| type. They can be then converted in C++ types through some specific functions defined in the R header files as \verb|REAL()| or \verb|INTEGER()|. The power of this interface is that all R variables are not passed by copy, but by a particular kind of pointer (the \verb|SEXP| type). As a consequence to prevent that R garbage collection destroys objects which should be returned, it is important to use the \verb|PROTECT()| function. Finally all the code that R should be able to use (e.g. the defined function) must be included in the \verb|extern "C"| scope.
+
+\medskip
+
+We decided also to rely on \emph{Rcpp}/\emph{RcppEigen} libraries [cit] which easily allow to interface R matrixes with \verb|Eigen| structures combining the \verb|Eigen::Map| method with the \verb|Rcpp::as| function, e.g.:
+
+\begin{lstlisting}
+SEXP Rmatrix;
+Eigen::Map<Eigen::MatrixXd>  newMatrix(as<Eigen::Map<Eigen::MatrixXd>> (Rmatrix));
+\end{lstlisting}
+
+Note that this leads to have a complex type for the \verb|newMatrix| object, i.e.:
+
+\begin{lstlisting}
+Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false>
+\end{lstlisting}
+
+\section{C++ implementation} \label{c++}
+
+\subsection{\texttt{parametersManager}, \texttt{dataManager} and \texttt{densityEstimator} classes}
 
 \subsection{Solve method}
 As already discussed in section \ref{optimal}, the smoothing problem could not have a solution, in such case a minimum norm solution should be provided.
@@ -53,7 +94,7 @@ Otherwise, when kernel dimension is greater than 2 we decided to apply Tychonoff
 
 All that is done by the \verb|solve| method of the \verb|densityEstimator| object through a \verb|switch| statement over the kernel dimension.
 
-\section{R interface} \label{R}
+\subsection{Cross-validation function} \label{cv}
 
 \section{OpenMP parallelization} \label{openmp}
 In section \ref{workflow} was mentioned the fact that we perform the same operation over each row of the given data set in a \verb|for| loop. Precisely the matrix associated to the linear system is fixed and what changes is the constant term, which depends on the data. So after constructing the problem matrix, we loop over the row in the following way:
@@ -68,6 +109,8 @@ for(std::size_t i = 0; i < nrow; i++)
   obj.plotData_Clr(dens, numPoints, bsplineMat.row(i), yvalueMatClr.row(i));
 }
 \end{lstlisting}
+
+where \verb|obj| is a \verb|dataManager| object and \verb|dens| a \verb|densityEstimator| object.
 
 This commands are easily parallelizable in shared memory framework as OpenMP, it is enough to ask each thread to solve the problem for a subset of rows. OpenMP gives also the possibility to make same objects private to each thread through the \verb|private| keyword. If those objects exists before the \verb|#pragma| statement then the \verb|firstprivate| keyword should be used to initialize them with their values. In a simple way the previous code become the following:
 
@@ -86,8 +129,65 @@ This commands are easily parallelizable in shared memory framework as OpenMP, it
  }
 \end{lstlisting}
 
+Thanks to this multithreads implementation we achieved a satisfactory speed-up in the computations when a large data set is provided.
 
-\section{Cross-validation function} 
+We tested the code on a dataset of $10^{6}$ rows and 12 column on a 12 cores Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz machine, leaving out one core dedicated to the OS. Results are shown in figure \ref{fig:giuspo12}.
+
+\begin{figure}[ht]
+	
+	\begin{subfigure}{.5\textwidth}
+		\includegraphics[width=6cm]{./pictures/openmp/giuspo12_time.png} 
+		\label{fig:subim1}
+	\end{subfigure}
+	\begin{subfigure}{.5\textwidth}
+		\includegraphics[width=6cm]{./pictures/openmp/giuspo12_speedup.png}
+		\label{fig:subim2}
+	\end{subfigure}
+	
+	\caption{Intel(R) i7-3930K CPU @ 3.20GHz: on the left time (milliseconds) required by the software divided in computation time (solve the problem) and writing time (write the solution in R objects, this is done by just one thread). On the right speed-up plot.}
+	\label{fig:giuspo12}
+	
+\end{figure}
+
+
+Cross-validation function (section \ref{cv}) has been parallelized over the different $\alpha$ values:
+
+\begin{lstlisting}
+@ \textcolor{magenta}{\#pragma omp parallel private(obj) firstprivate(dens)} @
+  {
+    Eigen::MatrixXd threadBsplineMat(nrow,dens.get_G());
+    Eigen::ArrayXd N;
+    int span;
+    long double fvalue;
+
+    @ \textcolor{magenta}{\#pragma omp for} @
+    for(std::size_t z = 0; z < alpha_size; z++)
+    {
+      dens.set_alpha(alpha[z]);
+      for(std::size_t i = 0; i < nrow; i++)
+      {
+        for(std::size_t j = 1; j < ncol-1; j++) 
+        {
+          // LOO-CV, leave out column j, fit spline and compute error
+          dens.readXcp(Xcp,Xcpsize,j);
+          dens.set_matrix();
+          dens.set_system();
+          obj.readData(data.row(i),prior,j);
+          obj.transfData();
+          obj.pacs(dens, threadBsplineMat.row(i));
+          Jvalues(z)+=dens.eval_J(obj.getNumbers())/nrow;
+
+          // computing error using spline coefficients, fvalue is the predicted value
+          // [...]
+        }
+      }
+    }
+  }
+  \end{lstlisting}
+
+This time it was necessary to reserve each thread an \verb|Eigen| matrix (\verb|threadBsplineMat|) where to store the result of its partial computation. Note that every object defined inside the \verb|#pragma omp| statement is automatically private to each thread. Comparison to asses the best $\alpha$ value is done outside the parallelized scope by one single thread.
+
+
 
 
 % struttura generale del codice: cosa in input, cosa in output

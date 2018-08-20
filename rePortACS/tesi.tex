@@ -56,15 +56,16 @@
   showstringspaces=false,
   basicstyle=\footnotesize\ttfamily,
   keywordstyle=\bfseries\color{green!40!black},
+  morekeywords={SEXP,MatrixXd},
   % keyword highlighting
   classoffset=1, % starting new class
-  morekeywords={readData,transfData,row,plotData,plotData_Clr,pacs},
+  morekeywords={readData,transfData,row,plotData,plotData_Clr,pacs,readXcp,set_matrix,set_system,eval_J},
   keywordstyle=\bfseries\color{blue},
   commentstyle=\itshape\color{purple!40!black},
   classoffset=0,
   stringstyle=\color{orange},
 }
-\lstset{numbers=left, numberstyle=\tiny,escapechar=@,style=customc}
+\lstset{escapechar=@,style=customc} % numbers=left, numberstyle=\tiny    to add numbers to lines
 
 \include{frontespizio}
 \thispagestyle{empty} \normalfont %\cleardoublepage
