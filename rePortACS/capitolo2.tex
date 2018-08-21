@@ -48,7 +48,7 @@ add <- function(a, b) { .Call("add", a, b)
 
 After we compile our C++ code in a dynamic library via command line with \verb|R CMD SHLIB| or using the compiler directly, we can load the library in the R environment using \verb|dyn.oad()|. After our object is loaded we can directly use the C++ function with \verb|.Call("add",a,b)|, e.g. defining an R function named "add".
 
-In the C++ code all kind of object that come from R or should be return to R are of the \verb|SEXP| type. The power of this interface is that all R variables are not passed by copy, but by a particular kind of pointer (the \verb|SEXP| type). As a consequence to prevent that R garbage collection destroys objects which should be returned, it is important to use the \verb|PROTECT()| function. Finally all the code that R should be able to use (e.g. the defined function) must be included in the \verb|extern "C"| scope. \verb|SEXP| object can be copied in C++ objects through some specific functions defined in the R header files as \verb|REAL()| or \verb|INTEGER()|. 
+In the C++ code all kind of object that come from R or should be return to R are of the \verb|SEXP| type. The power of this interface is that all R variables are not passed by copy, but by a particular kind of pointer (the \verb|SEXP| type). As a consequence, to prevent that R garbage collection destroys objects which should be returned, it is important to use the \verb|PROTECT()| function. Finally all the code that R should be able to use (e.g. the defined function) must be included in the \verb|extern "C"| scope. \verb|SEXP| object can be copied in C++ objects through some specific functions defined in the R header files as \verb|REAL()| or \verb|INTEGER()|. 
  
 \medskip
 
@@ -59,7 +59,7 @@ SEXP Rmatrix;
 Eigen::Map<Eigen::MatrixXd>  newMatrix(as<Eigen::Map<Eigen::MatrixXd>> (Rmatrix));
 \end{lstlisting}
 
-Note that this leads to have a complex type for the \verb|newMatrix| object, i.e.:
+Note that this leads to have a complex type for the \verb|newMatrix| object, working with a row of it you have to consider the following type:
 
 \begin{lstlisting}
 Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false>
@@ -95,6 +95,11 @@ Otherwise, when kernel dimension is greater than 2 we decided to apply Tychonoff
 All that is done by the \verb|solve| method of the \verb|densityEstimator| object through a \verb|switch| statement over the kernel dimension.
 
 \subsection{Cross-validation function} \label{cv}
+In addition to the resolution of the optimal problem, we were asked to provide a cross-validation method to asses the best $\alpha$ among a vector of choices. Such validation has been designed to be a sort of leave-one-out (LOO) algorithm: one at a time each control point (c.p.), which is not an extremal, is left out, the b-spline is estimated and the error is computed as the sum of the differences between the left out values and the corresponding estimate given by the b-spline averaged among all the rows:
+
+\[ \forall \alpha_{i}\in\bm{\alpha}  \quad \text{error}_{LOO}(\alpha_{i}) = \sum_{k=1}^{\#rows}\sum_{j=1}^{\#c.p.} \frac{\\| y_{k,j}-\hat{y}_{k,j} \\| }{\text{\#rows}} \]
+
+After that the best $\alpha$ value is found and cross-validation errors among with evaluation of the J functional of the minimization problem are returned to the user, with best choice highlighted.
 
 \section{OpenMP parallelization} \label{openmp}
 In section \ref{workflow} was mentioned the fact that we perform the same operation over each row of the given data set in a \verb|for| loop. Precisely the matrix associated to the linear system is fixed and what changes is the constant term, which depends on the data. So after constructing the problem matrix, we loop over the row in the following way:
