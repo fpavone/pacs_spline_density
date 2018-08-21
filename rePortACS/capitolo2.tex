@@ -69,9 +69,29 @@ Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 
 
 \subsection{\texttt{parametersManager}, \texttt{dataManager} and \texttt{densityEstimator} classes}
 
-\subsection{Solve method}
+\begin{itemize}
+\item \verb|parametersManager|: it includes problem parameters shared among all statistical units such as control points, knots, spline degree, penalization order and $\alpha$ value. No objects of this class are actually declared, but it is conceptually useful to distinguish it from its child \verb|densityEstimator|.
+
+\item \verb|densityEstimator|: it inherits publicly from \verb|parametersManager|. It has methods to compute all the necessary matrixes and the final linear system described in \ref{optimal}. it has a method to evaluate the J functional and the \verb|solve| method which is described in \ref{solvemethod}. Such method is used on each row (parameters and problem matrix are common) and return the estimated b-spline coefficients.
+
+\item \verb|dataManager|: it used to interface the data with the smoothing process. It reads a row of the data set and then performs the BM treatment (section \ref{BM}). The \verb|pacs| method has the \verb|densityEstimator| object as argument and calls the \verb|solve| method saving the output (spline coefficients) in a given matrix. It has also methods to evaluate the estimated function in a grid of points both in the clr space and the reference space, respectively \verb|plotData| and \verb|plotData_Clr| methods.
+
+\begin{figure}[ht]
+	
+	
+	\includegraphics[width=\textwidth]{./pictures/classes/class_diagram.jpg}
+	\label{fig:diagram}
+
+	\caption{Classes diagram}
+	\label{fig:diagram}
+	
+\end{figure}
+
+\end{itemize}
+
+\subsection{Solve method} \label{solvemethod}
 As already discussed in section \ref{optimal}, the smoothing problem could not have a solution, in such case a minimum norm solution should be provided.
-We decided to rely on the \verb|FullPivHouseholderQR| solver provided by the Eigen library, which apply Householder rank-revealing QR decomposition with full pivoting. This decomposition performs a very prudent full pivoting in order to be rank-revealing and achieve optimal numerical stability. 
+We decided to rely on the \verb|FullPivHouseholderQR| solver provided by the \verb|Eigen| library, which apply Householder rank-revealing QR decomposition with full pivoting. This decomposition performs a very prudent full pivoting in order to be rank-revealing and achieve optimal numerical stability. 
 
 Rank-revealing property is very important in case we want to find a solution when the problem is not solvable. Kernel knowledge allows us to analytically find a minimum norm solution in case its dimension is 1 or 2:
 
