@@ -35,6 +35,7 @@ extern "C"{
  @param knots_ Knot sequence
  @param numPoints_ Number of points of the grid for plotting the density
  @param prior_ 1:Perks, 2: Jeffreys, 3: Bayes-Laplace, 4: Square root
+ @see PRIOR
  @param nCPU_ Number of core to use for parallelization
  @param fast_ Unable/disable progress bar
 
