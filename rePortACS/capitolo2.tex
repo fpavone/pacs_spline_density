@@ -1,8 +1,25 @@
-\chapter{Code Structure}
+\chapter{Implementation and code structure}
 \label{code}
 % \thispagestyle{empty}
 
 \noindent 
+
+\section{Count zeros: the Bayesian-multiplicative treatment} \label{BM}
+In order to perform the clr map we have to compute a logarithm, so we have to ensure that all data are strictly positive. But some observation could be zero for different reason, in this framework we consider just the count-zero case using the lexicon of [CIT ARTICOLO], i.e. unobserved positive values that may have been observed with a larger number of trials or with a different sampling design.
+
+We decided to rely on the Bayesian-multiplicative (BM) treatment described in [ARTICOLO], which basically use a conjugate Dirichlet model for the normalized observation with uniform prior:
+\[ \bm{X} \sim Dir(D,s\bm{t}) \]
+\[ \bm{t} \sim U(1/D) \]
+
+where $D$ is the dimension and $s$ tunes the strength of the prior. Using different values for $s$, we distinguish different priors, in particular we let the user choose among:
+%TABELLA PRIORS
+
+Finally the BM treatment "corrects" the count-zeros using the Bayesian posterior estimate. So if $\bm{c}_{i}=(c_{i1},..,c_{iD})$ is the observed vector with some count-zeros, defined $n_{i}=\sum_{j=1}^{D}c_{ij}$ the total mass, we use the posterior estimate formula on $\bm{x}_{i}=\bm{c}_{i}/n_{i}$, i.e. we replace $\bm{x}_{i}$ with $\bm{r}_{i}$ defined as:
+
+\[ r_{ij} = \begin{cases} t_{ij}\frac{s_{i}}{n_{i}+s_{i}}, & \mbox{if } x_{ij}=0 \\ x_{ij}(1-\sum_{k:x_{ik}=0}t_{ik}\frac{s_{i}}{n_{i}+s_{i}}), & \mbox{if } x_{ij}>0 \end{cases} \]
+
+This has been implemented in the \verb|zeros| header and source files.
+
 \section{Overview}
 We briefly explain here what kind of data are expected as input, the general workflow and the output of the software. In section \ref{c++}] more detailed implementation is discussed with focus on the R interface in section \ref{R} and the shared-memory parallelization in \ref{openmp}.
 
