@@ -24,6 +24,23 @@ using namespace Rcpp;
 
 
 extern "C"{
+/*!
+ @brief	Main function that read data from R input, transform it and process it to estimate the density function
+
+ @param k_ Spline degree
+ @param l_ Derivative degree
+ @param alpha_ Penalization parameter
+ @param data_ Data for density estimation
+ @param Xcp_ Control points
+ @param knots_ Knot sequence
+ @param numPoints_ Number of points of the grid for plotting the density
+ @param prior_ 1:Perks, 2: Jeffreys, 3: Bayes-Laplace, 4: Square root
+ @param nCPU_ Number of core to use for parallelization
+ @param fast_ Unable/disable progress bar
+
+ @return List with B-spline coefficients, points to plot density (also clr-transformed version) and the number of points.
+
+ */
 SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP numPoints_, SEXP prior_, SEXP nCPU_, SEXP fast_)
 {
   cns::timer<> t1,t4,t5;
@@ -37,10 +54,10 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   bool furious = INTEGER(fast_)[0];
 
   // Read parameters
-  unsigned int k = INTEGER(k_)[0];     // Spline degree
+  unsigned int k = INTEGER(k_)[0];
   unsigned int l = INTEGER(l_)[0];
-  double alpha = REAL(alpha_)[0];  // penalization parameter
-  unsigned int numPoints = INTEGER(numPoints_)[0]; // number of points of the grid for the density
+  double alpha = REAL(alpha_)[0];
+  unsigned int numPoints = INTEGER(numPoints_)[0];
   unsigned int prior_num = INTEGER(prior_)[0];
 
   PRIOR prior = PRIOR::DEFAULT;
@@ -139,14 +156,22 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
 };
 
 
-/**************************************************************/
-/**************************************************************/
-/******************* VALIDATION FUNCTION **********************/
-/**************************************************************/
-/**************************************************************/
+/*!
+ @brief	Cross-validation function to choose the best \f$ \alpha \f$
 
+ @param k_ Spline degree
+ @param l_ Derivative degree
+ @param alpha_ Penalization parameter vector
+ @param data_ Data for density estimation
+ @param Xcp_ Control points
+ @param knots_ Knot sequence
+ @param numPoints_ Number of points of the grid for plotting the density
+ @param prior_ 1:Perks, 2: Jeffreys, 3: Bayes-Laplace, 4: Square root
+ @param nCPU_ Number of core to use for parallelization
 
+ @return List with the best \f$ \alpha \f$, the related value of the functional and error
 
+ */
 SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP prior_, SEXP nCPU_)
 {
   cns::timer<> t,t2;

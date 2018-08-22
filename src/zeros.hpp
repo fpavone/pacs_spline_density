@@ -12,7 +12,7 @@
 /*! \file
   @brief Bayesian treatment of zeros observations
   @details The main aim is to correct count zeros observations using a Bayesian
-            prior in order to be able to compute the clr-transofrmation. See the note
+            prior in order to be able to compute the clr-transformation. See the note
             for further informations.
   @note
     Reference: "Bayesian-multiplicative treatment of count zeros in compositional data sets"
