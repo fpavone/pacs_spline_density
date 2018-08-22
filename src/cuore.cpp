@@ -21,7 +21,9 @@
 
 
 using namespace Rcpp;
-
+/*! \file
+ @brief Main functions that read data from R input and retun the density estimation function
+ */
 
 extern "C"{
 /*!
