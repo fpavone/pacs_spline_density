@@ -14,6 +14,9 @@ constexpr double tol = 1e-04;
 
 // NOTE: in densityEstimator::solve() there is the following note:
 //        NOTE: QR should do this automatically without giving any warning (CHECK)
+/*! \file
+  @brief Parmeters container class and methods to compute the solution of the problem
+*/
 
 /*!
 @brief	Parameter class manager
@@ -137,7 +140,7 @@ public:
   {};
 
   /*!
-  	@brief Compute the matrixes of the problem
+  	@brief Compute the matrices of the problem
   */
   void
   set_matrix

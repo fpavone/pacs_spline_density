@@ -10,9 +10,12 @@
 #include <functional>
 #include "density_estimation.hpp"
 #include "zeros.hpp"
+/*! \file
+  @brief Data container class
+*/
 
 /*!
-@brief	Data manager
+@brief Data manager
 @note Data are assumed to be already without extreme observations
 */
 
