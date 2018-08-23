@@ -11,8 +11,18 @@ We decided to rely on the Bayesian-multiplicative (BM) treatment described in [A
 \[ \bm{X} \sim Dir(D,s\bm{t}) \]
 \[ \bm{t} \sim U(1/D) \]
 
-where $D$ is the dimension and $s$ tunes the strength of the prior. Using different values for $s$, we distinguish different priors, in particular we let the user choose among:
-%TABELLA PRIORS
+where $D$ is the dimension and $s$ tunes the strength of the prior. Using different values for $s$, we distinguish different priors, in particular we let the user choose among the ones showed in tabel \ref{fig:priors}.
+
+\begin{figure}[ht]
+	
+	
+	\includegraphics[width=\textwidth]{./pictures/BM/BMpriors.png}
+	\label{fig:priors}
+
+	\caption{(source [ARTICOLO]) BM priors: $\bm{c}_{i}=(c_{i1},..,c_{iD})$ is the observed vector with some count-zeros, defined $n_{i}=\sum_{j=1}^{D}c_{ij}$ the total mass. $t_{i}=1/D \quad \forall i$ since uniform priors}
+	\label{fig:priors}
+	
+\end{figure}
 
 Finally the BM treatment "corrects" the count-zeros using the Bayesian posterior estimate. So if $\bm{c}_{i}=(c_{i1},..,c_{iD})$ is the observed vector with some count-zeros, defined $n_{i}=\sum_{j=1}^{D}c_{ij}$ the total mass, we use the posterior estimate formula on $\bm{x}_{i}=\bm{c}_{i}/n_{i}$, i.e. we replace $\bm{x}_{i}$ with $\bm{r}_{i}$ defined as:
 
