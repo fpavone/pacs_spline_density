@@ -4,7 +4,18 @@
 
 \noindent 
 
-\section{Count zeros: the Bayesian-multiplicative treatment} \label{BM}
+
+\section{Overview}
+We briefly explain here what kind of data are expected as input, the general workflow and the output of the software. In section \ref{c++}] more detailed implementation is discussed with focus on the R interface in section \ref{R} and the shared-memory parallelization in \ref{openmp}.
+
+\subsection{Input data}
+User provides a dataset of observation, each row a statistical unit, all belonging to the same statistical model and have the same length. Those are the data for our problem and they fulfil hypothesis of compositional data observation, e.g. sum constrain. Using the histogram example, each row consist of a histogram and all the histogram come from the same underlying model, e.g. proportion of annual income aggregated in classes for different region of a given country as in [articolo smoothing spline]. The values of a given row correspond to the "height" of each class of the histogram
+
+User provides also what in splines lexicon are called the \textit{control points}, i.e. the middle point abscissa of each class of the histogram. Those abscissa are the same for all the rows of the dataset.
+
+Strictly related to the optimal smoothing problem, spline degree \textit{k}, penalization order \textit{l}, smoothness tuning parameter \textit{$\alpha$} and spline knots must be provided. Spline knots can be passed as a given vector or they can be builded by default equispaced given the size.
+
+\subsection{Count zeros: the Bayesian-multiplicative treatment} \label{BM}
 In order to perform the clr map we have to compute a logarithm, so we have to ensure that all data are strictly positive. But some observation could be zero for different reason, in this framework we consider just the count-zero case using the lexicon of [CIT ARTICOLO], i.e. unobserved positive values that may have been observed with a larger number of trials or with a different sampling design.
 
 We decided to rely on the Bayesian-multiplicative (BM) treatment described in [ARTICOLO], which basically use a conjugate Dirichlet model for the normalized observation with uniform prior:
@@ -30,15 +41,6 @@ Finally the BM treatment "corrects" the count-zeros using the Bayesian posterior
 
 This has been implemented in the \verb|zeros| header and source files.
 
-\section{Overview}
-We briefly explain here what kind of data are expected as input, the general workflow and the output of the software. In section \ref{c++}] more detailed implementation is discussed with focus on the R interface in section \ref{R} and the shared-memory parallelization in \ref{openmp}.
-
-\subsection{Input data}
-User provides a dataset of observation, each row a statistical unit, all belonging to the same statistical model and have the same length. Those are the data for our problem and they fulfil hypothesis of compositional data observation, e.g. sum constrain. Using the histogram example, each row consist of a histogram and all the histogram come from the same underlying model, e.g. proportion of annual income aggregated in classes for different region of a given country as in [articolo smoothing spline]. The values of a given row correspond to the "height" of each class of the histogram
-
-User provides also what in splines lexicon are called the \textit{control points}, i.e. the middle point abscissa of each class of the histogram. Those abscissa are the same for all the rows of the dataset.
-
-Strictly related to the optimal smoothing problem, spline degree \textit{k}, penalization order \textit{l}, smoothness tuning parameter \textit{$\alpha$} and spline knots must be provided. Spline knots can be passed as a given vector or they can be builded by default equispaced given the size.
 
 \subsection{Workflow} \label{workflow}
 Parameters of the spline problem, including knots and control points, are stored in \verb|densityEstimator| class. This class contains all the fixed information of the problem, common to every row of the dataset to be processed. Through corresponding methods all the matrix requested to build the linear system described previously are computed and stored using \verb|Eigen| in such class.
@@ -51,6 +53,7 @@ The reason of this structure of the code is due to the parallelization and it wi
 Output consist in b-spline coefficients for each statistical unit and possibly a grid of values in which resulting b-splines are evaluated at. Size of the grid can be given as input parameter otherwise it is handled by default.
 
 \section{R/C++ interface} \label{R}
+\subsection{\texttt{.Call} and \texttt{RcppEigen}}
 Code structures, implementation choices and C++ programming style reflect the necessity to develop an efficient implementation of the discussed density estimation method united with the flexibility and the comfort of the R environment for further analysis. All of that is done via the R package facility with our \verb|splineDensity| package available in the git repository (see section \ref{installation}). 
 
 The interface used to execute C++ code in R is \verb|.Call| described in [cit]. Let us provide a simple example of how it works, this is our C++ example:
@@ -91,6 +94,15 @@ Note that this leads to have a complex type for the \verb|newMatrix| object, wor
 \begin{lstlisting}
 Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false>
 \end{lstlisting}
+
+\subsection{Debug}
+It could happen that R session crashes due to some memory leakage, in such cases it could be hard to find the problem since the lack of reports from the R session. We have find really helpful the debug mode, which can be started with the following command from the terminal:
+
+\begin{lstlisting}
+R -d <debugger>
+\end{lstlisting}
+
+where \verb|-d| stays for "debug". In particular we relied a lot on the famous memory error detector \emph{valgrind} and we found it really useful.
 
 \section{C++ implementation} \label{c++}
 
