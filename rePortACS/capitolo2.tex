@@ -4,10 +4,21 @@
 
 \noindent 
 
-\section{Count zeros: the Bayesian-multiplicative treatment} \label{BM}
-In order to perform the clr map we have to compute a logarithm, so we have to ensure that all data are strictly positive. But some observation could be zero for different reason, in this framework we consider just the count-zero case using the lexicon of [CIT ARTICOLO], i.e. unobserved positive values that may have been observed with a larger number of trials or with a different sampling design.
 
-We decided to rely on the Bayesian-multiplicative (BM) treatment described in [ARTICOLO], which basically use a conjugate Dirichlet model for the normalized observation with uniform prior:
+
+\section{Overview}
+We briefly explain here what kind of data are expected as input, the general workflow and the output of the software. In section \ref{c++}] more detailed implementation is discussed with focus on the R interface in section \ref{R} and the shared-memory parallelization in \ref{openmp}.
+
+\subsection{Input data}
+User provides a dataset of observation, each row a statistical unit, all belonging to the same statistical model and have the same length. Those are the data for our problem and they fulfil hypothesis of compositional data observation, e.g. sum constraint. Using the histogram example, each row consist of a histogram and all the histograms come from the same underlying model, e.g. proportion of annual income aggregated in classes for different region of a given country as in \cite{paper:pacs}. The values of a given row correspond to the "height" of each class of the histogram
+
+User provides also what in splines lexicon are called the \textit{control points}, i.e. the middle point abscissa of each class of the histogram. Those abscissa are the same for all the rows of the dataset.
+
+Strictly related to the optimal smoothing problem, spline degree \textit{k}, penalization order \textit{l}, smoothness tuning parameter \textit{$\alpha$} and spline knots must be provided. Spline knots can be passed as a given vector or they can be builded by default equispaced given the size.
+\subsection{Count zeros: the Bayesian-multiplicative treatment} \label{BM}
+In order to perform the clr map we have to compute a logarithm, so we have to ensure that all data are strictly positive. But some observation could be zero for different reason, in this framework we consider just the count-zero case using the lexicon of \cite{fernandez:zeros}, i.e. unobserved positive values that may have been observed with a larger number of trials or with a different sampling design.
+
+We decided to rely on the Bayesian-multiplicative (BM) treatment described in \cite{fernandez:zeros}, which basically use a conjugate Dirichlet model for the normalized observation with uniform prior:
 \[ \bm{X} \sim Dir(D,s\bm{t}) \]
 \[ \bm{t} \sim U(1/D) \]
 
@@ -18,8 +29,8 @@ where $D$ is the dimension and $s$ tunes the strength of the prior. Using differ
 	
 	\includegraphics[width=\textwidth]{./pictures/BM/BMpriors.png}
 	\label{fig:priors}
-
-	\caption{(source [ARTICOLO]) BM priors: $\bm{c}_{i}=(c_{i1},..,c_{iD})$ is the observed vector with some count-zeros, defined $n_{i}=\sum_{j=1}^{D}c_{ij}$ the total mass. $t_{i}=1/D \quad \forall i$ since uniform priors}
+	
+	\caption{(source \cite{fernandez:zeros}) BM priors: $\bm{c}_{i}=(c_{i1},..,c_{iD})$ is the observed vector with some count-zeros, defined $n_{i}=\sum_{j=1}^{D}c_{ij}$ the total mass. $t_{i}=1/D \quad \forall i$ since uniform priors}
 	\label{fig:priors}
 	
 \end{figure}
@@ -29,16 +40,6 @@ Finally the BM treatment "corrects" the count-zeros using the Bayesian posterior
 \[ r_{ij} = \begin{cases} t_{ij}\frac{s_{i}}{n_{i}+s_{i}}, & \mbox{if } x_{ij}=0 \\ x_{ij}(1-\sum_{k:x_{ik}=0}t_{ik}\frac{s_{i}}{n_{i}+s_{i}}), & \mbox{if } x_{ij}>0 \end{cases} \]
 
 This has been implemented in the \verb|zeros| header and source files.
-
-\section{Overview}
-We briefly explain here what kind of data are expected as input, the general workflow and the output of the software. In section \ref{c++}] more detailed implementation is discussed with focus on the R interface in section \ref{R} and the shared-memory parallelization in \ref{openmp}.
-
-\subsection{Input data}
-User provides a dataset of observation, each row a statistical unit, all belonging to the same statistical model and have the same length. Those are the data for our problem and they fulfil hypothesis of compositional data observation, e.g. sum constrain. Using the histogram example, each row consist of a histogram and all the histogram come from the same underlying model, e.g. proportion of annual income aggregated in classes for different region of a given country as in [articolo smoothing spline]. The values of a given row correspond to the "height" of each class of the histogram
-
-User provides also what in splines lexicon are called the \textit{control points}, i.e. the middle point abscissa of each class of the histogram. Those abscissa are the same for all the rows of the dataset.
-
-Strictly related to the optimal smoothing problem, spline degree \textit{k}, penalization order \textit{l}, smoothness tuning parameter \textit{$\alpha$} and spline knots must be provided. Spline knots can be passed as a given vector or they can be builded by default equispaced given the size.
 
 \subsection{Workflow} \label{workflow}
 Parameters of the spline problem, including knots and control points, are stored in \verb|densityEstimator| class. This class contains all the fixed information of the problem, common to every row of the dataset to be processed. Through corresponding methods all the matrix requested to build the linear system described previously are computed and stored using \verb|Eigen| in such class.

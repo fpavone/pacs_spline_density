@@ -5,7 +5,7 @@
 
 \noindent 
 \section{Introduction}
-In the analysis of large-scale database systems, information is frequently summarized using a density function, that is, Borel measurable, positive functions on a support $\text{I}$ with a unit integral constraint. 
+In the analysis of large-scale database systems, information is frequently summarized using a density function, that is, Borel measurable, positive function on a support $\text{I}$ with a unit integral constraint. 
 % In this way, the intrinsic variability in the data is preserved and statistical analysis can be done according to the already existing methodologies. \\
 
 Even though it might seem that density functions are just a special case of functional data, standard FDA methods appear to be inappropriate for their treatment, as they do not consider the particular constrained nature of the data. 
@@ -35,7 +35,7 @@ This additional condition needs to be taken into account for computation and ana
 
 \section{Why B-spline}
 In practice the aggregation of individual observations to a discretized form of histogram data is done and a smoothed version of the distribution has to be found.
-Spline functions are often chosen for the approximation of non-periodic functional data since they allow fast computation and flexibility. The most famous system of spline for this kind of problem is the smoothing B-spline basis system developed by de Boor. This is because the resulting coefficients of basis functions can be directly used for statistical analysis. %2005_Book_FunctionalDataAnalysis
+Spline functions are often chosen for the approximation of non-periodic functional data since they allow fast computation and flexibility. The most famous system of spline for this kind of problem is the smoothing B-spline basis system developed by de Boor (\cite{ramsay:FDA}). This is because the resulting coefficients of basis functions can be directly used for statistical analysis. %2005_Book_FunctionalDataAnalysis
 
 \section{B-spline representation}
 Let $\Delta\lambda := \lambda_0=u < \lambda_1< \dots < \lambda_g < v = \lambda_{g+1} $ be a sequence of knots, $S_k^{\Delta\lambda}[u,v]$ the vector space of polynomial splines of degree $k > 0$ defined on the interval $[u,v]$ using $\Delta\lambda$, $dim(S_k^{\Delta\lambda}[u,v]) = g + k + 1$. \\
@@ -46,7 +46,7 @@ where ${B_i^{k+1}}$ are B-splines of degree k and form a basis in $S_k^{\Delta\l
 %%% NOTE: maybe we can skip the upper part
 In matrix notation, the spline can be rewritten as:
 \[  s_k(\textbf{x})=  \textbf{C}_{k+1}(\textbf{x})\textbf{b}, \]
-where $ \textbf{C}_{k+1}(\textbf{x})$ is the \textit{collocation matrix} and it is defined as
+where $ \textbf{C}_{k+1}(\textbf{x})$ is the \textit{collocation matrix}, defined as
 \[  \textbf{C}_{k+1}(\textbf{x}) =
 \begin{bmatrix}
 B_{-k}^{k+1}(x_1)  & \dots  & B_{g}^{k+1}(x_1) \\
@@ -79,7 +79,7 @@ Our goal is to find a function $f(x)$ that is a smooth approximation, close enou
 where the objective function is a measure of non-smoothness of $f(x)$ and the constraint is a measure of the closeness of fit that takes into account data accuracy using weights.
 The solution is known to be a natural spline $s_k(\textbf{x})$ of degree $k=2l-1$.
 It follows that for $l \ge 2$  
-\[s_k^{(l+j)}(\textbf{x}_1)=s_k^{(l+j)}(\textbf{x}_n)=0, \ \ \ j=0,1,\dots,l-2.\]
+\[s_k^{(l+j)}(x_1)=s_k^{(l+j)}(x_n)=0, \ \ \ j=0,1,\dots,l-2.\]
 In order to find $\textbf{b}$, we can plug this result into the dual problem:
 \begin{equation*} 
 \begin{aligned}
@@ -88,7 +88,7 @@ In order to find $\textbf{b}$, we can plug this result into the dual problem:
 \end{aligned}
 \end{equation*}
 $\text{where} \ J_l(f) :=\int_{x_1}^{x_n} [f^{(l)}(x)]^2 \,dx + \alpha \sum\limits_{i=1}^{n}[w_i(y_i-f(x_i))]^2$.\\
-Assuming data $(x_i,y_i), \ u\le x_i \le v$, weights $w_i \ge 0, \ i=1, \dots, n$, sequence of knots $\Delta\lambda$, $n \ge g+1 $ and $\alpha \in (0,1)$ are given, % If $\alpha is not given, find it throgh crossvalidation 
+Assuming data $(x_i,y_i), \ u\le x_i \le v$, $\textbf{x} = [x_1, \dots, x_n]^\top$, $\textbf{y} = [y_1, \dots, y_n]^\top$ weights $w_i \ge 0, \ i=1, \dots, n$, sequence of knots $\Delta\lambda$, $n \ge g+1 $ and $\alpha \in (0,1)$ are given, % If $\alpha is not given, find it throgh crossvalidation 
 and rewriting the functional $J_l(f)$ in matrix notation, we find:
 \[J_l(\textbf{b}) = \textbf{b}^\top \textbf{N}_{kl}\textbf{b} + \alpha [\textbf{y}-\textbf{C}_{k+1}(\textbf{x})\textbf{b}]^\top \textbf{W} [\textbf{y}-\textbf{C}_{k+1}(\textbf{x})\textbf{b}]\]
 where $\textbf{N}_{kl} =  \textbf{S}_l^\top \textbf{M}_{kl}\textbf{S}_l$ is positive semidefinite, 
@@ -107,7 +107,7 @@ From B-spline properties we know that
 is the derivative of the spline
 \[  s_{k+1}(\textbf{x})=\sum\limits_{i=-k-1}^{g}c_iB_i^{k+2}(\textbf{x}) \]
 if
-\[b_i = (k+1)\frac{c_i-c_{i-1}}{\lambda_{i+k+1}-\lambda_{i}} \forall i = -k, \dots, g.\]
+\[b_i = (k+1)\frac{c_i-c_{i-1}}{\lambda_{i+k+1}-\lambda_{i}}\ \ \  \forall i = -k, \dots, g.\]
 Hence 
 \[ 0 = \int_u^v s_k(x) \, dx = [s_{k+1}(x)]_u^v = s_{k+1}(\lambda_{g+1})-s_{k+1}(\lambda_{0}) = c_g-c_{-k-1},\]
 so that $c_g = c_{-k-1}$.\\
