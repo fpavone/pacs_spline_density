@@ -9,7 +9,7 @@ There are different ways of installing it on your machine.
 The first one requires the use of \verb|devtools|, a popoular R package. It will also take care of installing all dependencies (Rcpp and RcppEigen) and install the splineDensity package in the same directories of all the other R packages installed.  \\
 In R, use the command 
 \begin{Verbatim}[commandchars=\\\{\}]
-install_github("fpavone/pacs_spline_density",ref="ROpenMP")
+devtools::install_github("fpavone/pacs_spline_density",ref="ROpenMP")
 \end{Verbatim}
 Using \verb|devtools|, it's possible to install the package from the terminal.
 Once the source code is downloaded and unzipped, it is enough to run from the package root folder the following commands:
