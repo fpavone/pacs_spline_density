@@ -10,7 +10,8 @@
 We briefly explain here what kind of data are expected as input, the general workflow and the output of the software. In section \ref{c++}] more detailed implementation is discussed with focus on the R interface in section \ref{R} and the shared-memory parallelization in \ref{openmp}.
 
 \subsection{Input data}
-User provides a dataset of observation, each row a statistical unit, all belonging to the same statistical model and have the same length. Those are the data for our problem and they fulfil hypothesis of compositional data observation, e.g. sum constraint. Using the histogram example, each row consist of a histogram and all the histograms come from the same underlying model, e.g. proportion of annual income aggregated in classes for different region of a given country as in \cite{paper:pacs}. The values of a given row correspond to the "height" of each class of the histogram
+User provides a dataset of observations, each row a statistical unit, all belong to the same statistical model and have the same length. \\
+Those are the data for our problem and they fulfil hypothesis of compositional data observation, e.g. sum constraint. Using the histogram example, each row consist of a histogram and all the histograms come from the same underlying model, e.g. proportion of annual income aggregated in classes for different region of a given country as in \cite{paper:pacs}. The values of a given row correspond to the "height" of each class of the histogram
 
 User provides also what in splines lexicon are called the \textit{control points}, i.e. the middle point abscissa of each class of the histogram. Those abscissa are the same for all the rows of the dataset.
 
@@ -30,14 +31,18 @@ where $D$ is the dimension and $s$ tunes the strength of the prior. Using differ
 	\includegraphics[width=\textwidth]{./pictures/BM/BMpriors.png}
 	\label{fig:priors}
 	
-	\caption{(source \cite{fernandez:zeros}) BM priors: $\bm{c}_{i}=(c_{i1},..,c_{iD})$ is the observed vector with some count-zeros, defined $n_{i}=\sum_{j=1}^{D}c_{ij}$ the total mass. $t_{i}=1/D \quad \forall i$ since uniform priors}
+	\caption{BM priors (source \cite{fernandez:zeros}): $\bm{c}_{i}=(c_{i1},..,c_{iD})$ is the observed vector with some count-zeros, while $n_{i}=\sum_{j=1}^{D}c_{ij}$ is the total mass. Keep in mind that $t_{i}=1/D \quad \forall i$ since uniform priors are assumed.}
 	\label{fig:priors}
 	
 \end{figure}
 
-Finally the BM treatment "corrects" the count-zeros using the Bayesian posterior estimate. So if $\bm{c}_{i}=(c_{i1},..,c_{iD})$ is the observed vector with some count-zeros, defined $n_{i}=\sum_{j=1}^{D}c_{ij}$ the total mass, we use the posterior estimate formula on $\bm{x}_{i}=\bm{c}_{i}/n_{i}$, i.e. we replace $\bm{x}_{i}$ with $\bm{r}_{i}$ defined as:
+Finally the BM treatment ``corrects'' the count-zeros using the Bayesian posterior estimate. So if $\bm{c}_{i}=(c_{i1},..,c_{iD})$ is the observed vector with some count-zeros, defined $n_{i}=\sum_{j=1}^{D}c_{ij}$ the total mass, we use the posterior estimate formula on $\bm{x}_{i}=\bm{c}_{i}/n_{i}$, i.e. we replace $\bm{x}_{i}$ with $\bm{r}_{i}$ defined as:
 
-\[ r_{ij} = \begin{cases} t_{ij}\frac{s_{i}}{n_{i}+s_{i}}, & \mbox{if } x_{ij}=0 \\ x_{ij}(1-\sum_{k:x_{ik}=0}t_{ik}\frac{s_{i}}{n_{i}+s_{i}}), & \mbox{if } x_{ij}>0 \end{cases} \]
+\[ r_{ij} = 
+\begin{cases} 
+t_{ij} \, \frac{s_{i}}{n_{i}+s_{i}}, & \mbox{if } x_{ij}=0 \\ 
+x_{ij}(1-\sum_{k:x_{ik}=0} \, t_{ik} \, \frac{s_{i}}{n_{i}+s_{i}}), & \mbox{if } x_{ij}>0 
+\end{cases} \]
 
 This has been implemented in the \verb|zeros| header and source files.
 
@@ -49,11 +54,11 @@ Parameters of the spline problem, including knots and control points, are stored
 The reason of this structure of the code is due to the parallelization and it will be better understood in section \ref{openmp}.
 
 \subsection{Output}
-Output consist in b-spline coefficients for each statistical unit and possibly a grid of values in which resulting b-splines are evaluated at. Size of the grid can be given as input parameter otherwise it is handled by default.
+Output consist in b-spline coefficients for each statistical unit and possibly a grid of values in which resulting b-splines are evaluated at. \\ Size of the grid can be given as input parameter, otherwise it is handled by default.
 
 \section{R/C++ interface} \label{R}
 \subsection{\texttt{.Call} and \texttt{RcppEigen}}
-Code structures, implementation choices and C++ programming style reflect the necessity to develop an efficient implementation of the discussed density estimation method united with the flexibility and the comfort of the R environment for further analysis. All of that is done via the R package facility with our \verb|splineDensity| package available in the git repository (see section \ref{installation}). 
+Code structures, implementation choices and C++ programming style reflect the necessity to develop an efficient implementation of the discussed density estimation method together with the flexibility and the comfort of the R environment for further analysis. \\ All of that is done via the R package facility with our \verb|splineDensity| package available in the git repository (see section \ref{installation} for installation details). 
 
 The interface used to execute C++ code in R is \verb|.Call| described in [cit]. Let us provide a simple example of how it works, this is our C++ example:
 
@@ -138,12 +143,17 @@ Rank-revealing property is very important in case we want to find a solution whe
 If dim(Ker($A$))$=1$,
 	
 \[ \bm{k}\in\text{Ker{A}} \quad \text{and} \quad \bm{\hat{x}} \quad \text{found solution} \]
-\[ c=\frac{<\bm{\hat{x}},\bm{k}>}{\| \bm{k} \|} \]
+\[ c=\frac{<\bm{\hat{x}},\bm{k}>}{<\bm{k},\bm{k}>} \]
 \[ \bm{x}_{\text{min}} = \bm{\hat{x}} - c\bm{k} \]
+else if dim(Ker($A$))$=2$, let
+\[ \bm{k_1}, \bm{k_2} \in\text{Ker{A}} \quad \text{and} \quad \bm{\hat{x}} \quad \text{found solution,} \]
+then, doing elementary computations,
+\begin{align*}
+\left( \| \bm{k_2} \|^2 - \frac{<\bm{k_1},\bm{k_2}>^2}{<\bm{k_1},\bm{k_1}>} \right) &c_2 = \, <\bm{\hat{x}},\bm{k_2} - \frac{<\bm{k_1},\bm{k_2}>}{<\bm{k_1},\bm{k_1}>} \, \bm{k_1}> \\
+&c_1 = - \frac{<\bm{k_1},\bm{k_2}>}{<\bm{k_1},\bm{k_1}>} \, c_2 +  \frac{<\bm{\hat{x}},\bm{k_1}>}{<\bm{k_1},\bm{k_1}>}
+\end{align*}  
+\[ \bm{x}_{\text{min}} = \bm{\hat{x}} - c_1\bm{k_1} - c_2\bm{k_2} \]
 
-else if dim(Ker($A$))$=2$,
-% inserire conti sulla soluzione a norma minima
-\[  \text{inserire conti} \]
 
 Otherwise, when kernel dimension is greater than 2 we decided to apply Tychonoff regularization ($\lambda=0.01$) to the matrix problem in order to achieve full rank and find a solution. Obviously in such case we will be solving an approximation of our problem:
 
@@ -180,7 +190,7 @@ This commands are easily parallelizable in shared memory framework as OpenMP, it
 \begin{lstlisting}
 @ \textcolor{magenta}{\#pragma omp parallel private(obj) firstprivate(dens)} @
   {
-@ \textcolor{magenta}{\#pragma omp for}�@
+@ \textcolor{magenta}{\#pragma omp for} @
     for(std::size_t i = 0; i < nrow; i++)
     {
       obj.readData(data.row(i), prior);
