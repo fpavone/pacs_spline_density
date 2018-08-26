@@ -238,9 +238,9 @@ densityEstimator::solve
       c = solverQR.solve(p);
       Eigen::VectorXd ker1= solverQR.matrixQ().col(G-1);
       Eigen::VectorXd ker2 = solverQR.matrixQ().col(G-2);
-      double scale1 = 0.5*c.dot(ker1 - ker2*(ker1.dot(ker2)/ker2.dot(ker2)))/(ker1.dot(ker1)
+      double scale1 = c.dot(ker1 - ker2*(ker1.dot(ker2)/ker2.dot(ker2)))/(ker1.dot(ker1)
                           - ker1.dot(ker2)*ker1.dot(ker2)/ker2.dot(ker2));
-      double scale2 = -ker1.dot(ker2)/ker2.dot(ker2)*scale1 + 0.5*c.dot(ker2)/ker2.dot(ker2);
+      double scale2 = -ker1.dot(ker2)/ker2.dot(ker2)*scale1 + c.dot(ker2)/ker2.dot(ker2);
       c = c - scale1*ker1 - scale2*ker2;
       break;
     }
