@@ -6,11 +6,14 @@
 The source code of this R package can be found and downloaded from \url{https://github.com/fpavone/pacs_spline_density} in the branch \textit{ROpenMP}. 
 There are different ways of installing it on your machine.
 
-The first one requires the use of \verb|devtools|, a popoular R package. It will also take care of installing all dependencies (Rcpp and RcppEigen) and install the splineDensity package in the same directories of all the other R packages installed.  \\
+The first one requires the use of \verb|devtools|, a popular R package. It will also take care of installing all dependencies (Rcpp and RcppEigen) and install the splineDensity package in the same directories of all the other R packages installed.  \\
 In R, use the command 
 \begin{Verbatim}[commandchars=\\\{\}]
-devtools::install_github("fpavone/pacs_spline_density",ref="ROpenMP")
+   library(devtools)
+   install_github("fpavone/pacs_spline_density",ref="ROpenMP")
 \end{Verbatim}
+Note that it is required to have the unzip option as \verb|internal|, you can check the unzip setting of your machine with \verb|getOption("unzip")| and possibly change it with \verb|options(unzip = "internal")|.
+
 Using \verb|devtools|, it's possible to install the package from the terminal.
 Once the source code is downloaded and unzipped, it is enough to run from the package root folder the following commands:
 \begin{Verbatim}[commandchars=\\\{\}]
@@ -26,26 +29,26 @@ This second command will create a subfolder named man where the .Rd files will b
 As an alternative, the second way to complete the installation does not require any additional package, but will throw errors if the packages required for the functioning of splineDensity are not installed.
 From the terminal, you need to run:
 \begin{verbatim}
-   R CMD BUILD <path to folder splineDensity>
    R CMD INSTALL -l <path name of the R library tree> 
       <path name of the package to be installed>
 \end{verbatim}
 
-To test the successful installation of the package, it is possible to run one of the examples in the subdirectory tests, either from terminal
+To test the successful installation of the package, it is possible to run the example in the subdirectory tests, either from terminal
 \begin{verbatim}
-   Rscript <what-else-test.R>
+   Rscript test_particle.r
 \end{verbatim}
-or directly in R.
+or loading it directly in R. Otherwise the R command \verb|example(smoothSplines)| does the same job.
 
-To build the \verb|Doxygen| documentation of the C++ code instead, you need to navigate to the \textit{src} folder and type 
+The \verb|Doxygen| documentation of the C++ code can be built from the \textit{src} folder using the provided \textit{Doxyfile}. To run Doxygen type:
+\begin{verbatim}
+   doxygen Doxyfile
+\end{verbatim}
+Keep in mind that, in order to create a new documentation with different settings, you need to create a new configuration file, i.e.\textit{Doxyfile}, with:
 \begin{verbatim}
    doxygen -g <config-file>
 \end{verbatim}
-This will create a configuration file (if \verb|<config-file>| is missing, by default it will be named \textit{Doxyfile}), that can be edited to customize the output. \\
-To run Doxygen then type:
-\begin{verbatim}
-   doxygen <config-file>
-\end{verbatim}
+that can be edited to customize the output. \\
+
 To get the Reference Manual, then go to the \textit{latex} subfolder that has been generated and type \verb|make|.
 
 
