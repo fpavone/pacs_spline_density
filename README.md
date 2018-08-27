@@ -12,8 +12,8 @@ The output is an R Package [splineDensity]
 
 The source code is written in C++ and linked to R throught the API RcppEigen and .Call
 
-Subfolder structure
-—------------------------
+#### Subfolder structure
+
 - src contains all C++ code and a special file named Makevars necessary to build and install the R package
 - R contains the R functions that wrap the C++ calls
 - data contains all .rda and .RData files useful for testings
