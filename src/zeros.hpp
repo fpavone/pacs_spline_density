@@ -16,7 +16,7 @@
             for further informations.
   @note
     Reference: "Bayesian-multiplicative treatment of count zeros in compositional data sets"
-    Authors: Josep-Antoni Martín-Fernández, Karel Hron, Matthias Templ,
+    Authors: Josep-Antoni Martin-Fernandez, Karel Hron, Matthias Templ,
               Peter Filzmoser and Javier Palarea-Albaladejo
     Periodical: Statistical Modelling 2015; 15(2): 134–158
 */
