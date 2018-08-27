@@ -3,14 +3,14 @@
 % \thispagestyle{empty}
 
 \noindent 
-The source code of this R package can be found and downloaded from \url{https://github.com/fpavone/pacs_spline_density} in the branch \textit{ROpenMP}. 
+The source code of this R package can be found and downloaded from \url{https://github.com/fpavone/pacs_spline_density} in the branch \textit{master}. 
 There are different ways of installing it on your machine.
 
 The first one requires the use of \verb|devtools|, a popular R package. It will also take care of installing all dependencies (Rcpp and RcppEigen) and install the splineDensity package in the same directories of all the other R packages installed.  \\
 In R, use the command 
 \begin{Verbatim}[commandchars=\\\{\}]
    library(devtools)
-   install_github("fpavone/pacs_spline_density",ref="ROpenMP")
+   install_github("fpavone/pacs_spline_density")
 \end{Verbatim}
 Note that it is required to have the unzip option as \verb|internal|, you can check the unzip setting of your machine with \verb|getOption("unzip")| and possibly change it with \verb|options(unzip = "internal")|.
 
