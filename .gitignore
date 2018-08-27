@@ -16,3 +16,4 @@
 *.toc
 src/html
 src/latex
+*.RData
