@@ -25,19 +25,24 @@ constexpr double tol = 1e-04;
 class parametersManager
 {
 protected:
-
-  unsigned int k;  /*! Spline degree */
-  unsigned int l;  /*! order of derivative in penalization term */
-  double alpha;  /*! penalization parameter */
-
-  unsigned int n;   /*! Number of control points */
-  unsigned int g;   /*! Number of knots - 2 (number of internal ones) */
-  unsigned int G;   /*! Number of knots including additional ones G = g+k+1 */
-
-  std::vector<double> knots; /*! spline knots */
-  double u, v;    /*! [u,v] support of splines */
-
-  std::vector<double> xcp; /*! control points */
+  /*! Spline degree */
+  unsigned int k;
+  /*! order of derivative in penalization term */
+  unsigned int l;
+  /*! penalization parameter */
+  double alpha;
+  /*! Number of control points */
+  unsigned int n;
+  /*! Number of knots - 2 (number of internal ones) */
+  unsigned int g;
+  /*! Number of knots including additional ones G = g+k+1 */
+  unsigned int G;
+  /*! spline knots */
+  std::vector<double> knots;
+  /*! [u,v] support of splines */
+  double u,v;
+  /*! control points */
+  std::vector<double> xcp;
 
 public:
   parametersManager
@@ -90,23 +95,33 @@ public:
 class densityEstimator: public parametersManager
 {
 private:
+  /*! Collocation matrix - dimensions nxG */
+  Eigen::MatrixXd C;
+  /*! dimensions GxG */
+  Eigen::MatrixXd M;
 
-  Eigen::MatrixXd C;   /*! Collocation matrix - dimensions nxG */
-  Eigen::MatrixXd M;   /*! dimensions GxG */
 
   Eigen::SparseMatrix<double> S;
-  Eigen::SparseMatrix<double> DK; /*! dimensions GxG */
-  Eigen::MatrixXd P; /*! matrix of the problem to solve - dimensions GxG */
+  /*! dimensions GxG */
+  Eigen::SparseMatrix<double> DK;
+  /*! matrix of the problem to solve - dimensions GxG */
+  Eigen::MatrixXd P;
 
-  Eigen::VectorXd p; /*! constant term vector of the problem to solve - dimensions G */
-  Eigen::VectorXd c; /*! solution of the problem: c = P^(-)p - dimensions G */
-  Eigen::VectorXd b; /*! B-spline coefficients - dimensions G */
+  /*! constant term vector of the problem to solve - dimensions G */
+  Eigen::VectorXd p;
+  /*! solution of the problem: c = P^(-)p - dimensions G */
+  Eigen::VectorXd c;
+  /*! B-spline coefficients - dimensions G */
+  Eigen::VectorXd b;
 
-  Eigen::VectorXd weights; /*! Weights associated to data, all set to value 1.
+  /*! Weights associated to data, all set to value 1.
                               More in general they allow to take in account the various data accuracy */
-  std::vector<double> lambda;  /*! extended vector of knots - with extra ones
+  Eigen::VectorXd weights;
+  /*! extended vector of knots - with extra ones
                                  dimension: g + 2k + 2 = G + k + 1 */
-  std::vector<double> lambda_der; /*! extended vector of knots of the l-th derivative */
+  std::vector<double> lambda;
+  /*! extended vector of knots of the l-th derivative */
+  std::vector<double> lambda_der;
 
   void
   fill_C

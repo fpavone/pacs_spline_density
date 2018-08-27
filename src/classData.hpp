@@ -22,10 +22,12 @@
 class dataManager
 {
 private:
-
-  std::vector<double> numbers; /** vector where data are stored (one row at a time)*/
-  std::vector<double> grid;    /** mesh grid - where to evaluate output density */
-  unsigned int howmanyclasses; /** numbers' size*/
+  /** vector where data are stored (one row at a time)*/
+  std::vector<double> numbers;
+  /** mesh grid - where to evaluate output density */
+  std::vector<double> grid;
+  /** numbers' size*/
+  unsigned int howmanyclasses;
 
 public:
   /*!
