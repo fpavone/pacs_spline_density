@@ -10,14 +10,15 @@
 We briefly explain here what kind of data are expected as input, the general workflow and the output of the software. In section \ref{c++}] more detailed implementation is discussed with focus on the R interface in section \ref{R} and the shared-memory parallelization in \ref{openmp}.
 
 \subsection{Input data}
-User provides a dataset of observations, each row a statistical unit, all belong to the same statistical model and have the same length. \\
-Those are the data for our problem and they fulfil hypothesis of compositional data observation, e.g. sum constraint. Using the histogram example, each row consist of a histogram and all the histograms come from the same underlying model, e.g. proportion of annual income aggregated in classes for different region of a given country as in \cite{paper:pacs}. The values of a given row correspond to the "height" of each class of the histogram
+User provides a dataset of observations, each row a statistical unit, all belonging to the same statistical model and with the same length. \\
+Those are the data for our problem and they fulfil hypothesis of compositional data observation, e.g. sum constraint. Using the histogram example, each row consist of a histogram and all the histograms come from the same underlying model, e.g. proportion of annual income aggregated in classes for different regions of a given country as in \cite{paper:pacs}. The values of a given row correspond to the ``height'' of each class of the histogram.
 
 User provides also what in splines lexicon are called the \textit{control points}, i.e. the middle point abscissa of each class of the histogram. Those abscissa are the same for all the rows of the dataset.
 
-Strictly related to the optimal smoothing problem, spline degree \textit{k}, penalization order \textit{l}, smoothness tuning parameter \textit{$\alpha$} and spline knots must be provided. Spline knots can be passed as a given vector or they can be builded by default equispaced given the size.
+Strictly related to the optimal smoothing problem, other parameters must be provided: spline degree \textit{k}, penalization order \textit{l}, smoothness tuning parameter \textit{$\alpha$} and spline knots. Spline knots can be passed as a given vector or they can be built by default equispaced given the size.
+
 \subsection{Count zeros: the Bayesian-multiplicative treatment} \label{BM}
-In order to perform the clr map we have to compute a logarithm, so we have to ensure that all data are strictly positive. But some observation could be zero for different reason, in this framework we consider just the count-zero case using the lexicon of \cite{fernandez:zeros}, i.e. unobserved positive values that may have been observed with a larger number of trials or with a different sampling design.
+In order to perform the clr map we have to compute a logarithm, so we have to ensure that all data are strictly positive. But some observation could be zero for different reason. \\ In this framework we consider just the count-zero case using the lexicon of \cite{fernandez:zeros}, i.e. unobserved positive values that may have been observed with a larger number of trials or with a different sampling design.
 
 We decided to rely on the Bayesian-multiplicative (BM) treatment described in \cite{fernandez:zeros}, which basically use a conjugate Dirichlet model for the normalized observation with uniform prior:
 \[ \bm{X} \sim Dir(D,s\bm{t}) \]
@@ -47,20 +48,20 @@ x_{ij}(1-\sum_{k:x_{ik}=0} \, t_{ik} \, \frac{s_{i}}{n_{i}+s_{i}}), & \mbox{if }
 This has been implemented in the \verb|zeros| header and source files.
 
 \subsection{Workflow} \label{workflow}
-Parameters of the spline problem, including knots and control points, are stored in \verb|densityEstimator| class. This class contains all the fixed information of the problem, common to every row of the dataset to be processed. Through corresponding methods all the matrix requested to build the linear system described previously are computed and stored using \verb|Eigen| in such class.
+Parameters of the spline problem, including knots and control points, are stored in \verb|densityEstimator| class. This class contains all the fixed information of the problem, common to every row of the dataset to be processed. Through corresponding methods all the matrices requested to build the linear system described previously are computed and stored using \verb|Eigen| in such class.
 
-\verb|dataManager| class deals with data. It reads a data-row, perform the zeros treatment and through the \verb|pacs| method solve the b-spline problem calling the \verb|solve| method of the \verb|densityEstimator| object. The result is written in a proper \verb|Eigen| structure. Using the \verb|plotData| method the resulting spline is finally evaluated in a given grid of point.
+\verb|dataManager| class deals with data. It reads a data-row, perform the zeros treatment and through the \verb|pacs| method solve the B-spline problem calling the \verb|solve| method of the \verb|densityEstimator| object. The result is written in a proper \verb|Eigen| structure. \\ Using the \verb|plotData| method the resulting spline is finally evaluated in a given grid of points.
 
 The reason of this structure of the code is due to the parallelization and it will be better understood in section \ref{openmp}.
 
 \subsection{Output}
-Output consist in b-spline coefficients for each statistical unit and possibly a grid of values in which resulting b-splines are evaluated at. \\ Size of the grid can be given as input parameter, otherwise it is handled by default.
+Output consist in B-spline coefficients for each statistical unit and possibly a grid of values in which resulting B-splines are evaluated at. \\ Size of the grid can be given as input parameter, otherwise it is handled by default.
 
 \section{R/C++ interface} \label{R}
 \subsection{\texttt{.Call} and \texttt{RcppEigen}}
 Code structures, implementation choices and C++ programming style reflect the necessity to develop an efficient implementation of the discussed density estimation method together with the flexibility and the comfort of the R environment for further analysis. \\ All of that is done via the R package facility with our \verb|splineDensity| package available in the git repository (see section \ref{installation} for installation details). 
 
-The interface used to execute C++ code in R is \verb|.Call| described in [cit]. Let us provide a simple example of how it works, this is our C++ example:
+The interface used to execute C++ code in R is \verb|.Call|, described in \cite{manual:rext}. Let us provide a simple example of how it works, this is our C++ example:
 
 \begin{lstlisting}
 #include <R.h>
@@ -115,7 +116,7 @@ where \verb|-d| stays for "debug". In particular we relied a lot on the famous m
 \begin{itemize}
 \item \verb|parametersManager|: it includes problem parameters shared among all statistical units such as control points, knots, spline degree, penalization order and $\alpha$ value. No objects of this class are actually declared, but it is conceptually useful to distinguish it from its child \verb|densityEstimator|.
 
-\item \verb|densityEstimator|: it inherits publicly from \verb|parametersManager|. It has methods to compute all the necessary matrixes and the final linear system described in \ref{optimal}. it has a method to evaluate the J functional and the \verb|solve| method which is described in \ref{solvemethod}. Such method is used on each row (parameters and problem matrix are common) and return the estimated b-spline coefficients.
+\item \verb|densityEstimator|: it inherits publicly from \verb|parametersManager|. It has methods to compute all the necessary matrixes and the final linear system described in \ref{optimal}. it has a method to evaluate the J functional and the \verb|solve| method which is described in \ref{solvemethod}. Such method is used on each row (parameters and problem matrix are common) and return the estimated B-spline coefficients.
 
 \item \verb|dataManager|: it used to interface the data with the smoothing process. It reads a row of the data set and then performs the BM treatment (section \ref{BM}). The \verb|pacs| method has the \verb|densityEstimator| object as argument and calls the \verb|solve| method saving the output (spline coefficients) in a given matrix. It has also methods to evaluate the estimated function in a grid of points both in the clr space and the reference space, respectively \verb|plotData| and \verb|plotData_Clr| methods.
 
@@ -163,7 +164,7 @@ Otherwise, when kernel dimension is greater than 2 we decided to apply Tychonoff
 All that is done by the \verb|solve| method of the \verb|densityEstimator| object through a \verb|switch| statement over the kernel dimension.
 
 \subsection{Cross-validation function} \label{cv}
-In addition to the resolution of the optimal problem, we were asked to provide a cross-validation method to asses the best $\alpha$ among a vector of choices. Such validation has been designed to be a sort of leave-one-out (LOO) algorithm: one at a time each control point (c.p.), which is not an extremal, is left out, the b-spline is estimated and the error is computed as the sum of the differences between the left out values and the corresponding estimate given by the b-spline averaged among all the rows:
+In addition to the resolution of the optimal problem, we were asked to provide a cross-validation method to asses the best $\alpha$ among a vector of choices. Such validation has been designed to be a sort of leave-one-out (LOO) algorithm: one at a time each control point (c.p.), which is not an extremal, is left out, the B-spline is estimated and the error is computed as the sum of the differences between the left out values and the corresponding estimate given by the B-spline averaged among all the rows:
 
 \[ \forall \alpha_{i}\in\bm{\alpha}  \quad \text{error}_{LOO}(\alpha_{i}) = \sum_{k=1}^{\#rows}\sum_{j=1}^{\#c.p.} \frac{\\| y_{k,j}-\hat{y}_{k,j} \\| }{\text{\#rows}} \]
 
@@ -266,4 +267,4 @@ This time it was necessary to reserve each thread an \verb|Eigen| matrix (\verb|
 % struttura generale del codice: cosa in input, cosa in output
 % scelta di salvare le matrici con eigen sparse, dimensione matrici
 % problema zero-forcing
-% densityEstimator figlia di parametersManager (che � "astratta")
+% densityEstimator figlia di parametersManager ("astratta")
