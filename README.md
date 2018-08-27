@@ -1,5 +1,12 @@
-Smoothing spline density
-================================================================================
+# splineDensity Package
+### Course on Advanced programming for scientific computing
+#### *Politecnico di Milano* (ITALY)
+
+Author : Alessia Di Blasi & Federico Pavone & Gianluca Zeni
+
+Mailto : alessia.diblasi@mail.polimi.it, federico.pavone@mail.polimi.it, gianluca.zeni@mail.polimi.it
+
+Date   : September 2018
 
 The output is an R Package [splineDensity]
 
@@ -25,14 +32,9 @@ or in another way download source code from the github repository, unzip the fil
 
     R CMD INSTALL <path name of the package to be installed> -l <path name of the R library tree>
 
-    (R CMD INSTALL splineDensity -l /home/vagrant/R/x86_64-pc-linux-gnu-library/3.2)
-						.libPaths()
-
 Otherwise you can install directly from github:
 
-    devtools::install_github("fpavone/pacs_spline_density", ref = "splineDensity")
-    
-    devtools::install_github("fpavone/pacs_spline_density", ref = "ROpenMP")
+    devtools::install_github("fpavone/pacs_spline_density", ref = "master")
 
 Be careful that this will not allow you to compile with enabled parallelization.
 
