@@ -7,14 +7,14 @@ The source code of this R package can be found and downloaded from \url{https://
 There are different ways of installing it on your machine.
 
 The first one requires the use of \verb|devtools|, a popular R package. It will also take care of installing all dependencies (Rcpp and RcppEigen) and install the splineDensity package in the same directories of all the other R packages installed.  \\
-In R, use the command 
+In R, use the commands: 
 \begin{Verbatim}[commandchars=\\\{\}]
    library(devtools)
    install_github("fpavone/pacs_spline_density")
 \end{Verbatim}
 Note that it is required to have the unzip option as \verb|internal|, you can check the unzip setting of your machine with \verb|getOption("unzip")| and possibly change it with \verb|options(unzip = "internal")|.
 
-Using \verb|devtools|, it's possible to install the package from the terminal.
+As an alternative, still using \verb|devtools|, it's possible to install the package from the terminal.
 Once the source code is downloaded and unzipped, it is enough to run from the package root folder the following commands:
 \begin{Verbatim}[commandchars=\\\{\}]
    R -e \textcolor{red}{"library(devtools); install()"} --silent
@@ -23,21 +23,24 @@ To build the documentation in Roxygen, then:
 \begin{Verbatim}[commandchars=\\\{\}]
    R -e \textcolor{red}{"library(devtools); document()"} --silent
 \end{Verbatim}
-
 This second command will create a subfolder named man where the .Rd files will be stored. This will be useful when calling for "help" from R (e.g., ?smoothSplines).
 
-As an alternative, the second way to complete the installation does not require any additional package, but will throw errors if the packages required for the functioning of splineDensity are not installed.
-From the terminal, you need to run:
+A different way to complete the installation does not require any additional package, but will throw errors if the packages required for the functioning of splineDensity are not installed. \\
+From the terminal, after downloading the code, you need to run:
 \begin{verbatim}
    R CMD INSTALL -l <path name of the R library tree> 
       <path name of the package to be installed>
 \end{verbatim}
+
+\medskip
 
 To test the successful installation of the package, it is possible to run the example in the subdirectory tests, either from terminal
 \begin{verbatim}
    Rscript test_particle.r
 \end{verbatim}
 or loading it directly in R. Otherwise the R command \verb|example(smoothSplines)| does the same job.
+
+\medskip
 
 The \verb|Doxygen| documentation of the C++ code can be built from the \textit{src} folder using the provided \textit{Doxyfile}. To run Doxygen type:
 \begin{verbatim}
@@ -47,10 +50,9 @@ Keep in mind that, in order to create a new documentation with different setting
 \begin{verbatim}
    doxygen -g <config-file>
 \end{verbatim}
-that can be edited to customize the output. \\
+that can be edited to customize the output.
 
 To get the Reference Manual, then go to the \textit{latex} subfolder that has been generated and type \verb|make|.
-
 
 
 %---------------------------------------------------------------
@@ -63,5 +65,25 @@ Now, follow the instructions as above to install the package. \\
 Once finished, you have the opportunity to exploit the benefits that only a parallel implementation can provide.
 
 
-%----------------------------
-\section{Installing devtools}
+%---------------------------------------------------------------
+
+\section*{4.2\quad Installing devtools}
+It may be possible to have problems in installing the R package \verb|devtools| in Ubuntu or other Linux distributions.
+
+If the installation throws the following errors:
+\begin{verbatim}
+ERROR: dependency `curl' is not available for package `httr'
+ERROR: dependencies `httr', `memoise' are not available
+for package `devtool'...
+Warning messages:
+1: In install.packages("devtools"):
+installation of package `httr' had non-zero exit status
+2: In install.packages("devtools"):
+installation of package `devtools' had non-zero exit status
+\end{verbatim}
+it may be solved by installing the following libraries:  \verb|sudo yum -y install| \verb|libcurl libcurl-devel| in CentOS and \verb|sudo apt-get install| \\ \verb|libcurl4-openssl-dev libssl-dev| in Ubuntu.
+
+
+
+
+

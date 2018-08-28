@@ -7,7 +7,7 @@
 
 
 \section{Overview}
-We briefly explain here what kind of data are expected as input, the general workflow and the output of the software. In section \ref{c++}] more detailed implementation is discussed with focus on the R interface in section \ref{R} and the shared-memory parallelization in \ref{openmp}.
+We briefly explain here what kind of data are expected as input, the general workflow and the output of the software. In the following,  more detailed implementation is discussed with focus on the R interface in section \ref{R} and the shared-memory parallelization in \ref{openmp}.
 
 \subsection{Input data}
 User provides a dataset of observations, each row a statistical unit, all belonging to the same statistical model and with the same length. \\
@@ -55,13 +55,13 @@ Parameters of the spline problem, including knots and control points, are stored
 The reason of this structure of the code is due to the parallelization and it will be better understood in section \ref{openmp}.
 
 \subsection{Output}
-Output consist in B-spline coefficients for each statistical unit and possibly a grid of values in which resulting B-splines are evaluated at. \\ Size of the grid can be given as input parameter, otherwise it is handled by default.
+Output consist in B-spline coefficients for each statistical unit and possibly a grid of values in which resulting smoothing functions are evaluated at. \\ Size of the grid can be given as input parameter, otherwise it is handled by default.
 
 \section{R/C++ interface} \label{R}
 \subsection{\texttt{.Call} and \texttt{RcppEigen}}
 Code structures, implementation choices and C++ programming style reflect the necessity to develop an efficient implementation of the discussed density estimation method together with the flexibility and the comfort of the R environment for further analysis. \\ All of that is done via the R package facility with our \verb|splineDensity| package available in the git repository (see section \ref{installation} for installation details). 
 
-The interface used to execute C++ code in R is \verb|.Call|, described in \cite{manual:rext}. Let us provide a simple example of how it works, this is our C++ example:
+The interface used to execute C++ code in R is \verb|.Call|, described in \cite{manual:rext}. Let us provide a simple example of how it works. Consider a simple C++ function. It looks like this:
 
 \begin{lstlisting}
 #include <R.h>
@@ -81,13 +81,13 @@ add <- function(a, b) { .Call("add", a, b)
 }
 \end{lstlisting}
 
-After we compile our C++ code in a dynamic library via command line with \verb|R CMD SHLIB| or using the compiler directly, we can load the library in the R environment using \verb|dyn.oad()|. After our object is loaded we can directly use the C++ function with \verb|.Call("add",a,b)|, e.g. defining an R function named "add".
+After we compile the C++ code in a dynamic library, via command line with \verb|R CMD SHLIB| or using the compiler directly, we can load the library in the R environment using \verb|dyn.load()|. \\ Once our object is loaded, we can directly use the C++ function with \verb|.Call("add",a,b)|, i.e. defining an R function named ``add''.
 
-In the C++ code all kind of object that come from R or should be return to R are of the \verb|SEXP| type. The power of this interface is that all R variables are not passed by copy, but by a particular kind of pointer (the \verb|SEXP| type). As a consequence, to prevent that R garbage collection destroys objects which should be returned, it is important to use the \verb|PROTECT()| function. Finally all the code that R should be able to use (e.g. the defined function) must be included in the \verb|extern "C"| scope. \verb|SEXP| object can be copied in C++ objects through some specific functions defined in the R header files as \verb|REAL()| or \verb|INTEGER()|. 
+In the C++ code all kind of object that come from R, or should be returned to R, are of the \verb|SEXP| type. The powerful advantage of this interface is that all R variables are not passed by copy, but by a particular kind of pointer (the \verb|SEXP| type). As a consequence, to prevent that R garbage collection destroys objects which should be returned, it is important to use the \verb|PROTECT()| function. \\ Finally, all the code that R should be able to use (e.g. the defined function) must be included in the \verb|extern "C"| scope. \\ \verb|SEXP| object can be copied in C++ objects through some specific functions defined in the R header files as \verb|REAL()| or \verb|INTEGER()|. 
  
 \medskip
 
-We decided also to rely on \emph{Rcpp}/\emph{RcppEigen} libraries [cit] which easily allow to interface R matrixes with \verb|Eigen| structures combining the \verb|Eigen::Map| method with the \verb|Rcpp::as| function, e.g.:
+We decided also to rely on \emph{Rcpp} and \emph{RcppEigen} libraries (a lot of work on the topic, especially done by Eddelbuettel, is available, among the others \cite{dirk:rcpp}) which easily allow to interface R matrixes with \verb|Eigen| structures, combining the \verb|Eigen::Map| method with the \verb|Rcpp::as| function, e.g.:
 
 \begin{lstlisting}
 SEXP Rmatrix;
@@ -116,9 +116,9 @@ where \verb|-d| stays for "debug". In particular we relied a lot on the famous m
 \begin{itemize}
 \item \verb|parametersManager|: it includes problem parameters shared among all statistical units such as control points, knots, spline degree, penalization order and $\alpha$ value. No objects of this class are actually declared, but it is conceptually useful to distinguish it from its child \verb|densityEstimator|.
 
-\item \verb|densityEstimator|: it inherits publicly from \verb|parametersManager|. It has methods to compute all the necessary matrixes and the final linear system described in \ref{optimal}. it has a method to evaluate the J functional and the \verb|solve| method which is described in \ref{solvemethod}. Such method is used on each row (parameters and problem matrix are common) and return the estimated B-spline coefficients.
+\item \verb|densityEstimator|: it inherits publicly from \verb|parametersManager|. It has methods to compute all the necessary matrixes and the final linear system described in \ref{optimal}. It has a method to evaluate the J functional and the \verb|solve| method which is described in \ref{solvemethod}. Such method is used on each row (parameters and problem matrix are common) and returns the estimated B-spline coefficients.
 
-\item \verb|dataManager|: it used to interface the data with the smoothing process. It reads a row of the data set and then performs the BM treatment (section \ref{BM}). The \verb|pacs| method has the \verb|densityEstimator| object as argument and calls the \verb|solve| method saving the output (spline coefficients) in a given matrix. It has also methods to evaluate the estimated function in a grid of points both in the clr space and the reference space, respectively \verb|plotData| and \verb|plotData_Clr| methods.
+\item \verb|dataManager|: it is used to interface the data with the smoothing process. It reads a row of the data set and then performs the BM treatment (section \ref{BM}). The \verb|pacs| method has the \verb|densityEstimator| object as argument and calls the \verb|solve| method saving the output (spline coefficients) in a given matrix. \\ It includes also methods to evaluate the estimated function in a grid of points both in the clr space and the reference space, respectively \verb|plotData| and \verb|plotData_Clr| methods.
 
 \begin{figure}[ht]
 	
@@ -134,44 +134,39 @@ where \verb|-d| stays for "debug". In particular we relied a lot on the famous m
 \end{itemize}
 
 \subsection{Solve method} \label{solvemethod}
-As already discussed in section \ref{optimal}, the smoothing problem could not have a solution, in such case a minimum norm solution should be provided.
+As already discussed in section \ref{optimal}, the smoothing problem could not have a solution, in such case a minimum norm solution should be provided. \\
 We decided to rely on the \verb|FullPivHouseholderQR| solver provided by the \verb|Eigen| library, which apply Householder rank-revealing QR decomposition with full pivoting. This decomposition performs a very prudent full pivoting in order to be rank-revealing and achieve optimal numerical stability. 
 
 Rank-revealing property is very important in case we want to find a solution when the problem is not solvable. Kernel knowledge allows us to analytically find a minimum norm solution in case its dimension is 1 or 2:
-
 \[ A\bm{x}=\bm{b} \]
-
 If dim(Ker($A$))$=1$,
-	
 \[ \bm{k}\in\text{Ker{A}} \quad \text{and} \quad \bm{\hat{x}} \quad \text{found solution} \]
 \[ c=\frac{<\bm{\hat{x}},\bm{k}>}{<\bm{k},\bm{k}>} \]
 \[ \bm{x}_{\text{min}} = \bm{\hat{x}} - c\bm{k} \]
 else if dim(Ker($A$))$=2$, let
 \[ \bm{k_1}, \bm{k_2} \in\text{Ker{A}} \quad \text{and} \quad \bm{\hat{x}} \quad \text{found solution,} \]
 then, doing elementary computations,
-\begin{align*}
-\left( \| \bm{k_2} \|^2 - \frac{<\bm{k_1},\bm{k_2}>^2}{<\bm{k_1},\bm{k_1}>} \right) &c_2 = \, <\bm{\hat{x}},\bm{k_2} - \frac{<\bm{k_1},\bm{k_2}>}{<\bm{k_1},\bm{k_1}>} \, \bm{k_1}> \\
-&c_1 = - \frac{<\bm{k_1},\bm{k_2}>}{<\bm{k_1},\bm{k_1}>} \, c_2 +  \frac{<\bm{\hat{x}},\bm{k_1}>}{<\bm{k_1},\bm{k_1}>}
-\end{align*}  
+\begin{gather*}
+\left( \| \bm{k_2} \|^2 - \frac{<\bm{k_1},\bm{k_2}>^2}{<\bm{k_1},\bm{k_1}>} \right) c_2 = \, <\bm{\hat{x}},\bm{k_2} - \frac{<\bm{k_1},\bm{k_2}>}{<\bm{k_1},\bm{k_1}>} \, \bm{k_1}> \\
+c_1 = - \frac{<\bm{k_1},\bm{k_2}>}{<\bm{k_1},\bm{k_1}>} \, c_2 +  \frac{<\bm{\hat{x}},\bm{k_1}>}{<\bm{k_1},\bm{k_1}>}
+\end{gather*}  
 \[ \bm{x}_{\text{min}} = \bm{\hat{x}} - c_1\bm{k_1} - c_2\bm{k_2} \]
 
-
 Otherwise, when kernel dimension is greater than 2 we decided to apply Tychonoff regularization ($\lambda=0.01$) to the matrix problem in order to achieve full rank and find a solution. Obviously in such case we will be solving an approximation of our problem:
-
 \[  \hat{A}=A + \lambda I \]
 \[  \text{new problem} \quad \hat{A}\bm{x}=\bm{b} \]
 
 All that is done by the \verb|solve| method of the \verb|densityEstimator| object through a \verb|switch| statement over the kernel dimension.
 
 \subsection{Cross-validation function} \label{cv}
-In addition to the resolution of the optimal problem, we were asked to provide a cross-validation method to asses the best $\alpha$ among a vector of choices. Such validation has been designed to be a sort of leave-one-out (LOO) algorithm: one at a time each control point (c.p.), which is not an extremal, is left out, the B-spline is estimated and the error is computed as the sum of the differences between the left out values and the corresponding estimate given by the B-spline averaged among all the rows:
+In addition to the resolution of the optimal problem, we were asked to provide a cross-validation method to asses the best $\alpha$ among a vector of choices. \\ Such validation has been designed to be a sort of leave-one-out (LOO) algorithm: one at a time each control point (c.p.), which is not an extremal, is left out, the B-spline is estimated and the error is computed as the sum of the differences between the left out values and the corresponding estimate given by the B-spline averaged among all the rows:
 
 \[ \forall \alpha_{i}\in\bm{\alpha}  \quad \text{error}_{LOO}(\alpha_{i}) = \sum_{k=1}^{\#rows}\sum_{j=1}^{\#c.p.} \frac{\\| y_{k,j}-\hat{y}_{k,j} \\| }{\text{\#rows}} \]
 
-After that the best $\alpha$ value is found and cross-validation errors among with evaluation of the J functional of the minimization problem are returned to the user, with best choice highlighted.
+After that, the best $\alpha$ value is found and cross-validation errors among with the evaluations of the J functional of the minimization problem are returned to the user, with best choice highlighted.
 
 \section{OpenMP parallelization} \label{openmp}
-In section \ref{workflow} was mentioned the fact that we perform the same operation over each row of the given data set in a \verb|for| loop. Precisely the matrix associated to the linear system is fixed and what changes is the constant term, which depends on the data. So after constructing the problem matrix, we loop over the row in the following way:
+In section \ref{workflow} it was mentioned the fact that we perform the same operation over each row of the given data set in a \verb|for| loop. \\ Precisely, the matrix associated to the linear system is fixed and what changes is the constant term, which depends on the data. Therefore, after constructing the problem matrix, we loop over the row in the following way:
 
 \begin{lstlisting}
 for(std::size_t i = 0; i < nrow; i++)
@@ -179,14 +174,16 @@ for(std::size_t i = 0; i < nrow; i++)
   obj.readData(data.row(i), prior);
   obj.transfData();
   obj.pacs(dens,bsplineMat.row(i));
-  obj.plotData(dens, numPoints, bsplineMat.row(i), yvalueMat.row(i));
+  obj.plotData(dens, numPoints, bsplineMat.row(i),   yvalueMat.row(i));
   obj.plotData_Clr(dens, numPoints, bsplineMat.row(i), yvalueMatClr.row(i));
 }
 \end{lstlisting}
 
 where \verb|obj| is a \verb|dataManager| object and \verb|dens| a \verb|densityEstimator| object.
 
-This commands are easily parallelizable in shared memory framework as OpenMP, it is enough to ask each thread to solve the problem for a subset of rows. OpenMP gives also the possibility to make same objects private to each thread through the \verb|private| keyword. If those objects exists before the \verb|#pragma| statement then the \verb|firstprivate| keyword should be used to initialize them with their values. In a simple way the previous code become the following:
+This commands are easily parallelizable in shared memory framework as OpenMP, it is enough to ask each thread to solve the problem for a subset of rows.
+
+Moreover, OpenMP gives the possibility to make same objects private to each thread through the \verb|private| keyword. If those objects exist before the \verb|#pragma| statement then the \verb|firstprivate| keyword should be used to initialize them with their values. \\ In a simple way, the previous code becomes the following:
 
 \begin{lstlisting}
 @ \textcolor{magenta}{\#pragma omp parallel private(obj) firstprivate(dens)} @
@@ -203,9 +200,9 @@ This commands are easily parallelizable in shared memory framework as OpenMP, it
  }
 \end{lstlisting}
 
-Thanks to this multithreads implementation we achieved a satisfactory speed-up in the computations when a large data set is provided.
+Thanks to this multithreads implementation we have achieved a satisfactory speed-up in the computations when a large data set is provided.
 
-We tested the code on a dataset of $10^{6}$ rows and 12 column on a 12 cores Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz machine, leaving out one core dedicated to the OS. Results are shown in figure \ref{fig:giuspo12}.
+We tested the code on a dataset of $10^{6}$ rows and 12 columns, i.e. 12 histogram cells, on a 12 cores Intel(R) Core(TM) i7-3930K CPU @ 3.20GHz machine, leaving out one core dedicated to the OS. \\ Results are shown in figure \ref{fig:giuspo12}.
 
 \begin{figure}[ht]
 	
@@ -218,11 +215,12 @@ We tested the code on a dataset of $10^{6}$ rows and 12 column on a 12 cores Int
 		\label{fig:subim2}
 	\end{subfigure}
 	
-	\caption{Intel(R) i7-3930K CPU @ 3.20GHz: on the left time (milliseconds) required by the software divided in computation time (solve the problem) and writing time (write the solution in R objects, this is done by just one thread). On the right speed-up plot.}
+	\caption{Intel(R) i7-3930K CPU @ 3.20GHz: on the left, the time (milliseconds) required by the software divided in computation time (to solve the problem) and writing time (to write the solution in R objects, this is done by just one thread). On the right, speed-up plot.}
 	\label{fig:giuspo12}
 	
 \end{figure}
 
+\medskip
 
 Cross-validation function (section \ref{cv}) has been parallelized over the different $\alpha$ values:
 
@@ -259,7 +257,7 @@ Cross-validation function (section \ref{cv}) has been parallelized over the diff
   }
   \end{lstlisting}
 
-This time it was necessary to reserve each thread an \verb|Eigen| matrix (\verb|threadBsplineMat|) where to store the result of its partial computation. Note that every object defined inside the \verb|#pragma omp| statement is automatically private to each thread. Comparison to asses the best $\alpha$ value is done outside the parallelized scope by one single thread.
+This time it was necessary to reserve each thread an \verb|Eigen| matrix (\verb|threadBsplineMat|) where to store the result of its partial computation. Note that every object defined inside the \verb|#pragma omp| statement is automatically private to each thread. \\ Comparison to asses the best $\alpha$ value is done outside the parallelized scope by one single thread.
 
 
 
