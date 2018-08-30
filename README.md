@@ -1,7 +1,7 @@
 # splineDensity Package [<img style="float: right;" src="https://www.r-project.org/logo/Rlogo.png" width=70 alt="R logo"/>](https://www.r-project.org)
 ### Course on Advanced programming for scientific computing 
 #### *Politecnico di Milano* (ITALY) 
-[<img style="float: right;" src="https://github.com/fpavone/pacs_spline_density/blob/master/rePortACS/pictures/logopoli.png" width=50 alt="Polimi logo"/>](http://www.polimi.it/)
+[<img style="float: right;" src="https://github.com/fpavone/pacs_spline_density/blob/master/logopoli.png" width=50 alt="Polimi logo"/>](http://www.polimi.it/)
 
 ***Author*** : Alessia Di Blasi, Federico Pavone, Gianluca Zeni
 
