@@ -6,7 +6,6 @@
 main
 /data/topsecret
 *.Rhistory
-*.pdf
 .Rproj.user
 *.Rproj
 *.aux
