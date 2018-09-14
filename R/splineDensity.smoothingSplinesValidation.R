@@ -20,15 +20,16 @@
 #' Preprocessing of centred logratio transformed density functions 
 #' using smoothing splines. Journal of Applied Statistics, 43:8, 1419-1435.
 #' @examples
-#' axcp <- c(0.063,0.125,0.25,0.5,1,2,4,8,16,31.5,63,100)
-#' u <- log(0.001)
-#' v <- log(200)
-#' classes <- c(u,log(axcp))
-#' midx <- (classes[-1] + classes[-13])/2
-#' lenx <- (classes[-1] - classes[-13])/2
-#' midy <- adata/lenx
-#' aknots <- seq(midx[1],midx[12], length = 7)
-#' sol <- smoothSplinesVal(k=3,l=2,alpha=10^seq(-4,4,by=1),midy/100,midx,aknots,cores=1)
+#' SepalLengthCm <- iris$Sepal.Length
+#' Species <- iris$Species
+#' 
+#' iris1 <- SepalLengthCm[iris$Species==levels(iris$Species)[1]]
+#' h1 <- hist(iris1, nclass = 12, plot = F)
+#' 
+#' midx1 <- h1$mids
+#' midy1 <- matrix(h1$density, nrow=1, ncol = length(h1$density), byrow=T)
+#' knots <- 7 
+#' sol1 <- smoothSplinesVal(k=3,l=2,alpha=10^seq(-4,4,by=1),midy1,midx1,knots,cores=1)
 #' @useDynLib splineDensity
 #' @export
 #' 
