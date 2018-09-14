@@ -4,8 +4,8 @@
 \alias{smoothSplinesVal}
 \title{Estimate density from histogram - for different \code{alpha}}
 \usage{
-smoothSplinesVal(k, l, alpha, data, xcp, knots, prior = "default",
-  cores = 1)
+smoothSplinesVal(k, l, alpha, data, xcp, knots, weights = 1,
+  prior = "default", cores = 1)
 }
 \arguments{
 \item{k}{smoothing splines degree}
@@ -19,6 +19,8 @@ smoothSplinesVal(k, l, alpha, data, xcp, knots, prior = "default",
 \item{xcp}{vector of control points}
 
 \item{knots}{either vector of knots for the splines or a integer for the number of equispaced knots}
+
+\item{weights}{vector of weights. If not gives, all data points will be weighted the same.}
 
 \item{prior}{prior used for zero-replacements. This must be one of "perks", "jeffreys", "bayes_laplace", "sq" or "default"}
 
