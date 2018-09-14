@@ -261,7 +261,7 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
           N = Eigen::ArrayXd::Constant(dens.get_G(), 0.0);
           bspline::basisfun(span,Xcp[j],k,dens.get_lambda(), N);
           fvalue = obj.compute_fvalue(threadBsplineMat.row(i), N);
-          CVerror(z) += (fvalue - data(i,j))*(fvalue - data(i,j))/nrow;
+          CVerror(z) += (fvalue - obj.getNumbers()[j])*(fvalue - obj.getNumbers()[j])/nrow;
         }
       }
     }
