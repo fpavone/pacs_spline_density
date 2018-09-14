@@ -64,7 +64,7 @@ smoothSplines <- function(k,l,alpha,data,xcp,knots,weights = 1,num_points = 100,
   
   # Check weights
   weights.len = dim(data)[2]
-  if(weights = 1)
+  if(weights == 1)
   {
     weights = rep(1, weights.len)
   }
