@@ -6,6 +6,7 @@
 #' @param data an object of class "matrix" containing data to be smoothed, row by row
 #' @param xcp vector of control points
 #' @param knots either vector of knots for the splines or a integer for the number of equispaced knots
+#' @param weights vector of weights. If not gives, all data points will be weighted the same.
 #' @param prior prior used for zero-replacements. This must be one of "perks", "jeffreys", "bayes_laplace", "sq" or "default"
 #' @param cores number of cores for parallel execution
 #' @return A list of three objects:
@@ -34,12 +35,23 @@
 #' @export
 #' 
 
-smoothSplinesVal <- function(k,l,alpha,data,xcp,knots,prior = "default",cores = 1)
+smoothSplinesVal <- function(k,l,alpha,data,xcp,knots, weights = 1, prior = "default",cores = 1)
 {
   # Checking if data is a matrix
   if ( !is.matrix(data) )
   {
     err <- simpleError("data must be a matrix type.")
+    stop(err)
+  }
+  
+  weights.len = dim(data)[2]
+  if(weights = 1)
+  {
+    weights = rep(1, weights.len)
+  }
+  else if(length(weights) != weights.len)
+  {
+    err <- simpleError("weights lenght must be equal to the number of column in data.")
     stop(err)
   }
   
@@ -60,11 +72,11 @@ smoothSplinesVal <- function(k,l,alpha,data,xcp,knots,prior = "default",cores = 
     step <- (v - u)/(size-1)
     knots_ <- seq(u,v, by = step)
     obj <- .Call("smoothingSplinesValidation_",as.integer(k),as.integer(l),alpha,
-                 data,xcp,knots_,as.integer(prior_num), as.integer(cores))
+                 data,xcp,knots_,weights,as.integer(prior_num), as.integer(cores))
   }
   else
     obj <- .Call("smoothingSplinesValidation_",as.integer(k),as.integer(l),alpha,
-                 data,xcp,knots,as.integer(prior_num), as.integer(cores))
+                 data,xcp,knots,weights,as.integer(prior_num), as.integer(cores))
   
   class(obj) <- "smoothSplVal"
   return(obj)
