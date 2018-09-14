@@ -45,7 +45,7 @@ smoothSplinesVal <- function(k,l,alpha,data,xcp,knots, weights = 1, prior = "def
   }
   
   weights.len = dim(data)[2]
-  if(legth(weights) == 1)
+  if(length(weights) == 1)
   {
     weights = rep(1, weights.len)
   }
