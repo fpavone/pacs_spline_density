@@ -39,7 +39,14 @@ parametersManager::readXcp
   n = xcp.size();
 }
 
-
+void
+parametersManager::readWeights
+    (const double * inputWeights, const unsigned int & size)
+{
+  weights.resize(size);
+  for(std::size_t i=0; i < size; i++)
+    weights(i) = inputWeights[i];
+}
 
 /************* densityEstimator class ***************/
 
@@ -170,7 +177,7 @@ void
 densityEstimator::set_matrix
 ()
 {
-  weights = Eigen::VectorXd::Constant(n,1.0);
+  //weights = Eigen::VectorXd::Constant(n,1.0);
   set_lambda(knots);
   set_lambda_der(knots);
   fill_C(xcp);

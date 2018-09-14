@@ -35,6 +35,7 @@ extern "C"{
  @param data_ Data for density estimation
  @param Xcp_ Control points
  @param knots_ Knot sequence
+ @param weights_ Weights sequence
  @param numPoints_ Number of points of the grid for plotting the density
  @param prior_ 1:Perks, 2: Jeffreys, 3: Bayes-Laplace, 4: Square root
  @see PRIOR
@@ -44,7 +45,7 @@ extern "C"{
  @return List with B-spline coefficients, points to plot density (also clr-transformed version) and the number of points.
 
  */
-SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP numPoints_, SEXP prior_, SEXP nCPU_, SEXP fast_)
+SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP weights_, SEXP numPoints_, SEXP prior_, SEXP nCPU_, SEXP fast_)
 {
   cns::timer<> t1;
   t1.start();
@@ -94,6 +95,11 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   double *knots = REAL(knots_);
   unsigned int knotsSize = LENGTH(knots_);
   dens.readKnots(knots,knotsSize);
+
+  // Read weights
+  double *weights = REAL(weights_);
+  unsigned int weightsSize = LENGTH(knots_);
+  dens.readWeights(weights,weightsSize);
 
   // Read data
   Eigen::Map<Eigen::MatrixXd> data(as<Eigen::Map<Eigen::MatrixXd>> (data_));
@@ -164,6 +170,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
  @param data_ Data for density estimation
  @param Xcp_ Control points
  @param knots_ Knot sequence
+ @param weights_ Weights sequence
  @param numPoints_ Number of points of the grid for plotting the density
  @param prior_ 1:Perks, 2: Jeffreys, 3: Bayes-Laplace, 4: Square root
  @param nCPU_ Number of core to use for parallelization
@@ -171,7 +178,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
  @return List with the best \f$ \alpha \f$, the related value of the functional and error
 
  */
-SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP prior_, SEXP nCPU_)
+SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEXP knots_, SEXP weights_, SEXP prior_, SEXP nCPU_)
 {
   cns::timer<> t;
   t.start();
@@ -218,6 +225,11 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
   double *knots = REAL(knots_);
   unsigned int knotsSize = LENGTH(knots_);
   dens.readKnots(knots,knotsSize);
+
+  // Read weights
+  double *weights = REAL(weights_);
+  unsigned int weightsSize = LENGTH(knots_);
+  dens.readWeights(weights,weightsSize);
 
   // Read data
   Eigen::Map<Eigen::MatrixXd> data(as<Eigen::Map<Eigen::MatrixXd>> (data_));
