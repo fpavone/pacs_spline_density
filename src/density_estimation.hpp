@@ -142,10 +142,6 @@ private:
   ();
 
   void
-  set_weights
-  (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false> & row);
-
-  void
   set_lambda
   (const std::vector<double>& knots);
 
@@ -165,7 +161,10 @@ public:
   void
   set_matrix
   ();
-
+  
+  void
+  set_weights
+      (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false> & row);
   /*!
   	@brief Compute the value of the functional to be minimized.
   	@param ycp Value of data in the control points.

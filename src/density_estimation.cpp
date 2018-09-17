@@ -142,14 +142,6 @@ densityEstimator::fill_S
   S.makeCompressed();
 }
 
-void
-densityEstimator::set_weights
-    (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false> & row)
-{
-weights.resize(row.cols());
-for(std::size_t i=0; i < size; i++)
-weights(i) = row(i);
-}
 
 void
 densityEstimator::set_lambda
@@ -185,6 +177,14 @@ densityEstimator::set_matrix
   fill_S();
 }
 
+void
+densityEstimator::set_weights
+    (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false> & row)
+{
+weights.resize(row.cols());
+for(std::size_t i=0; i < size; i++)
+weights(i) = row(i);
+}
 
 double
 densityEstimator::eval_J
