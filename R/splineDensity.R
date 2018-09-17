@@ -6,7 +6,7 @@
 #' @param data an object of class "matrix" containing data to be smoothed, row by row
 #' @param xcp vector of control points
 #' @param knots either vector of knots for the splines or a integer for the number of equispaced knots
-#' @param weights vector of weights. If not gives, all data points will be weighted the same.
+#' @param weights matrix of weights. If not given, all data points will be weighted the same.
 #' @param num_points number of points of the grid where to evaluate the density estimated
 #' @param prior prior used for zero-replacements. This must be one of "perks", "jeffreys", "bayes_laplace", "sq" or "default"
 #' @param cores number of cores for parallel execution, if the option was enabled before installing the package
@@ -53,7 +53,7 @@
 #' @export 
 #' 
 
-smoothSplines <- function(k,l,alpha,data,xcp,knots,weights = 1,num_points = 100, prior = "default", cores = 1, fast = 0)
+smoothSplines <- function(k,l,alpha,data,xcp,knots,weights = matrix(0, dim(data)[1], dim(data)[2]),num_points = 100, prior = "default", cores = 1, fast = 0)
 {
   # Checking if data is a matrix
   if ( !is.matrix(data) )
@@ -63,14 +63,15 @@ smoothSplines <- function(k,l,alpha,data,xcp,knots,weights = 1,num_points = 100,
   }
   
   # Check weights
-  weights.len = dim(data)[2]
-  if(length(weights)==1)
+  if ( !is.matrix(weights) )
   {
-    weights = rep(1, weights.len)
+    err <- simpleError("weights must be a matrix type.")
+    stop(err)
   }
-  else if(length(weights) != weights.len)
+
+  if(dim(weights) != dim(data))
   {
-    err <- simpleError("weights lenght must be equal to the number of column in data.")
+    err <- simpleError("weights size must be equal to data size.")
     stop(err)
   }
   

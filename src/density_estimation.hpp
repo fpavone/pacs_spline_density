@@ -43,9 +43,6 @@ protected:
   double u,v;
   /*! control points */
   std::vector<double> xcp;
-  /*! Weights associated to data.
-                              More in general they allow to take in account the various data accuracy */
-  Eigen::VectorXd weights;
 
 public:
   parametersManager
@@ -68,12 +65,6 @@ public:
   readXcp
   (const double * inputXcp, const unsigned int & size, const int & cancel = -1);
 
-  /*!
-	@brief Read weights from C-array style and store them in the std::vector<double> member
-  */
-  void
-  readWeights
-      (const double * inputWeights, const unsigned int & size);
 
   void
   set_alpha
@@ -124,6 +115,9 @@ private:
   /*! B-spline coefficients - dimensions G */
   Eigen::VectorXd b;
 
+  /*! Weights associated to data.
+                            More in general they allow to take in account the various data accuracy */
+  Eigen::VectorXd weights;
   /*! extended vector of knots - with extra ones
                                  dimension: g + 2k + 2 = G + k + 1 */
   std::vector<double> lambda;
@@ -148,6 +142,10 @@ private:
   ();
 
   void
+  set_weights
+  (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false> & row);
+
+  void
   set_lambda
   (const std::vector<double>& knots);
 
@@ -166,13 +164,6 @@ public:
   */
   void
   set_matrix
-  ();
-
-  /*!
-  	@brief Compute the matrix P of the problem
-  */
-  void
-  set_system
   ();
 
   /*!

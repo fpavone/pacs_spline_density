@@ -39,15 +39,6 @@ parametersManager::readXcp
   n = xcp.size();
 }
 
-void
-parametersManager::readWeights
-    (const double * inputWeights, const unsigned int & size)
-{
-  weights.resize(size);
-  for(std::size_t i=0; i < size; i++)
-    weights(i) = inputWeights[i];
-}
-
 /************* densityEstimator class ***************/
 
 void
@@ -151,6 +142,14 @@ densityEstimator::fill_S
   S.makeCompressed();
 }
 
+void
+densityEstimator::set_weights
+    (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false> & row)
+{
+weights.resize(row.cols());
+for(std::size_t i=0; i < size; i++)
+weights(i) = row(i);
+}
 
 void
 densityEstimator::set_lambda
@@ -186,13 +185,6 @@ densityEstimator::set_matrix
   fill_S();
 }
 
-void
-densityEstimator::set_system
-()
-{
-  P.noalias() = 1.0 / alpha * (DK).transpose() * S.transpose() * M * S * (DK) +
-        (C * DK).transpose() * weights.asDiagonal() * C * DK;
-}
 
 double
 densityEstimator::eval_J
@@ -212,6 +204,8 @@ densityEstimator::solve
 (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> bspline, const std::vector<double>& ycp)
 {
   Eigen::VectorXd newycp(Eigen::VectorXd::Map(ycp.data(),ycp.size()));
+  P.noalias() = 1.0 / alpha * (DK).transpose() * S.transpose() * M * S * (DK) +
+                (C * DK).transpose() * weights.asDiagonal() * C * DK;
   p.noalias() = DK.transpose()* C.transpose() * weights.asDiagonal() * newycp;
 
   Eigen::FullPivHouseholderQR<Eigen::MatrixXd> solverQR;

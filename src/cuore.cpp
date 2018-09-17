@@ -96,17 +96,15 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
   unsigned int knotsSize = LENGTH(knots_);
   dens.readKnots(knots,knotsSize);
 
-  // Read weights
-  double *weights = REAL(weights_);
-  unsigned int weightsSize = LENGTH(knots_);
-  dens.readWeights(weights,weightsSize);
-
   // Read data
   Eigen::Map<Eigen::MatrixXd> data(as<Eigen::Map<Eigen::MatrixXd>> (data_));
   unsigned int nrow = data.rows();
   furious = furious || (nrow < 100); // if not useful, progress bar will not be shown
   dens.set_matrix();
   dens.set_system();
+
+  // Read weights
+  Eigen::Map<Eigen::MatrixXd> weights(as<Eigen::Map<Eigen::MatrixXd>> (weights_));
 
   Eigen::MatrixXd bsplineMat(nrow,dens.get_G());
   Eigen::MatrixXd yvalueMat(nrow,numPoints);
@@ -123,6 +121,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
     {
       obj.readData(data.row(i), prior);
       obj.transfData();
+      dens.set_weights(weights.row(i));
       obj.pacs(dens, bsplineMat.row(i));
       obj.plotData(dens, numPoints, bsplineMat.row(i), yvalueMat.row(i));
       obj.plotData_Clr(dens, numPoints, bsplineMat.row(i), yvalueMatClr.row(i));
