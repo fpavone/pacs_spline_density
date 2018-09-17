@@ -4,7 +4,7 @@
 \alias{smoothSplines}
 \title{Estimate density from histogram}
 \usage{
-smoothSplines(k, l, alpha, data, xcp, knots, weights = matrix(0,
+smoothSplines(k, l, alpha, data, xcp, knots, weights = matrix(1,
   dim(data)[1], dim(data)[2]), num_points = 100, prior = "default",
   cores = 1, fast = 0)
 }

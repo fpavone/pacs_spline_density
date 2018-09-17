@@ -4,7 +4,7 @@
 \alias{smoothSplinesVal}
 \title{Estimate density from histogram - for different \code{alpha}}
 \usage{
-smoothSplinesVal(k, l, alpha, data, xcp, knots, weights = matrix(0,
+smoothSplinesVal(k, l, alpha, data, xcp, knots, weights = matrix(1,
   dim(data)[1], dim(data)[2]), prior = "default", cores = 1)
 }
 \arguments{
