@@ -224,13 +224,10 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
   unsigned int knotsSize = LENGTH(knots_);
   dens.readKnots(knots,knotsSize);
 
-  // Read weights
-  double *weights = REAL(weights_);
-  unsigned int weightsSize = LENGTH(knots_);
-  dens.readWeights(weights,weightsSize);
-
   // Read data
   Eigen::Map<Eigen::MatrixXd> data(as<Eigen::Map<Eigen::MatrixXd>> (data_));
+  // Read weights
+  Eigen::Map<Eigen::MatrixXd> weights(as<Eigen::Map<Eigen::MatrixXd>> (weights_));
 
   unsigned int nrow = data.rows();
   unsigned int ncol = data.cols();
