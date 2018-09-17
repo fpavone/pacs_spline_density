@@ -178,12 +178,11 @@ densityEstimator::set_matrix
 }
 
 void
-densityEstimator::set_weights
-    (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false> & row)
+densityEstimator::set_weights(Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> >, 1, -1, false> & row)
 {
-weights.resize(row.cols());
-for(std::size_t i=0; i < size; i++)
-weights(i) = row(i);
+  weights.resize(row.cols());
+  for(std::size_t i=0; i < size; i++)
+  weights(i) = row(i);
 }
 
 double
