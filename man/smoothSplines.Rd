@@ -4,8 +4,9 @@
 \alias{smoothSplines}
 \title{Estimate density from histogram}
 \usage{
-smoothSplines(k, l, alpha, data, xcp, knots, weights = 1,
-  num_points = 100, prior = "default", cores = 1, fast = 0)
+smoothSplines(k, l, alpha, data, xcp, knots, weights = matrix(0,
+  dim(data)[1], dim(data)[2]), num_points = 100, prior = "default",
+  cores = 1, fast = 0)
 }
 \arguments{
 \item{k}{smoothing splines degree}
@@ -20,7 +21,7 @@ smoothSplines(k, l, alpha, data, xcp, knots, weights = 1,
 
 \item{knots}{either vector of knots for the splines or a integer for the number of equispaced knots}
 
-\item{weights}{vector of weights. If not gives, all data points will be weighted the same.}
+\item{weights}{matrix of weights. If not given, all data points will be weighted the same.}
 
 \item{num_points}{number of points of the grid where to evaluate the density estimated}
 
