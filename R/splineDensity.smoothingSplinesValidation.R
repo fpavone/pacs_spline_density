@@ -51,7 +51,7 @@ smoothSplinesVal <- function(k,l,alpha,data,xcp,knots, weights = matrix(0, dim(d
     stop(err)
   }
   
-  if(dim(weights) != dim(data))
+  if(dim(weights)[1] != dim(data)[1] & dim(weights)[2] != dim(data)[2])
   {
     err <- simpleError("weights size must be equal to data size.")
     stop(err)
