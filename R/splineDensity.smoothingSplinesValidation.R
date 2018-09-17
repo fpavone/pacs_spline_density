@@ -35,7 +35,7 @@
 #' @export
 #' 
 
-smoothSplinesVal <- function(k,l,alpha,data,xcp,knots, weights = matrix(0, dim(data)[1], dim(data)[2]), prior = "default",cores = 1)
+smoothSplinesVal <- function(k,l,alpha,data,xcp,knots, weights = matrix(1, dim(data)[1], dim(data)[2]), prior = "default",cores = 1)
 {
   # Checking if data is a matrix
   if ( !is.matrix(data) )

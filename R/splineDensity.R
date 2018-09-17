@@ -53,7 +53,7 @@
 #' @export 
 #' 
 
-smoothSplines <- function(k,l,alpha,data,xcp,knots,weights = matrix(0, dim(data)[1], dim(data)[2]),num_points = 100, prior = "default", cores = 1, fast = 0)
+smoothSplines <- function(k,l,alpha,data,xcp,knots,weights = matrix(1, dim(data)[1], dim(data)[2]),num_points = 100, prior = "default", cores = 1, fast = 0)
 {
   
   # Checking if data is a matrix
