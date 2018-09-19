@@ -63,12 +63,14 @@ void
 dataManager::antitData
 (Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> x)
 {
-  // Using rectangular integration in continuous setting
-  double den = 0;
+  // Using trapezoidal integration in continuous setting
   double len = (grid.back() - grid.front())/(grid.size()-1);
-  for(int i=0; i<x.size();i++){
+  unsigned int x_len = x.size();
+  double den = 0.5*exp(x(0))*len + 0.5*exp(x(x_len-1))*len;
+  for(int i=1; i<x_len-1;i++){
     den += exp(x(i))*len;
   }
+
   for(int i=0; i<x.size();i++){
     x(i) = exp(x(i))/den;
   }
