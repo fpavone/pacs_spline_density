@@ -71,7 +71,7 @@ dataManager::antitData
     den += exp(x(i))*len;
   }
 
-  for(int i=0; i<x.size()-1;i++){
+  for(int i=0; i<x.size();i++){
     x(i) = exp(x(i))/den;
   }
 };
