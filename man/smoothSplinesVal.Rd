@@ -45,10 +45,10 @@ SepalLengthCm <- iris$Sepal.Length
 Species <- iris$Species
 
 iris1 <- SepalLengthCm[iris$Species==levels(iris$Species)[1]]
-h1 <- hist(iris1, nclass = 12, plot = F)
+h1 <- hist(iris1, nclass = 12, plot = FALSE)
 
 midx1 <- h1$mids
-midy1 <- matrix(h1$density, nrow=1, ncol = length(h1$density), byrow=T)
+midy1 <- matrix(h1$density, nrow=1, ncol = length(h1$density), byrow=TRUE)
 knots <- 7 
 sol1 <- smoothSplinesVal(k=3,l=2,alpha=10^seq(-4,4,by=1),midy1,midx1,knots,cores=1)
 }
