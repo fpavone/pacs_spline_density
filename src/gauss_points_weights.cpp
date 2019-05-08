@@ -87,7 +87,8 @@ void integral::grule(std::vector<double> &bp, std::vector<double> &wf) {
   unsigned int n = bp.size();
   if(wf.size()!= n){
     // gestisci errore
-    exit(EXIT_FAILURE);
+    Rcpp::stop("Error in the C++ execution");
+    // exit(EXIT_FAILURE);
   }
   int iter=2;
  unsigned int m=std::trunc(double(n+1)/2); //Example: -2.3->-2; 2.3 -> 2

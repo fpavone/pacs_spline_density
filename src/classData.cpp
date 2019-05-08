@@ -157,7 +157,8 @@ dataManager::compute_fvalue
   if(vec2.size() != n){
     Rcpp::Rcerr << "Error in compute_fvalue function. Check dimensions of the vectors.."
               << std::endl;
-    exit(1);
+    Rcpp::stop("Error in the C++ execution");
+    // exit(1);
   }
   for (int i = 0; i < n; ++i) {
     res += vec1[i]*vec2[i];
