@@ -2,6 +2,7 @@
 #include <cmath>
 #include <algorithm>
 #include <iostream>
+#include <Rcpp.h>
 #include "gauss_points_weights.h"
 // constexpr double pi() { return std::atan(1)*4; } //only GCC defines the mathfunctions like atan as constexpr.
 
