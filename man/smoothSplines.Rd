@@ -44,7 +44,7 @@ function that 'best' fits data, in a trade-off between smooth and least squares 
 \details{
 The original discretized densities are not directly smoothed, but instead the centred logratio transformation is
 first applied, to deal with the unit integral constraint related to density functions. \cr
-Then the constrained variational problem is set. This minimization problem for the optimal 
+Then the constrained variational problem is set. This minimization problem for the optimal
 density is a compromise between staying close to the given data, at the corresponding \code{xcp},
 and obtaining a smooth function.
 The non-smoothness measure takes into account the \code{l}th derivative, while the fidelity term is weigthed by \code{alpha}. \cr
@@ -58,11 +58,11 @@ SepalLengthCm <- iris$Sepal.Length
 Species <- iris$Species
 
 iris1 <- SepalLengthCm[iris$Species==levels(iris$Species)[1]]
-h1 <- hist(iris1, nclass = 12, plot = F)
+h1 <- hist(iris1, nclass = 12, plot = FALSE)
 
 midx1 <- h1$mids
-midy1 <- matrix(h1$density, nrow=1, ncol = length(h1$density), byrow=T)
-knots <- 7 
+midy1 <- matrix(h1$density, nrow=1, ncol = length(h1$density), byrow=TRUE)
+knots <- 7
 sol1 <- smoothSplines(k=3,l=2,alpha=1000,midy1,midx1,knots)
 plot(sol1)
 
@@ -73,7 +73,7 @@ xx1 <- seq(sol1$Xcp[1],tail(sol1$Xcp,n=1),length.out = sol1$NumPoints)
 lines(xx1,sol1$Y[1,], col = 'red', lwd = 2)
 }
 \references{
-J. Machalova, K. Hron & G.S. Monti (2016): 
-Preprocessing of centred logratio transformed density functions 
+J. Machalova, K. Hron & G.S. Monti (2016):
+Preprocessing of centred logratio transformed density functions
 using smoothing splines. Journal of Applied Statistics, 43:8, 1419-1435.
 }
