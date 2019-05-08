@@ -9,9 +9,9 @@ Authors@R: c(person("Alessia", "Di Blasi", role = c("aut", "cre"),
 						 person("Gianluca", "Zeni", role = c("aut"),
 							email = "gianluca.zeni@mail.polimi.it"))
 Description: What the package does (one paragraph).
-Depends: R (>= 3.2.0), 
-         Rcpp (>= 0.12.16), 
-         RcppEigen (>= 0.3.3.4.0),
+Depends: R (>= 3.2.0),
+         Rcpp (>= 0.12.16),
+         RcppEigen (>= 0.3.3.4.0)
 LinkingTo: Rcpp,
 	         RcppEigen
 NeedsCompilation: yes
