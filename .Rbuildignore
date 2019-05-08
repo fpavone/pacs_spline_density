@@ -4,3 +4,5 @@
 ^src/html$
 ^src/latex$
 ^rePortACS$
+src/mainpage.md
+README.md
