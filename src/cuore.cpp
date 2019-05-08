@@ -1,6 +1,6 @@
-#include "density_estimation.hpp"
-#include "classData.hpp"
-#include "zeros.hpp"
+#include "density_estimation.h"
+#include "classData.h"
+#include "zeros.h"
 #include <vector>
 #include <string>
 #include <cmath>

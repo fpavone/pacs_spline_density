@@ -8,8 +8,8 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
-#include "density_estimation.hpp"
-#include "zeros.hpp"
+#include "density_estimation.h"
+#include "zeros.h"
 /*! \file
   @brief Data container class
 */

@@ -1,4 +1,4 @@
-#include "bspline.hpp"
+#include "bspline.h"
 #include <iostream>
 #include <vector>
 #include <cassert>

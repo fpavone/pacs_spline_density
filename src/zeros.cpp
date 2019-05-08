@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <functional>
 #include <numeric>
-#include "zeros.hpp"
+#include "zeros.h"
 
 std::vector<double>
 help::divide

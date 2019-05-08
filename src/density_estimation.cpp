@@ -4,10 +4,10 @@
 #include <iterator>
 #include <vector>
 #include <Rcpp.h>
-#include "bspline.hpp"
-#include "sandia_rules.hpp"
-#include "gauss_points_weights.hpp"
-#include "density_estimation.hpp"
+#include "bspline.h"
+#include "sandia_rules.h"
+#include "gauss_points_weights.h"
+#include "density_estimation.h"
 
 
 /************* parametersManager class ***************/

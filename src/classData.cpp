@@ -5,9 +5,9 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
-#include "zeros.hpp"
-#include "density_estimation.hpp"
-#include "classData.hpp"
+#include "zeros.h"
+#include "density_estimation.h"
+#include "classData.h"
 
 void
 dataManager::readData
@@ -100,7 +100,7 @@ dataManager::plotData
   double end = dens.get_v();
   unsigned int degree = dens.get_k();
   unsigned int G = dens.get_G();
-  const std::vector<double> knots = dens.get_lambda(); 
+  const std::vector<double> knots = dens.get_lambda();
 
   fillGrid(start, end, numPoints);
 

@@ -6,9 +6,9 @@
 #include <iostream>
 #include <iterator>
 #include <vector>
-#include "bspline.hpp"
-#include "sandia_rules.hpp"
-#include "gauss_points_weights.hpp"
+#include "bspline.h"
+#include "sandia_rules.h"
+#include "gauss_points_weights.h"
 
 constexpr double tol = 1e-04;
 
@@ -161,7 +161,7 @@ public:
   void
   set_matrix
   ();
-  
+
   void
   set_weights
       (const Eigen::Block<Eigen::Map<Eigen::Matrix<double, -1, -1>,0, Eigen::Stride<0, 0> >, 1, -1, false> & row);

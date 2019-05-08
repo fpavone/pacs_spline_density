@@ -1,4 +1,4 @@
-# include "sandia_rules.hpp"
+# include "sandia_rules.h"
 
 # include <cstdlib>
 # include <iomanip>
