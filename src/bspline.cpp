@@ -34,7 +34,8 @@ bspline::findspan
 		Rcpp::Rcerr << "Value " << t
 	            << " of t is outside the knot span by "
 	            << U[U.size () - 1] - t << "\n";
-	    exit(EXIT_FAILURE);
+			Rcpp::stop("Error in the C++ execution");
+			// exit(EXIT_FAILURE);
 	}
 	else
 	{

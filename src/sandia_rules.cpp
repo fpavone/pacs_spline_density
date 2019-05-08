@@ -469,7 +469,7 @@ void chebyshev1_compute ( int n, double x[], double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "CHEBYSHEV1_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   for ( i = 0; i < n; i++ )
@@ -595,7 +595,7 @@ void chebyshev1_compute_points ( int n, double x[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "CHEBYSHEV1_COMPUTE_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   for ( i = 0; i < n; i++ )
@@ -704,7 +704,7 @@ void chebyshev1_compute_weights ( int n, double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "CHEBYSHEV1_COMPUTE_WEIGHTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   for ( i = 0; i < n; i++ )
@@ -883,7 +883,7 @@ void chebyshev2_compute ( int n, double x[], double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "CHEBYSHEV2_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   for ( i = 0; i < n; i++ )
@@ -1008,7 +1008,7 @@ void chebyshev2_compute_points ( int n, double x[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "CHEBYSHEV2_COMPUTE_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   for ( i = 0; i < n; i++ )
@@ -1119,7 +1119,7 @@ void chebyshev2_compute_weights ( int n, double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "CHEBYSHEV2_COMPUTE_WEIGHTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   for ( i = 0; i < n; i++ )
@@ -1293,7 +1293,7 @@ void clenshaw_curtis_compute ( int n, double x[], double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "CLENSHAW_CURTIS_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   else if ( n == 1 )
   {
@@ -1440,7 +1440,7 @@ void clenshaw_curtis_compute_points ( int n, double x[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "CLENSHAW_CURTIS_COMPUTE_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  N < 1.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   else if ( n == 1 )
   {
@@ -1556,7 +1556,7 @@ void clenshaw_curtis_compute_weights ( int n, double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "CLENSHAW_CURTIS_COMPUTE_WEIGHTS - Fatal error!\n";
     Rcpp::Rcerr << "  N < 1.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   else if ( n == 1 )
   {
@@ -2166,7 +2166,7 @@ void fejer2_compute ( int n, double x[], double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "FEJER2_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   else if ( n == 1 )
   {
@@ -2304,7 +2304,7 @@ void fejer2_compute_points ( int n, double x[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "FEJER2_COMPUTE_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  N < 1.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   else if ( n == 1 )
   {
@@ -2431,7 +2431,7 @@ void fejer2_compute_weights ( int n, double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "FEJER2_COMPUTE_WEIGHTS - Fatal error!\n";
     Rcpp::Rcerr << "  N < 1.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   else if ( n == 1 )
   {
@@ -2601,7 +2601,7 @@ void gegenbauer_compute ( int order, double alpha, double x[], double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "GEGENBAUER_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  1 <= ORDER is required.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   c = new double[order];
 //
@@ -2612,7 +2612,7 @@ void gegenbauer_compute ( int order, double alpha, double x[], double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "GEGENBAUER_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  -1.0 < ALPHA is required.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 //
 //  Set the recursion coefficients.
@@ -3605,7 +3605,7 @@ void gen_hermite_dr_compute ( int order, double alpha, double x[], double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "GEN_HERMITE_DR_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of ORDER = " << order << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   if ( order == 1 )
@@ -4261,7 +4261,7 @@ void gen_laguerre_ss_compute ( int order, double alpha, double x[], double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "GEN_LAGUERRE_SS_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of ORDER = " << order << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   b = new double[order];
@@ -4688,7 +4688,7 @@ void hcc_compute_points ( int n, double x[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "HCC_COMPUTE_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  Order of rule N is not even.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   nhalf = n / 2;
@@ -4795,7 +4795,7 @@ void hcc_compute_weights ( int n, double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "HCC_COMPUTE_WEIGHTS - Fatal error!\n";
     Rcpp::Rcerr << "  Order of rule N is not even.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   nhalf = n / 2;
@@ -5013,7 +5013,7 @@ void hce_compute_points ( int n, double x[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "HCE_COMPUTE_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  Order of rule N is not even.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   m = n / 2;
 
@@ -5121,7 +5121,7 @@ void hce_compute_weights ( int n, double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "HCE_COMPUTE_WEIGHTS - Fatal error!\n";
     Rcpp::Rcerr << "  Order of rule N is not even.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   nhalf = n / 2;
@@ -5867,7 +5867,7 @@ void hermite_genz_keister_lookup_points ( int n, double x[] )
     Rcpp::Rcerr << "HERMITE_GENZ_KEISTER_LOOKUP_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal input value of N.\n";
     Rcpp::Rcerr << "  N must be 1, 3, 9, 19, 35, 37, 41 or 43.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   return;
 }
@@ -6247,7 +6247,7 @@ void hermite_genz_keister_lookup_weights ( int n, double w[] )
     Rcpp::Rcerr << "HERMITE_GENZ_KEISTER_LOOKUP_WEIGHTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal input value of N.\n";
     Rcpp::Rcerr << "  N must be 1, 3, 9, 19, 35, 37, 41 or 43.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   return;
 }
@@ -6485,7 +6485,7 @@ void hermite_gk18_lookup_points ( int n, double x[] )
     Rcpp::Rcerr << "HERMITE_GK18_LOOKUP_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal input value of N.\n";
     Rcpp::Rcerr << "  N must be 1, 3, 9, 19, or 37.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   return;
 }
@@ -6646,7 +6646,7 @@ void hermite_gk22_lookup_points ( int n, double x[] )
     Rcpp::Rcerr << "HERMITE_GK22_LOOKUP_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal input value of N.\n";
     Rcpp::Rcerr << "  N must be 1, 3, 9, 19, or 41.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   return;
 }
@@ -6809,7 +6809,7 @@ void hermite_gk24_lookup_points ( int n, double x[] )
     Rcpp::Rcerr << "HERMITE_GK24_LOOKUP_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal input value of N.\n";
     Rcpp::Rcerr << "  N must be 1, 3, 9, 19, or 43.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   return;
 }
@@ -7569,7 +7569,7 @@ void hermite_lookup_points ( int n, double x[] )
     Rcpp::Rcerr << "HERMITE_LOOKUP_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     Rcpp::Rcerr << "  Legal values are 1 through 20.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   return;
@@ -7928,7 +7928,7 @@ void hermite_lookup_weights ( int n, double w[] )
     Rcpp::Rcerr << "HERMITE_LOOKUP_WEIGHTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     Rcpp::Rcerr << "  Legal values are 1 through 20.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   return;
@@ -7998,7 +7998,7 @@ void hermite_ss_compute ( int order, double x[], double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "HERMITE_SS_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of ORDER = " << order << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   cc = 1.7724538509 * webbur::r8_gamma ( ( double ) ( order ) )
@@ -8467,7 +8467,7 @@ int i4_power ( int i, int j )
       Rcpp::Rcerr << "\n";
       Rcpp::Rcerr << "I4_POWER - Fatal error!\n";
       Rcpp::Rcerr << "  I^J requested, with I = 0 and J negative.\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
     else
     {
@@ -8481,7 +8481,7 @@ int i4_power ( int i, int j )
       Rcpp::Rcerr << "\n";
       Rcpp::Rcerr << "I4_POWER - Fatal error!\n";
       Rcpp::Rcerr << "  I^J requested, with I = 0 and J = 0.\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
     else
     {
@@ -9412,7 +9412,7 @@ void imtqlx ( int n, double d[], double e[], double z[] )
         Rcpp::Rcerr << "\n";
         Rcpp::Rcerr << "IMTQLX - Fatal error!\n";
         Rcpp::Rcerr << "  Iteration limit exceeded\n";
-        Rcpp::stop("Error from sandia_rules.cpp")
+        Rcpp::stop("Error from sandia_rules.cpp");
       }
       j = j + 1;
       g = ( d[l] - p ) / ( 2.0 * e[l-1] );
@@ -10006,7 +10006,7 @@ void jacobi_ss_compute ( int order, double alpha, double beta, double x[],
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "JACOBI_SS_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of ORDER = " << order << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   b = new double[order];
@@ -10019,7 +10019,7 @@ void jacobi_ss_compute ( int order, double alpha, double beta, double x[],
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "JACOBI_SS_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  -1.0 < ALPHA is required.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   if ( beta <= -1.0 )
@@ -10027,7 +10027,7 @@ void jacobi_ss_compute ( int order, double alpha, double beta, double x[],
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "JACOBI_SS_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  -1.0 < BETA is required.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 //
 //  Set the recursion coefficients.
@@ -11090,7 +11090,7 @@ void laguerre_lookup_points ( int n, double x[] )
     Rcpp::Rcerr << "LAGUERRE_LOOKUP_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     Rcpp::Rcerr << "  Legal values are 1 through 20.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   return;
@@ -11433,7 +11433,7 @@ void laguerre_lookup_weights ( int n, double w[] )
     Rcpp::Rcerr << "LAGUERRE_LOOKUP_WEIGHTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     Rcpp::Rcerr << "  Legal values are 1 through 20.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   return;
@@ -11512,7 +11512,7 @@ void laguerre_ss_compute ( int order, double x[], double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "LAGUERRE_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of ORDER = " << order << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   b = new double[order];
@@ -12108,7 +12108,7 @@ void legendre_dr_compute ( int n, double x[], double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "LEGENDRE_DR_COMPUTE - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   e1 = ( double ) ( n * ( n + 1 ) );
@@ -13047,7 +13047,7 @@ void legendre_lookup_points ( int n, double x[] )
     Rcpp::Rcerr << "LEGENDRE_LOOKUP_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     Rcpp::Rcerr << "  Legal values are 1 through 33.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   return;
 }
@@ -13780,7 +13780,7 @@ void legendre_lookup_weights ( int n, double w[] )
     Rcpp::Rcerr << "LEGENDRE_LOOKUP_WEIGHTS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     Rcpp::Rcerr << "  Legal values are 1 through 33.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   return;
 }
@@ -14019,7 +14019,7 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
       Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
       Rcpp::Rcerr << "  Negative value of LEVEL[DIM]!\n";
       Rcpp::Rcerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
 
     if ( rule[dim] < 1 || 12 < rule[dim] )
@@ -14028,7 +14028,7 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
       Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
       Rcpp::Rcerr << "  Illegal value of RULE[DIM]!\n";
       Rcpp::Rcerr << "  RULE[" << dim << "] = " << rule[dim] << "\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
 
     if ( growth[dim] < 0 || 6 < growth[dim] )
@@ -14037,7 +14037,7 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
       Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
       Rcpp::Rcerr << "  Illegal value of GROWTH[DIM]!\n";
       Rcpp::Rcerr << "  GROWTH[" << dim << "] = " << growth[dim] << "\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
   }
 //
@@ -14155,21 +14155,21 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
         Rcpp::Rcerr << "\n";
         Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
         Rcpp::Rcerr << "  Growth rate 1 for rule 3 not available!\n";
-        Rcpp::stop("Error from sandia_rules.cpp")
+        Rcpp::stop("Error from sandia_rules.cpp");
       }
       else if ( growth[dim] == 2 )
       {
         Rcpp::Rcerr << "\n";
         Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
         Rcpp::Rcerr << "  Growth rate 2 for rule 3 not available!\n";
-        Rcpp::stop("Error from sandia_rules.cpp")
+        Rcpp::stop("Error from sandia_rules.cpp");
       }
       else if ( growth[dim] == 3 )
       {
         Rcpp::Rcerr << "\n";
         Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
         Rcpp::Rcerr << "  Growth rate 3 for rule 3 not available!\n";
-        Rcpp::stop("Error from sandia_rules.cpp")
+        Rcpp::stop("Error from sandia_rules.cpp");
       }
       else if ( growth[dim] == 4 )
       {
@@ -14456,21 +14456,21 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
         Rcpp::Rcerr << "\n";
         Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
         Rcpp::Rcerr << "  Growth rate 1 for rule 10 not available!\n";
-        Rcpp::stop("Error from sandia_rules.cpp")
+        Rcpp::stop("Error from sandia_rules.cpp");
       }
       else if ( growth[dim] == 2 )
       {
         Rcpp::Rcerr << "\n";
         Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
         Rcpp::Rcerr << "  Growth rate 2 for rule 10 not available!\n";
-        Rcpp::stop("Error from sandia_rules.cpp")
+        Rcpp::stop("Error from sandia_rules.cpp");
       }
       else if ( growth[dim] == 3 )
       {
         Rcpp::Rcerr << "\n";
         Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
         Rcpp::Rcerr << "  Growth rate 3 for rule 10 not available!\n";
-        Rcpp::stop("Error from sandia_rules.cpp")
+        Rcpp::stop("Error from sandia_rules.cpp");
       }
       else if ( growth[dim] == 4 )
       {
@@ -14485,7 +14485,7 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
             Rcpp::Rcerr << "\n";
             Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
             Rcpp::Rcerr << "  Hermite Genz-Keister maximum level exceeded.\n";
-            Rcpp::stop("Error from sandia_rules.cpp")
+            Rcpp::stop("Error from sandia_rules.cpp");
           }
           p = p_hgk[l];
           o = o_hgk[l];
@@ -14504,7 +14504,7 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
             Rcpp::Rcerr << "\n";
             Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
             Rcpp::Rcerr << "  Hermite Genz-Keister maximum level exceeded.\n";
-            Rcpp::stop("Error from sandia_rules.cpp")
+            Rcpp::stop("Error from sandia_rules.cpp");
           }
           p = p_hgk[l];
           o = o_hgk[l];
@@ -14519,7 +14519,7 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
           Rcpp::Rcerr << "\n";
           Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
           Rcpp::Rcerr << "  Hermite Genz-Keister maximum level exceeded.\n";
-          Rcpp::stop("Error from sandia_rules.cpp")
+          Rcpp::stop("Error from sandia_rules.cpp");
         }
         o = o_hgk[l];
       }
@@ -14710,7 +14710,7 @@ void level_to_order_default ( int dim_num, int level[], int rule[],
       Rcpp::Rcerr << "LEVEL_TO_ORDER_DEFAULT - Fatal error!\n";
       Rcpp::Rcerr << "  Negative value of LEVEL[DIM]!\n";
       Rcpp::Rcerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
     else if ( rule[dim] == 1 )
     {
@@ -14855,7 +14855,7 @@ void level_to_order_default ( int dim_num, int level[], int rule[],
       Rcpp::Rcerr << "LEVEL_TO_ORDER_DEFAULT - Fatal error!\n";
       Rcpp::Rcerr << "  Unexpected value of RULE["
            << dim << "] = " << rule[dim] << ".\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
   }
   return;
@@ -14938,7 +14938,7 @@ void level_to_order_exponential ( int dim_num, int level[], int rule[],
       Rcpp::Rcerr << "LEVEL_TO_ORDER_EXPONENTIAL - Fatal error!\n";
       Rcpp::Rcerr << "  Negative value of LEVEL[DIM]!\n";
       Rcpp::Rcerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
     else if ( rule[dim] == 1 )
     {
@@ -15035,7 +15035,7 @@ void level_to_order_exponential ( int dim_num, int level[], int rule[],
       Rcpp::Rcerr << "LEVEL_TO_ORDER_EXPONENTIAL - Fatal error!\n";
       Rcpp::Rcerr << "  Unexpected value of RULE["
            << dim << "] = " << rule[dim] << ".\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
   }
   return;
@@ -15163,7 +15163,7 @@ void level_to_order_exponential_slow ( int dim_num, int level[], int rule[],
       Rcpp::Rcerr << "LEVEL_TO_ORDER_EXPONENTIAL_SLOW - Fatal error!\n";
       Rcpp::Rcerr << "  Negative value of LEVEL[DIM]!\n";
       Rcpp::Rcerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
   }
 
@@ -15283,7 +15283,7 @@ void level_to_order_linear ( int dim_num, int level[], int rule[],
       Rcpp::Rcerr << "LEVEL_TO_ORDER_LINEAR - Fatal error!\n";
       Rcpp::Rcerr << "  Negative value of LEVEL[DIM]!\n";
       Rcpp::Rcerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
   }
 
@@ -15406,7 +15406,7 @@ int level_to_order_exp_cc ( int level, int growth )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_CC - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   return o;
 }
@@ -15521,7 +15521,7 @@ int level_to_order_exp_f2 ( int level, int growth )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_F2 - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   return o;
 }
@@ -15634,7 +15634,7 @@ int level_to_order_exp_gauss ( int level, int growth )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_GAUSS - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   return o;
@@ -15718,7 +15718,7 @@ int level_to_order_exp_gp ( int level, int growth )
           Rcpp::Rcerr << "\n";
           Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_GP - Fatal error!\n";
           Rcpp::Rcerr << "  Request for unavailable Patterson rule.\n";
-          Rcpp::stop("Error from sandia_rules.cpp")
+          Rcpp::stop("Error from sandia_rules.cpp");
         }
       }
     }
@@ -15745,7 +15745,7 @@ int level_to_order_exp_gp ( int level, int growth )
           Rcpp::Rcerr << "\n";
           Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_GP - Fatal error!\n";
           Rcpp::Rcerr << "  Request for unavailable Patterson rule.\n";
-          Rcpp::stop("Error from sandia_rules.cpp")
+          Rcpp::stop("Error from sandia_rules.cpp");
         }
       }
     }
@@ -15767,7 +15767,7 @@ int level_to_order_exp_gp ( int level, int growth )
         Rcpp::Rcerr << "\n";
         Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_GP - Fatal error!\n";
         Rcpp::Rcerr << "  Request for unavailable Patterson rule.\n";
-        Rcpp::stop("Error from sandia_rules.cpp")
+        Rcpp::stop("Error from sandia_rules.cpp");
       }
     }
   }
@@ -15776,7 +15776,7 @@ int level_to_order_exp_gp ( int level, int growth )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_GP - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   return o;
@@ -15857,7 +15857,7 @@ int level_to_order_exp_hgk ( int level, int growth )
         Rcpp::Rcerr << "\n";
         Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_HGK - Fatal error!\n";
         Rcpp::Rcerr << "  Hermite Genz-Keister maximum level exceeded.\n";
-        Rcpp::stop("Error from sandia_rules.cpp")
+        Rcpp::stop("Error from sandia_rules.cpp");
       }
       p = p_hgk[l];
       o = o_hgk[l];
@@ -15876,7 +15876,7 @@ int level_to_order_exp_hgk ( int level, int growth )
         Rcpp::Rcerr << "\n";
         Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_HGK - Fatal error!\n";
         Rcpp::Rcerr << "  Hermite Genz-Keister maximum level exceeded.\n";
-        Rcpp::stop("Error from sandia_rules.cpp")
+        Rcpp::stop("Error from sandia_rules.cpp");
       }
       p = p_hgk[l];
       o = o_hgk[l];
@@ -15891,7 +15891,7 @@ int level_to_order_exp_hgk ( int level, int growth )
       Rcpp::Rcerr << "\n";
       Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_HGK - Fatal error!\n";
       Rcpp::Rcerr << "  Hermite Genz-Keister maximum level exceeded.\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
     o = o_hgk[l];
   }
@@ -15900,7 +15900,7 @@ int level_to_order_exp_hgk ( int level, int growth )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_HGK - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   return o;
@@ -15980,7 +15980,7 @@ int level_to_order_linear_nn ( int level, int growth )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "LEVEL_TO_ORDER_LINEAR_NN - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   return o;
 }
@@ -16062,7 +16062,7 @@ int level_to_order_linear_wn ( int level, int growth )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "LEVEL_TO_ORDER_LINEAR_WN - Fatal error!\n";
     Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   return o;
 }
@@ -17766,7 +17766,7 @@ void patterson_lookup_points ( int n, double x[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "PATTERSON_LOOKUP_POINTS - Fatal error!\n";
     Rcpp::Rcerr << "  Unexpected value of N = " << n << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   return;
 }
@@ -18971,7 +18971,7 @@ void patterson_lookup_weights ( int n, double w[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "PATTERSON_LOOKUP_WEIGHTS - Fatal error!\n";
     Rcpp::Rcerr << "  Unexpected value of N = " << n << ".\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
   return;
 }
@@ -20579,7 +20579,7 @@ void product_mixed_weight ( int dim_num, int order_1d[], int order_nd,
       Rcpp::Rcerr << "\n";
       Rcpp::Rcerr << "PRODUCT_MIXED_WEIGHT - Fatal error!\n";
       Rcpp::Rcerr << "  Do not know how to set weights for rule 10.\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
     else if ( rule[dim] == 11 )
     {
@@ -20615,7 +20615,7 @@ void product_mixed_weight ( int dim_num, int order_1d[], int order_nd,
       Rcpp::Rcerr << "PRODUCT_MIXED_WEIGHT - Fatal error!\n";
       Rcpp::Rcerr << "  Unexpected value of RULE[" << dim << "] = "
            << rule[dim] << ".\n";
-      Rcpp::stop("Error from sandia_rules.cpp")
+      Rcpp::stop("Error from sandia_rules.cpp");
     }
 
     webbur::r8vec_direct_product2 ( dim, order_1d[dim], weight_1d,
@@ -21418,7 +21418,7 @@ double r8_hyper_2f1 ( double a, double b, double c, double x )
     Rcpp::Rcerr << "  The hypergeometric series is divergent.\n";
     Rcpp::Rcerr << "  C is integral and negative.\n";
     Rcpp::Rcerr << "  C = " << c << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   if ( l1 )
@@ -21431,7 +21431,7 @@ double r8_hyper_2f1 ( double a, double b, double c, double x )
     Rcpp::Rcerr << "  B = " << b << "\n";
     Rcpp::Rcerr << "  C = " << c << "\n";
     Rcpp::Rcerr << "  X = " << x << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   if ( 0.95 < x )
@@ -22232,7 +22232,7 @@ int r8col_compare ( int m, int n, double a[], int i, int j )
     Rcpp::Rcerr << "R8COL_COMPARE - Fatal error!\n";
     Rcpp::Rcerr << "  Column index I is out of bounds.\n";
     Rcpp::Rcerr << "  I = " << i << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   if ( j < 1 || n < j )
@@ -22241,7 +22241,7 @@ int r8col_compare ( int m, int n, double a[], int i, int j )
     Rcpp::Rcerr << "R8COL_COMPARE - Fatal error!\n";
     Rcpp::Rcerr << "  Column index J is out of bounds.\n";
     Rcpp::Rcerr << "  J = " << j << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   value = 0;
@@ -22664,7 +22664,7 @@ void r8col_swap ( int m, int n, double a[], int j1, int j2 )
     Rcpp::Rcerr << "  J1 =   " << j1 << "\n";
     Rcpp::Rcerr << "  J2 =   " << j2 << "\n";
     Rcpp::Rcerr << "  NCOL = " << n << "\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   if ( j1 == j2 )
@@ -24334,7 +24334,7 @@ int r8vec_indexed_heap_d_extract ( int *n, double a[], int indx[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "R8VEC_INDEXED_HEAP_D_EXTRACT - Fatal error!\n";
     Rcpp::Rcerr << "  The heap is empty.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 //
 //  Get the index of the maximum value.
@@ -25235,7 +25235,7 @@ void r8vec_uniform_01 ( int n, int *seed, double r[] )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "R8VEC_UNIFORM_01 - Fatal error!\n";
     Rcpp::Rcerr << "  Input value of SEED = 0.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   for ( i = 0; i < n; i++ )
@@ -25334,7 +25334,7 @@ double *r8vec_uniform_01_new ( int n, int *seed )
     Rcpp::Rcerr << "\n";
     Rcpp::Rcerr << "R8VEC_UNIFORM_01_NEW - Fatal error!\n";
     Rcpp::Rcerr << "  Input value of SEED = 0.\n";
-    Rcpp::stop("Error from sandia_rules.cpp")
+    Rcpp::stop("Error from sandia_rules.cpp");
   }
 
   r = new double[n];
