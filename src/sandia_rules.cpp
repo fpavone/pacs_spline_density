@@ -5,6 +5,7 @@
 # include <iostream>
 # include <cmath>
 # include <ctime>
+#include <Rcpp.h>
 
 namespace webbur
 {
@@ -465,9 +466,9 @@ void chebyshev1_compute ( int n, double x[], double w[] )
 
   if ( n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "CHEBYSHEV1_COMPUTE - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "CHEBYSHEV1_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     std::exit ( 1 );
   }
 
@@ -591,9 +592,9 @@ void chebyshev1_compute_points ( int n, double x[] )
 
   if ( n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "CHEBYSHEV1_COMPUTE_POINTS - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "CHEBYSHEV1_COMPUTE_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     std::exit ( 1 );
   }
 
@@ -700,9 +701,9 @@ void chebyshev1_compute_weights ( int n, double w[] )
 
   if ( n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "CHEBYSHEV1_COMPUTE_WEIGHTS - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "CHEBYSHEV1_COMPUTE_WEIGHTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     std::exit ( 1 );
   }
 
@@ -879,9 +880,9 @@ void chebyshev2_compute ( int n, double x[], double w[] )
 
   if ( n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "CHEBYSHEV2_COMPUTE - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "CHEBYSHEV2_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     std::exit ( 1 );
   }
 
@@ -1004,9 +1005,9 @@ void chebyshev2_compute_points ( int n, double x[] )
 
   if ( n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "CHEBYSHEV2_COMPUTE_POINTS - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "CHEBYSHEV2_COMPUTE_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     std::exit ( 1 );
   }
 
@@ -1115,9 +1116,9 @@ void chebyshev2_compute_weights ( int n, double w[] )
 
   if ( n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "CHEBYSHEV2_COMPUTE_WEIGHTS - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "CHEBYSHEV2_COMPUTE_WEIGHTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     std::exit ( 1 );
   }
 
@@ -1289,9 +1290,9 @@ void clenshaw_curtis_compute ( int n, double x[], double w[] )
 
   if ( n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "CLENSHAW_CURTIS_COMPUTE - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "CLENSHAW_CURTIS_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     std::exit ( 1 );
   }
   else if ( n == 1 )
@@ -1436,9 +1437,9 @@ void clenshaw_curtis_compute_points ( int n, double x[] )
 
   if ( n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "CLENSHAW_CURTIS_COMPUTE_POINTS - Fatal error!\n";
-    std::cerr << "  N < 1.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "CLENSHAW_CURTIS_COMPUTE_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  N < 1.\n";
     std::exit ( 1 );
   }
   else if ( n == 1 )
@@ -1552,9 +1553,9 @@ void clenshaw_curtis_compute_weights ( int n, double w[] )
 
   if ( n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "CLENSHAW_CURTIS_COMPUTE_WEIGHTS - Fatal error!\n";
-    std::cerr << "  N < 1.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "CLENSHAW_CURTIS_COMPUTE_WEIGHTS - Fatal error!\n";
+    Rcpp::Rcerr << "  N < 1.\n";
     std::exit ( 1 );
   }
   else if ( n == 1 )
@@ -2162,9 +2163,9 @@ void fejer2_compute ( int n, double x[], double w[] )
 
   if ( n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "FEJER2_COMPUTE - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "FEJER2_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     std::exit ( 1 );
   }
   else if ( n == 1 )
@@ -2300,9 +2301,9 @@ void fejer2_compute_points ( int n, double x[] )
 
   if ( n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "FEJER2_COMPUTE_POINTS - Fatal error!\n";
-    std::cerr << "  N < 1.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "FEJER2_COMPUTE_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  N < 1.\n";
     std::exit ( 1 );
   }
   else if ( n == 1 )
@@ -2427,9 +2428,9 @@ void fejer2_compute_weights ( int n, double w[] )
 
   if ( n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "FEJER2_COMPUTE_WEIGHTS - Fatal error!\n";
-    std::cerr << "  N < 1.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "FEJER2_COMPUTE_WEIGHTS - Fatal error!\n";
+    Rcpp::Rcerr << "  N < 1.\n";
     std::exit ( 1 );
   }
   else if ( n == 1 )
@@ -2597,9 +2598,9 @@ void gegenbauer_compute ( int order, double alpha, double x[], double w[] )
 //
   if ( order < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "GEGENBAUER_COMPUTE - Fatal error!\n";
-    std::cerr << "  1 <= ORDER is required.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "GEGENBAUER_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  1 <= ORDER is required.\n";
     std::exit ( 1 );
   }
   c = new double[order];
@@ -2608,9 +2609,9 @@ void gegenbauer_compute ( int order, double alpha, double x[], double w[] )
 //
   if ( alpha <= -1.0 )
   {
-    std::cerr << "\n";
-    std::cerr << "GEGENBAUER_COMPUTE - Fatal error!\n";
-    std::cerr << "  -1.0 < ALPHA is required.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "GEGENBAUER_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  -1.0 < ALPHA is required.\n";
     std::exit ( 1 );
   }
 //
@@ -3601,9 +3602,9 @@ void gen_hermite_dr_compute ( int order, double alpha, double x[], double w[] )
 
   if ( order < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "GEN_HERMITE_DR_COMPUTE - Fatal error!\n";
-    std::cerr << "  Illegal value of ORDER = " << order << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "GEN_HERMITE_DR_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of ORDER = " << order << "\n";
     std::exit ( 1 );
   }
 
@@ -4257,9 +4258,9 @@ void gen_laguerre_ss_compute ( int order, double alpha, double x[], double w[] )
 
   if ( order < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "GEN_LAGUERRE_SS_COMPUTE - Fatal error!\n";
-    std::cerr << "  Illegal value of ORDER = " << order << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "GEN_LAGUERRE_SS_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of ORDER = " << order << "\n";
     std::exit ( 1 );
   }
 
@@ -4684,9 +4685,9 @@ void hcc_compute_points ( int n, double x[] )
 
   if ( ( n % 2 ) != 0 )
   {
-    std::cerr << "\n";
-    std::cerr << "HCC_COMPUTE_POINTS - Fatal error!\n";
-    std::cerr << "  Order of rule N is not even.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "HCC_COMPUTE_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Order of rule N is not even.\n";
     std::exit ( 1 );
   }
 
@@ -4791,9 +4792,9 @@ void hcc_compute_weights ( int n, double w[] )
 
   if ( ( n % 2 ) != 0 )
   {
-    std::cerr << "\n";
-    std::cerr << "HCC_COMPUTE_WEIGHTS - Fatal error!\n";
-    std::cerr << "  Order of rule N is not even.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "HCC_COMPUTE_WEIGHTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Order of rule N is not even.\n";
     std::exit ( 1 );
   }
 
@@ -5009,9 +5010,9 @@ void hce_compute_points ( int n, double x[] )
 
   if ( ( n % 2 ) != 0 )
   {
-    std::cerr << "\n";
-    std::cerr << "HCE_COMPUTE_POINTS - Fatal error!\n";
-    std::cerr << "  Order of rule N is not even.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "HCE_COMPUTE_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Order of rule N is not even.\n";
     std::exit ( 1 );
   }
   m = n / 2;
@@ -5117,9 +5118,9 @@ void hce_compute_weights ( int n, double w[] )
 
   if ( ( n % 2 ) != 0 )
   {
-    std::cerr << "\n";
-    std::cerr << "HCE_COMPUTE_WEIGHTS - Fatal error!\n";
-    std::cerr << "  Order of rule N is not even.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "HCE_COMPUTE_WEIGHTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Order of rule N is not even.\n";
     std::exit ( 1 );
   }
 
@@ -5862,10 +5863,10 @@ void hermite_genz_keister_lookup_points ( int n, double x[] )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "HERMITE_GENZ_KEISTER_LOOKUP_POINTS - Fatal error!\n";
-    std::cerr << "  Illegal input value of N.\n";
-    std::cerr << "  N must be 1, 3, 9, 19, 35, 37, 41 or 43.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "HERMITE_GENZ_KEISTER_LOOKUP_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal input value of N.\n";
+    Rcpp::Rcerr << "  N must be 1, 3, 9, 19, 35, 37, 41 or 43.\n";
     std::exit ( 1 );
   }
   return;
@@ -6242,10 +6243,10 @@ void hermite_genz_keister_lookup_weights ( int n, double w[] )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "HERMITE_GENZ_KEISTER_LOOKUP_WEIGHTS - Fatal error!\n";
-    std::cerr << "  Illegal input value of N.\n";
-    std::cerr << "  N must be 1, 3, 9, 19, 35, 37, 41 or 43.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "HERMITE_GENZ_KEISTER_LOOKUP_WEIGHTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal input value of N.\n";
+    Rcpp::Rcerr << "  N must be 1, 3, 9, 19, 35, 37, 41 or 43.\n";
     std::exit ( 1 );
   }
   return;
@@ -6480,10 +6481,10 @@ void hermite_gk18_lookup_points ( int n, double x[] )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "HERMITE_GK18_LOOKUP_POINTS - Fatal error!\n";
-    std::cerr << "  Illegal input value of N.\n";
-    std::cerr << "  N must be 1, 3, 9, 19, or 37.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "HERMITE_GK18_LOOKUP_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal input value of N.\n";
+    Rcpp::Rcerr << "  N must be 1, 3, 9, 19, or 37.\n";
     std::exit ( 1 );
   }
   return;
@@ -6641,10 +6642,10 @@ void hermite_gk22_lookup_points ( int n, double x[] )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "HERMITE_GK22_LOOKUP_POINTS - Fatal error!\n";
-    std::cerr << "  Illegal input value of N.\n";
-    std::cerr << "  N must be 1, 3, 9, 19, or 41.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "HERMITE_GK22_LOOKUP_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal input value of N.\n";
+    Rcpp::Rcerr << "  N must be 1, 3, 9, 19, or 41.\n";
     std::exit ( 1 );
   }
   return;
@@ -6804,10 +6805,10 @@ void hermite_gk24_lookup_points ( int n, double x[] )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "HERMITE_GK24_LOOKUP_POINTS - Fatal error!\n";
-    std::cerr << "  Illegal input value of N.\n";
-    std::cerr << "  N must be 1, 3, 9, 19, or 43.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "HERMITE_GK24_LOOKUP_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal input value of N.\n";
+    Rcpp::Rcerr << "  N must be 1, 3, 9, 19, or 43.\n";
     std::exit ( 1 );
   }
   return;
@@ -7564,10 +7565,10 @@ void hermite_lookup_points ( int n, double x[] )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "HERMITE_LOOKUP_POINTS - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
-    std::cerr << "  Legal values are 1 through 20.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "HERMITE_LOOKUP_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "  Legal values are 1 through 20.\n";
     std::exit ( 1 );
   }
 
@@ -7923,10 +7924,10 @@ void hermite_lookup_weights ( int n, double w[] )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "HERMITE_LOOKUP_WEIGHTS - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
-    std::cerr << "  Legal values are 1 through 20.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "HERMITE_LOOKUP_WEIGHTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "  Legal values are 1 through 20.\n";
     std::exit ( 1 );
   }
 
@@ -7994,9 +7995,9 @@ void hermite_ss_compute ( int order, double x[], double w[] )
 
   if ( order < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "HERMITE_SS_COMPUTE - Fatal error!\n";
-    std::cerr << "  Illegal value of ORDER = " << order << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "HERMITE_SS_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of ORDER = " << order << "\n";
     std::exit ( 1 );
   }
 
@@ -8463,9 +8464,9 @@ int i4_power ( int i, int j )
     }
     else if ( i == 0 )
     {
-      std::cerr << "\n";
-      std::cerr << "I4_POWER - Fatal error!\n";
-      std::cerr << "  I^J requested, with I = 0 and J negative.\n";
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "I4_POWER - Fatal error!\n";
+      Rcpp::Rcerr << "  I^J requested, with I = 0 and J negative.\n";
       std::exit ( 1 );
     }
     else
@@ -8477,9 +8478,9 @@ int i4_power ( int i, int j )
   {
     if ( i == 0 )
     {
-      std::cerr << "\n";
-      std::cerr << "I4_POWER - Fatal error!\n";
-      std::cerr << "  I^J requested, with I = 0 and J = 0.\n";
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "I4_POWER - Fatal error!\n";
+      Rcpp::Rcerr << "  I^J requested, with I = 0 and J = 0.\n";
       std::exit ( 1 );
     }
     else
@@ -8691,8 +8692,8 @@ void i4mat_transpose_print_some ( int m, int n, int a[], int ilo, int jlo,
   int j2hi;
   int j2lo;
 
-  std::cout << "\n";
-  std::cout << title << "\n";
+  Rcpp::Rcout << "\n";
+  Rcpp::Rcout << title << "\n";
 //
 //  Print the columns of the matrix, in strips of INCX.
 //
@@ -8702,20 +8703,20 @@ void i4mat_transpose_print_some ( int m, int n, int a[], int ilo, int jlo,
     i2hi = webbur::i4_min ( i2hi, m );
     i2hi = webbur::i4_min ( i2hi, ihi );
 
-    std::cout << "\n";
+    Rcpp::Rcout << "\n";
 //
 //  For each row I in the current range...
 //
 //  Write the header.
 //
-    std::cout << "  Row: ";
+    Rcpp::Rcout << "  Row: ";
     for ( i = i2lo; i <= i2hi; i++ )
     {
-      std::cout << std::setw(6) << i - 1 << "  ";
+      Rcpp::Rcout << std::setw(6) << i - 1 << "  ";
     }
-    std::cout << "\n";
-    std::cout << "  Col\n";
-    std::cout << "\n";
+    Rcpp::Rcout << "\n";
+    Rcpp::Rcout << "  Col\n";
+    Rcpp::Rcout << "\n";
 //
 //  Determine the range of the rows in this strip.
 //
@@ -8727,12 +8728,12 @@ void i4mat_transpose_print_some ( int m, int n, int a[], int ilo, int jlo,
 //
 //  Print out (up to INCX) entries in column J, that lie in the current strip.
 //
-      std::cout << std::setw(5) << j - 1 << ":";
+      Rcpp::Rcout << std::setw(5) << j - 1 << ":";
       for ( i = i2lo; i <= i2hi; i++ )
       {
-        std::cout << std::setw(6) << a[i-1+(j-1)*m] << "  ";
+        Rcpp::Rcout << std::setw(6) << a[i-1+(j-1)*m] << "  ";
       }
-      std::cout << "\n";
+      Rcpp::Rcout << "\n";
     }
   }
 
@@ -8782,9 +8783,9 @@ void i4mat_write ( std::string output_filename, int m, int n, int table[] )
 
   if ( !output )
   {
-    std::cerr << "\n";
-    std::cerr << "I4MAT_WRITE - Fatal error!\n";
-    std::cerr << "  Could not open the output file.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "I4MAT_WRITE - Fatal error!\n";
+    Rcpp::Rcerr << "  Could not open the output file.\n";
     return;
   }
 //
@@ -9085,12 +9086,12 @@ void i4vec_print ( int n, int a[], std::string title )
 {
   int i;
 
-  std::cout << "\n";
-  std::cout << title << "\n";
-  std::cout << "\n";
+  Rcpp::Rcout << "\n";
+  Rcpp::Rcout << title << "\n";
+  Rcpp::Rcout << "\n";
   for ( i = 0; i < n; i++ )
   {
-    std::cout << "  " << std::setw(8) << i
+    Rcpp::Rcout << "  " << std::setw(8) << i
               << ": " << std::setw(8) << a[i]  << "\n";
   }
   return;
@@ -9408,9 +9409,9 @@ void imtqlx ( int n, double d[], double e[], double z[] )
       }
       if ( itn <= j )
       {
-        std::cerr << "\n";
-        std::cerr << "IMTQLX - Fatal error!\n";
-        std::cerr << "  Iteration limit exceeded\n";
+        Rcpp::Rcerr << "\n";
+        Rcpp::Rcerr << "IMTQLX - Fatal error!\n";
+        Rcpp::Rcerr << "  Iteration limit exceeded\n";
         std::exit ( 1 );
       }
       j = j + 1;
@@ -10002,9 +10003,9 @@ void jacobi_ss_compute ( int order, double alpha, double beta, double x[],
 
   if ( order < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "JACOBI_SS_COMPUTE - Fatal error!\n";
-    std::cerr << "  Illegal value of ORDER = " << order << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "JACOBI_SS_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of ORDER = " << order << "\n";
     std::exit ( 1 );
   }
 
@@ -10015,17 +10016,17 @@ void jacobi_ss_compute ( int order, double alpha, double beta, double x[],
 //
   if ( alpha <= -1.0 )
   {
-    std::cerr << "\n";
-    std::cerr << "JACOBI_SS_COMPUTE - Fatal error!\n";
-    std::cerr << "  -1.0 < ALPHA is required.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "JACOBI_SS_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  -1.0 < ALPHA is required.\n";
     std::exit ( 1 );
   }
 
   if ( beta <= -1.0 )
   {
-    std::cerr << "\n";
-    std::cerr << "JACOBI_SS_COMPUTE - Fatal error!\n";
-    std::cerr << "  -1.0 < BETA is required.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "JACOBI_SS_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  -1.0 < BETA is required.\n";
     std::exit ( 1 );
   }
 //
@@ -11085,10 +11086,10 @@ void laguerre_lookup_points ( int n, double x[] )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "LAGUERRE_LOOKUP_POINTS - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
-    std::cerr << "  Legal values are 1 through 20.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "LAGUERRE_LOOKUP_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "  Legal values are 1 through 20.\n";
     std::exit ( 1 );
   }
 
@@ -11428,10 +11429,10 @@ void laguerre_lookup_weights ( int n, double w[] )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "LAGUERRE_LOOKUP_WEIGHTS - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
-    std::cerr << "  Legal values are 1 through 20.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "LAGUERRE_LOOKUP_WEIGHTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "  Legal values are 1 through 20.\n";
     std::exit ( 1 );
   }
 
@@ -11508,9 +11509,9 @@ void laguerre_ss_compute ( int order, double x[], double w[] )
 
   if ( order < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "LAGUERRE_COMPUTE - Fatal error!\n";
-    std::cerr << "  Illegal value of ORDER = " << order << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "LAGUERRE_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of ORDER = " << order << "\n";
     std::exit ( 1 );
   }
 
@@ -12104,9 +12105,9 @@ void legendre_dr_compute ( int n, double x[], double w[] )
 
   if ( n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "LEGENDRE_DR_COMPUTE - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "LEGENDRE_DR_COMPUTE - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
     std::exit ( 1 );
   }
 
@@ -13042,10 +13043,10 @@ void legendre_lookup_points ( int n, double x[] )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "LEGENDRE_LOOKUP_POINTS - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
-    std::cerr << "  Legal values are 1 through 33.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "LEGENDRE_LOOKUP_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "  Legal values are 1 through 33.\n";
     std::exit ( 1 );
   }
   return;
@@ -13775,10 +13776,10 @@ void legendre_lookup_weights ( int n, double w[] )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "LEGENDRE_LOOKUP_WEIGHTS - Fatal error!\n";
-    std::cerr << "  Illegal value of N = " << n << "\n";
-    std::cerr << "  Legal values are 1 through 33.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "LEGENDRE_LOOKUP_WEIGHTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of N = " << n << "\n";
+    Rcpp::Rcerr << "  Legal values are 1 through 33.\n";
     std::exit ( 1 );
   }
   return;
@@ -14014,28 +14015,28 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
   {
     if ( level[dim] < 0 )
     {
-      std::cerr << "\n";
-      std::cerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
-      std::cerr << "  Negative value of LEVEL[DIM]!\n";
-      std::cerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
+      Rcpp::Rcerr << "  Negative value of LEVEL[DIM]!\n";
+      Rcpp::Rcerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
       std::exit ( 1 );
     }
 
     if ( rule[dim] < 1 || 12 < rule[dim] )
     {
-      std::cerr << "\n";
-      std::cerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
-      std::cerr << "  Illegal value of RULE[DIM]!\n";
-      std::cerr << "  RULE[" << dim << "] = " << rule[dim] << "\n";
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
+      Rcpp::Rcerr << "  Illegal value of RULE[DIM]!\n";
+      Rcpp::Rcerr << "  RULE[" << dim << "] = " << rule[dim] << "\n";
       std::exit ( 1 );
     }
 
     if ( growth[dim] < 0 || 6 < growth[dim] )
     {
-      std::cerr << "\n";
-      std::cerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
-      std::cerr << "  Illegal value of GROWTH[DIM]!\n";
-      std::cerr << "  GROWTH[" << dim << "] = " << growth[dim] << "\n";
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
+      Rcpp::Rcerr << "  Illegal value of GROWTH[DIM]!\n";
+      Rcpp::Rcerr << "  GROWTH[" << dim << "] = " << growth[dim] << "\n";
       std::exit ( 1 );
     }
   }
@@ -14151,23 +14152,23 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
     {
       if ( growth[dim] == 1 )
       {
-        std::cerr << "\n";
-        std::cerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
-        std::cerr << "  Growth rate 1 for rule 3 not available!\n";
+        Rcpp::Rcerr << "\n";
+        Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
+        Rcpp::Rcerr << "  Growth rate 1 for rule 3 not available!\n";
         std::exit ( 1 );
       }
       else if ( growth[dim] == 2 )
       {
-        std::cerr << "\n";
-        std::cerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
-        std::cerr << "  Growth rate 2 for rule 3 not available!\n";
+        Rcpp::Rcerr << "\n";
+        Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
+        Rcpp::Rcerr << "  Growth rate 2 for rule 3 not available!\n";
         std::exit ( 1 );
       }
       else if ( growth[dim] == 3 )
       {
-        std::cerr << "\n";
-        std::cerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
-        std::cerr << "  Growth rate 3 for rule 3 not available!\n";
+        Rcpp::Rcerr << "\n";
+        Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
+        Rcpp::Rcerr << "  Growth rate 3 for rule 3 not available!\n";
         std::exit ( 1 );
       }
       else if ( growth[dim] == 4 )
@@ -14452,23 +14453,23 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
     {
       if ( growth[dim] == 1 )
       {
-        std::cerr << "\n";
-        std::cerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
-        std::cerr << "  Growth rate 1 for rule 10 not available!\n";
+        Rcpp::Rcerr << "\n";
+        Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
+        Rcpp::Rcerr << "  Growth rate 1 for rule 10 not available!\n";
         std::exit ( 1 );
       }
       else if ( growth[dim] == 2 )
       {
-        std::cerr << "\n";
-        std::cerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
-        std::cerr << "  Growth rate 2 for rule 10 not available!\n";
+        Rcpp::Rcerr << "\n";
+        Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
+        Rcpp::Rcerr << "  Growth rate 2 for rule 10 not available!\n";
         std::exit ( 1 );
       }
       else if ( growth[dim] == 3 )
       {
-        std::cerr << "\n";
-        std::cerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
-        std::cerr << "  Growth rate 3 for rule 10 not available!\n";
+        Rcpp::Rcerr << "\n";
+        Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
+        Rcpp::Rcerr << "  Growth rate 3 for rule 10 not available!\n";
         std::exit ( 1 );
       }
       else if ( growth[dim] == 4 )
@@ -14481,9 +14482,9 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
           l = l + 1;
           if ( 5 < l )
           {
-            std::cerr << "\n";
-            std::cerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
-            std::cerr << "  Hermite Genz-Keister maximum level exceeded.\n";
+            Rcpp::Rcerr << "\n";
+            Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
+            Rcpp::Rcerr << "  Hermite Genz-Keister maximum level exceeded.\n";
             std::exit ( 1 );
           }
           p = p_hgk[l];
@@ -14500,9 +14501,9 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
           l = l + 1;
           if ( 5 < l )
           {
-            std::cerr << "\n";
-            std::cerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
-            std::cerr << "  Hermite Genz-Keister maximum level exceeded.\n";
+            Rcpp::Rcerr << "\n";
+            Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
+            Rcpp::Rcerr << "  Hermite Genz-Keister maximum level exceeded.\n";
             std::exit ( 1 );
           }
           p = p_hgk[l];
@@ -14515,9 +14516,9 @@ void level_growth_to_order ( int dim_num, int level[], int rule[],
         l = webbur::i4_max ( l, 0 );
         if ( 5 < l )
         {
-          std::cerr << "\n";
-          std::cerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
-          std::cerr << "  Hermite Genz-Keister maximum level exceeded.\n";
+          Rcpp::Rcerr << "\n";
+          Rcpp::Rcerr << "LEVEL_GROWTH_TO_ORDER - Fatal error!\n";
+          Rcpp::Rcerr << "  Hermite Genz-Keister maximum level exceeded.\n";
           std::exit ( 1 );
         }
         o = o_hgk[l];
@@ -14705,10 +14706,10 @@ void level_to_order_default ( int dim_num, int level[], int rule[],
   {
     if ( level[dim] < 0 )
     {
-      std::cerr << "\n";
-      std::cerr << "LEVEL_TO_ORDER_DEFAULT - Fatal error!\n";
-      std::cerr << "  Negative value of LEVEL[DIM]!\n";
-      std::cerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "LEVEL_TO_ORDER_DEFAULT - Fatal error!\n";
+      Rcpp::Rcerr << "  Negative value of LEVEL[DIM]!\n";
+      Rcpp::Rcerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
       std::exit ( 1 );
     }
     else if ( rule[dim] == 1 )
@@ -14850,9 +14851,9 @@ void level_to_order_default ( int dim_num, int level[], int rule[],
     }
     else
     {
-      std::cerr << "\n";
-      std::cerr << "LEVEL_TO_ORDER_DEFAULT - Fatal error!\n";
-      std::cerr << "  Unexpected value of RULE["
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "LEVEL_TO_ORDER_DEFAULT - Fatal error!\n";
+      Rcpp::Rcerr << "  Unexpected value of RULE["
            << dim << "] = " << rule[dim] << ".\n";
       std::exit ( 1 );
     }
@@ -14933,10 +14934,10 @@ void level_to_order_exponential ( int dim_num, int level[], int rule[],
   {
     if ( level[dim] < 0 )
     {
-      std::cerr << "\n";
-      std::cerr << "LEVEL_TO_ORDER_EXPONENTIAL - Fatal error!\n";
-      std::cerr << "  Negative value of LEVEL[DIM]!\n";
-      std::cerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "LEVEL_TO_ORDER_EXPONENTIAL - Fatal error!\n";
+      Rcpp::Rcerr << "  Negative value of LEVEL[DIM]!\n";
+      Rcpp::Rcerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
       std::exit ( 1 );
     }
     else if ( rule[dim] == 1 )
@@ -15030,9 +15031,9 @@ void level_to_order_exponential ( int dim_num, int level[], int rule[],
     }
     else
     {
-      std::cerr << "\n";
-      std::cerr << "LEVEL_TO_ORDER_EXPONENTIAL - Fatal error!\n";
-      std::cerr << "  Unexpected value of RULE["
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "LEVEL_TO_ORDER_EXPONENTIAL - Fatal error!\n";
+      Rcpp::Rcerr << "  Unexpected value of RULE["
            << dim << "] = " << rule[dim] << ".\n";
       std::exit ( 1 );
     }
@@ -15158,10 +15159,10 @@ void level_to_order_exponential_slow ( int dim_num, int level[], int rule[],
   {
     if ( level[dim] < 0 )
     {
-      std::cerr << "\n";
-      std::cerr << "LEVEL_TO_ORDER_EXPONENTIAL_SLOW - Fatal error!\n";
-      std::cerr << "  Negative value of LEVEL[DIM]!\n";
-      std::cerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "LEVEL_TO_ORDER_EXPONENTIAL_SLOW - Fatal error!\n";
+      Rcpp::Rcerr << "  Negative value of LEVEL[DIM]!\n";
+      Rcpp::Rcerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
       std::exit ( 1 );
     }
   }
@@ -15278,10 +15279,10 @@ void level_to_order_linear ( int dim_num, int level[], int rule[],
   {
     if ( level[dim] < 0 )
     {
-      std::cerr << "\n";
-      std::cerr << "LEVEL_TO_ORDER_LINEAR - Fatal error!\n";
-      std::cerr << "  Negative value of LEVEL[DIM]!\n";
-      std::cerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "LEVEL_TO_ORDER_LINEAR - Fatal error!\n";
+      Rcpp::Rcerr << "  Negative value of LEVEL[DIM]!\n";
+      Rcpp::Rcerr << "  LEVEL[" << dim << "] = " << level[dim] << "\n";
       std::exit ( 1 );
     }
   }
@@ -15402,9 +15403,9 @@ int level_to_order_exp_cc ( int level, int growth )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "LEVEL_TO_ORDER_EXP_CC - Fatal error!\n";
-    std::cerr << "  Illegal value of GROWTH = " << growth << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_CC - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
     std::exit ( 1 );
   }
   return o;
@@ -15517,9 +15518,9 @@ int level_to_order_exp_f2 ( int level, int growth )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "LEVEL_TO_ORDER_EXP_F2 - Fatal error!\n";
-    std::cerr << "  Illegal value of GROWTH = " << growth << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_F2 - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
     std::exit ( 1 );
   }
   return o;
@@ -15630,9 +15631,9 @@ int level_to_order_exp_gauss ( int level, int growth )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "LEVEL_TO_ORDER_EXP_GAUSS - Fatal error!\n";
-    std::cerr << "  Illegal value of GROWTH = " << growth << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_GAUSS - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
     std::exit ( 1 );
   }
 
@@ -15714,9 +15715,9 @@ int level_to_order_exp_gp ( int level, int growth )
         o = 2 * o + 1;
         if ( 511 < o )
         {
-          std::cerr << "\n";
-          std::cerr << "LEVEL_TO_ORDER_EXP_GP - Fatal error!\n";
-          std::cerr << "  Request for unavailable Patterson rule.\n";
+          Rcpp::Rcerr << "\n";
+          Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_GP - Fatal error!\n";
+          Rcpp::Rcerr << "  Request for unavailable Patterson rule.\n";
           std::exit ( 1 );
         }
       }
@@ -15741,9 +15742,9 @@ int level_to_order_exp_gp ( int level, int growth )
         o = 2 * o + 1;
         if ( 511 < o )
         {
-          std::cerr << "\n";
-          std::cerr << "LEVEL_TO_ORDER_EXP_GP - Fatal error!\n";
-          std::cerr << "  Request for unavailable Patterson rule.\n";
+          Rcpp::Rcerr << "\n";
+          Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_GP - Fatal error!\n";
+          Rcpp::Rcerr << "  Request for unavailable Patterson rule.\n";
           std::exit ( 1 );
         }
       }
@@ -15763,18 +15764,18 @@ int level_to_order_exp_gp ( int level, int growth )
       o = webbur::i4_power ( 2, level + 1 ) - 1;
       if ( 511 < o )
       {
-        std::cerr << "\n";
-        std::cerr << "LEVEL_TO_ORDER_EXP_GP - Fatal error!\n";
-        std::cerr << "  Request for unavailable Patterson rule.\n";
+        Rcpp::Rcerr << "\n";
+        Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_GP - Fatal error!\n";
+        Rcpp::Rcerr << "  Request for unavailable Patterson rule.\n";
         std::exit ( 1 );
       }
     }
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "LEVEL_TO_ORDER_EXP_GP - Fatal error!\n";
-    std::cerr << "  Illegal value of GROWTH = " << growth << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_GP - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
     std::exit ( 1 );
   }
 
@@ -15853,9 +15854,9 @@ int level_to_order_exp_hgk ( int level, int growth )
       l = l + 1;
       if ( 5 < l )
       {
-        std::cerr << "\n";
-        std::cerr << "LEVEL_TO_ORDER_EXP_HGK - Fatal error!\n";
-        std::cerr << "  Hermite Genz-Keister maximum level exceeded.\n";
+        Rcpp::Rcerr << "\n";
+        Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_HGK - Fatal error!\n";
+        Rcpp::Rcerr << "  Hermite Genz-Keister maximum level exceeded.\n";
         std::exit ( 1 );
       }
       p = p_hgk[l];
@@ -15872,9 +15873,9 @@ int level_to_order_exp_hgk ( int level, int growth )
       l = l + 1;
       if ( 5 < l )
       {
-        std::cerr << "\n";
-        std::cerr << "LEVEL_TO_ORDER_EXP_HGK - Fatal error!\n";
-        std::cerr << "  Hermite Genz-Keister maximum level exceeded.\n";
+        Rcpp::Rcerr << "\n";
+        Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_HGK - Fatal error!\n";
+        Rcpp::Rcerr << "  Hermite Genz-Keister maximum level exceeded.\n";
         std::exit ( 1 );
       }
       p = p_hgk[l];
@@ -15887,18 +15888,18 @@ int level_to_order_exp_hgk ( int level, int growth )
     l = webbur::i4_max ( l, 0 );
     if ( 5 < l )
     {
-      std::cerr << "\n";
-      std::cerr << "LEVEL_TO_ORDER_EXP_HGK - Fatal error!\n";
-      std::cerr << "  Hermite Genz-Keister maximum level exceeded.\n";
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_HGK - Fatal error!\n";
+      Rcpp::Rcerr << "  Hermite Genz-Keister maximum level exceeded.\n";
       std::exit ( 1 );
     }
     o = o_hgk[l];
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "LEVEL_TO_ORDER_EXP_HGK - Fatal error!\n";
-    std::cerr << "  Illegal value of GROWTH = " << growth << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "LEVEL_TO_ORDER_EXP_HGK - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
     std::exit ( 1 );
   }
 
@@ -15976,9 +15977,9 @@ int level_to_order_linear_nn ( int level, int growth )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "LEVEL_TO_ORDER_LINEAR_NN - Fatal error!\n";
-    std::cerr << "  Illegal value of GROWTH = " << growth << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "LEVEL_TO_ORDER_LINEAR_NN - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
     std::exit ( 1 );
   }
   return o;
@@ -16058,9 +16059,9 @@ int level_to_order_linear_wn ( int level, int growth )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "LEVEL_TO_ORDER_LINEAR_WN - Fatal error!\n";
-    std::cerr << "  Illegal value of GROWTH = " << growth << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "LEVEL_TO_ORDER_LINEAR_WN - Fatal error!\n";
+    Rcpp::Rcerr << "  Illegal value of GROWTH = " << growth << "\n";
     std::exit ( 1 );
   }
   return o;
@@ -17762,9 +17763,9 @@ void patterson_lookup_points ( int n, double x[] )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "PATTERSON_LOOKUP_POINTS - Fatal error!\n";
-    std::cerr << "  Unexpected value of N = " << n << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "PATTERSON_LOOKUP_POINTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Unexpected value of N = " << n << "\n";
     std::exit ( 1 );
   }
   return;
@@ -18967,9 +18968,9 @@ void patterson_lookup_weights ( int n, double w[] )
   }
   else
   {
-    std::cerr << "\n";
-    std::cerr << "PATTERSON_LOOKUP_WEIGHTS - Fatal error!\n";
-    std::cerr << "  Unexpected value of N = " << n << ".\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "PATTERSON_LOOKUP_WEIGHTS - Fatal error!\n";
+    Rcpp::Rcerr << "  Unexpected value of N = " << n << ".\n";
     std::exit ( 1 );
   }
   return;
@@ -20575,9 +20576,9 @@ void product_mixed_weight ( int dim_num, int order_1d[], int order_nd,
     }
     else if ( rule[dim] == 10 )
     {
-      std::cerr << "\n";
-      std::cerr << "PRODUCT_MIXED_WEIGHT - Fatal error!\n";
-      std::cerr << "  Do not know how to set weights for rule 10.\n";
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "PRODUCT_MIXED_WEIGHT - Fatal error!\n";
+      Rcpp::Rcerr << "  Do not know how to set weights for rule 10.\n";
       std::exit ( 1 );
     }
     else if ( rule[dim] == 11 )
@@ -20610,9 +20611,9 @@ void product_mixed_weight ( int dim_num, int order_1d[], int order_nd,
     }
     else
     {
-      std::cerr << "\n";
-      std::cerr << "PRODUCT_MIXED_WEIGHT - Fatal error!\n";
-      std::cerr << "  Unexpected value of RULE[" << dim << "] = "
+      Rcpp::Rcerr << "\n";
+      Rcpp::Rcerr << "PRODUCT_MIXED_WEIGHT - Fatal error!\n";
+      Rcpp::Rcerr << "  Unexpected value of RULE[" << dim << "] = "
            << rule[dim] << ".\n";
       std::exit ( 1 );
     }
@@ -21412,24 +21413,24 @@ double r8_hyper_2f1 ( double a, double b, double c, double x )
 
   if ( l0 )
   {
-    std::cerr << "\n";
-    std::cerr << "R8_HYPER_2F1 - Fatal error!\n";
-    std::cerr << "  The hypergeometric series is divergent.\n";
-    std::cerr << "  C is integral and negative.\n";
-    std::cerr << "  C = " << c << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "R8_HYPER_2F1 - Fatal error!\n";
+    Rcpp::Rcerr << "  The hypergeometric series is divergent.\n";
+    Rcpp::Rcerr << "  C is integral and negative.\n";
+    Rcpp::Rcerr << "  C = " << c << "\n";
     std::exit ( 1 );
   }
 
   if ( l1 )
   {
-    std::cerr << "\n";
-    std::cerr << "R8_HYPER_2F1 - Fatal error!\n";
-    std::cerr << "  The hypergeometric series is divergent.\n";
-    std::cerr << "  1 - X < 0, C - A - B <= 0\n";
-    std::cerr << "  A = " << a << "\n";
-    std::cerr << "  B = " << b << "\n";
-    std::cerr << "  C = " << c << "\n";
-    std::cerr << "  X = " << x << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "R8_HYPER_2F1 - Fatal error!\n";
+    Rcpp::Rcerr << "  The hypergeometric series is divergent.\n";
+    Rcpp::Rcerr << "  1 - X < 0, C - A - B <= 0\n";
+    Rcpp::Rcerr << "  A = " << a << "\n";
+    Rcpp::Rcerr << "  B = " << b << "\n";
+    Rcpp::Rcerr << "  C = " << c << "\n";
+    Rcpp::Rcerr << "  X = " << x << "\n";
     std::exit ( 1 );
   }
 
@@ -21745,10 +21746,10 @@ double r8_hyper_2f1 ( double a, double b, double c, double x )
 
   if ( 120 < k )
   {
-    std::cerr << "\n";
-    std::cerr << "R8_HYPER_2F1 - Warning!\n";
-    std::cerr << "  A large number of iterations were needed.\n";
-    std::cerr << "  The accuracy of the results should be checked.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "R8_HYPER_2F1 - Warning!\n";
+    Rcpp::Rcerr << "  A large number of iterations were needed.\n";
+    Rcpp::Rcerr << "  The accuracy of the results should be checked.\n";
   }
 
   return hf;
@@ -22227,19 +22228,19 @@ int r8col_compare ( int m, int n, double a[], int i, int j )
 //
   if ( i < 1 || n < i )
   {
-    std::cerr << "\n";
-    std::cerr << "R8COL_COMPARE - Fatal error!\n";
-    std::cerr << "  Column index I is out of bounds.\n";
-    std::cerr << "  I = " << i << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "R8COL_COMPARE - Fatal error!\n";
+    Rcpp::Rcerr << "  Column index I is out of bounds.\n";
+    Rcpp::Rcerr << "  I = " << i << "\n";
     std::exit ( 1 );
   }
 
   if ( j < 1 || n < j )
   {
-    std::cerr << "\n";
-    std::cerr << "R8COL_COMPARE - Fatal error!\n";
-    std::cerr << "  Column index J is out of bounds.\n";
-    std::cerr << "  J = " << j << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "R8COL_COMPARE - Fatal error!\n";
+    Rcpp::Rcerr << "  Column index J is out of bounds.\n";
+    Rcpp::Rcerr << "  J = " << j << "\n";
     std::exit ( 1 );
   }
 
@@ -22657,12 +22658,12 @@ void r8col_swap ( int m, int n, double a[], int j1, int j2 )
 
   if ( j1 < 1 || n < j1 || j2 < 1 || n < j2 )
   {
-    std::cerr << "\n";
-    std::cerr << "R8COL_SWAP - Fatal error!\n";
-    std::cerr << "  J1 or J2 is out of bounds.\n";
-    std::cerr << "  J1 =   " << j1 << "\n";
-    std::cerr << "  J2 =   " << j2 << "\n";
-    std::cerr << "  NCOL = " << n << "\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "R8COL_SWAP - Fatal error!\n";
+    Rcpp::Rcerr << "  J1 or J2 is out of bounds.\n";
+    Rcpp::Rcerr << "  J1 =   " << j1 << "\n";
+    Rcpp::Rcerr << "  J2 =   " << j2 << "\n";
+    Rcpp::Rcerr << "  NCOL = " << n << "\n";
     std::exit ( 1 );
   }
 
@@ -23277,8 +23278,8 @@ void r8mat_transpose_print_some ( int m, int n, double a[], int ilo, int jlo,
   int j2hi;
   int j2lo;
 
-  std::cout << "\n";
-  std::cout << title << "\n";
+  Rcpp::Rcout << "\n";
+  Rcpp::Rcout << title << "\n";
 
   for ( i2lo = i4_max ( ilo, 1 ); i2lo <= i4_min ( ihi, m ); i2lo = i2lo + INCX )
   {
@@ -23288,28 +23289,28 @@ void r8mat_transpose_print_some ( int m, int n, double a[], int ilo, int jlo,
 
     inc = i2hi + 1 - i2lo;
 
-    std::cout << "\n";
-    std::cout << "  Row: ";
+    Rcpp::Rcout << "\n";
+    Rcpp::Rcout << "  Row: ";
     for ( i = i2lo; i <= i2hi; i++ )
     {
-      std::cout << std::setw(7) << i - 1 << "       ";
+      Rcpp::Rcout << std::setw(7) << i - 1 << "       ";
     }
-    std::cout << "\n";
-    std::cout << "  Col\n";
-    std::cout << "\n";
+    Rcpp::Rcout << "\n";
+    Rcpp::Rcout << "  Col\n";
+    Rcpp::Rcout << "\n";
 
     j2lo = i4_max ( jlo, 1 );
     j2hi = i4_min ( jhi, n );
 
     for ( j = j2lo; j <= j2hi; j++ )
     {
-      std::cout << std::setw(5) << j - 1 << ":";
+      Rcpp::Rcout << std::setw(5) << j - 1 << ":";
       for ( i2 = 1; i2 <= inc; i2++ )
       {
         i = i2lo - 1 + i2;
-        std::cout << std::setw(14) << a[(i-1)+(j-1)*m];
+        Rcpp::Rcout << std::setw(14) << a[(i-1)+(j-1)*m];
       }
-      std::cout << "\n";
+      Rcpp::Rcout << "\n";
     }
   }
 
@@ -23359,9 +23360,9 @@ void r8mat_write ( std::string output_filename, int m, int n, double table[] )
 
   if ( !output )
   {
-    std::cerr << "\n";
-    std::cerr << "R8MAT_WRITE - Fatal error!\n";
-    std::cerr << "  Could not open the output file.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "R8MAT_WRITE - Fatal error!\n";
+    Rcpp::Rcerr << "  Could not open the output file.\n";
     return;
   }
 //
@@ -24330,9 +24331,9 @@ int r8vec_indexed_heap_d_extract ( int *n, double a[], int indx[] )
 
   if ( *n < 1 )
   {
-    std::cerr << "\n";
-    std::cerr << "R8VEC_INDEXED_HEAP_D_EXTRACT - Fatal error!\n";
-    std::cerr << "  The heap is empty.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "R8VEC_INDEXED_HEAP_D_EXTRACT - Fatal error!\n";
+    Rcpp::Rcerr << "  The heap is empty.\n";
     std::exit ( 1 );
   }
 //
@@ -24736,12 +24737,12 @@ void r8vec_print ( int n, double a[], std::string title )
 {
   int i;
 
-  std::cout << "\n";
-  std::cout << title << "\n";
-  std::cout << "\n";
+  Rcpp::Rcout << "\n";
+  Rcpp::Rcout << title << "\n";
+  Rcpp::Rcout << "\n";
   for ( i = 0; i < n; i++ )
   {
-    std::cout << "  " << std::setw(8)  << i
+    Rcpp::Rcout << "  " << std::setw(8)  << i
               << ": " << std::setw(14) << a[i]  << "\n";
   }
 
@@ -25231,9 +25232,9 @@ void r8vec_uniform_01 ( int n, int *seed, double r[] )
 
   if ( *seed == 0 )
   {
-    std::cerr << "\n";
-    std::cerr << "R8VEC_UNIFORM_01 - Fatal error!\n";
-    std::cerr << "  Input value of SEED = 0.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "R8VEC_UNIFORM_01 - Fatal error!\n";
+    Rcpp::Rcerr << "  Input value of SEED = 0.\n";
     std::exit ( 1 );
   }
 
@@ -25330,9 +25331,9 @@ double *r8vec_uniform_01_new ( int n, int *seed )
 
   if ( *seed == 0 )
   {
-    std::cerr << "\n";
-    std::cerr << "R8VEC_UNIFORM_01_NEW - Fatal error!\n";
-    std::cerr << "  Input value of SEED = 0.\n";
+    Rcpp::Rcerr << "\n";
+    Rcpp::Rcerr << "R8VEC_UNIFORM_01_NEW - Fatal error!\n";
+    Rcpp::Rcerr << "  Input value of SEED = 0.\n";
     std::exit ( 1 );
   }
 
@@ -25629,7 +25630,7 @@ void timestamp ( )
 
   len = std::strftime ( time_buffer, TIME_SIZE, "%d %B %Y %I:%M:%S %p", tm_ptr );
 
-  std::cout << time_buffer << "\n";
+  Rcpp::Rcout << time_buffer << "\n";
 
   return;
 # undef TIME_SIZE

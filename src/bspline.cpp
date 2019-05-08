@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include <Rcpp.h>
 
 // Find the knot span of the parametric point t.
 //
@@ -30,7 +31,7 @@ bspline::findspan
 	unsigned int ret = 0;
 	if (t > U[U.size () - 1] || t < U[0])
 	{
-		std::cerr << "Value " << t
+		Rcpp::Rcerr << "Value " << t
 	            << " of t is outside the knot span by "
 	            << U[U.size () - 1] - t << "\n";
 	    exit(EXIT_FAILURE);

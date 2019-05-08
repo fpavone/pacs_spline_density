@@ -5,6 +5,7 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
+#include <Rcpp.h>
 #include "zeros.h"
 #include "density_estimation.h"
 #include "classData.h"
@@ -154,7 +155,7 @@ dataManager::compute_fvalue
   long double res = 0.0;
   unsigned int n = vec1.size();
   if(vec2.size() != n){
-    std::cerr << "Error in compute_fvalue function. Check dimensions of the vectors.."
+    Rcpp::Rcerr << "Error in compute_fvalue function. Check dimensions of the vectors.."
               << std::endl;
     exit(1);
   }

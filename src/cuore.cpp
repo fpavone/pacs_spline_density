@@ -130,16 +130,16 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
       {
         #pragma omp critical
         {
-          std::cout << "[";
+          Rcpp::Rcout << "[";
           pos = barWidth * (double)count/nrow;
           for (int j = 0; j < barWidth; ++j)
           {
-            if (j < pos) std::cout << "=";
-            else if (j == pos) std::cout << ">";
-            else std::cout << " ";
+            if (j < pos) Rcpp::Rcout << "=";
+            else if (j == pos) Rcpp::Rcout << ">";
+            else Rcpp::Rcout << " ";
           }
-          std::cout << "] " << int((double)count/(nrow-1) * 100.0) << "%\r";
-          std::cout.flush();
+          Rcpp::Rcout << "] " << int((double)count/(nrow-1) * 100.0) << "%\r";
+          Rcpp::Rcout.flush();
           count++;
         }
       }
@@ -152,7 +152,7 @@ SEXP smoothingSplines_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP Xcp_, SEX
                              Named("Xcp") = Xcp_,
                              Named("NumPoints") = numPoints_);
   t1.stop();
-  std::cout << "\nIt took "<< t1.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  Rcpp::Rcout << "\nIt took "<< t1.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
 
 
   return wrap(result);
@@ -298,7 +298,7 @@ SEXP smoothingSplinesValidation_(SEXP k_, SEXP l_, SEXP alpha_, SEXP data_, SEXP
 
 
   t.stop();
-  std::cout << "\nIt took "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
+  Rcpp::Rcout << "\nIt took "<< t.elapsed<std::chrono::milliseconds>() <<" milliseconds. " << std::endl;
 
   return wrap(result);
 };

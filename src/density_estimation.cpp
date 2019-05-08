@@ -246,8 +246,8 @@ densityEstimator::solve
     }
     default:   // case > 2
     {
-      std::cout << "\n WARNING: kernel dimension of the problem exceeds 2," << '\n';
-      std::cout << " using Andrey Tychonoff regularization.." << '\n';
+      Rcpp::Rcout << "\n WARNING: kernel dimension of the problem exceeds 2," << '\n';
+      Rcpp::Rcout << " using Andrey Tychonoff regularization.." << '\n';
       double tychlambda2 = 0.01;
       solverQR.compute(P.transpose()*P + tychlambda2*Eigen::MatrixXd::Identity(G,G));
       c = solverQR.solve(P.transpose()*p);
@@ -258,7 +258,7 @@ densityEstimator::solve
   relative_error = (P*c - p).norm() / p.norm(); // norm() is L2 norm
 
   if(relative_error > tol)
-    std::cout << "\n WARNING: found least-square solution..." << std::endl;
+    Rcpp::Rcout << "\n WARNING: found least-square solution..." << std::endl;
   /*
     Least-square solution: we look for a solution in the col space projecting the b (in Ax=b)
   */
@@ -271,17 +271,17 @@ void
 densityEstimator::print_all
 () const
 {
-    std::cout << "MATRIX C:" << '\n' << C << std::endl;
-    std::cout << "MATRIX M:" << '\n' << M << std::endl;
-    std::cout << "MATRIX DK:" << '\n' << Eigen::MatrixXd(DK) << std::endl;
-    std::cout << "MATRIX W:" << '\n' << Eigen::MatrixXd(weights.asDiagonal()) << std::endl;
-    std::cout << "\n Matrix P: " << '\n' << P << '\n';
+    Rcpp::Rcout << "MATRIX C:" << '\n' << C << std::endl;
+    Rcpp::Rcout << "MATRIX M:" << '\n' << M << std::endl;
+    Rcpp::Rcout << "MATRIX DK:" << '\n' << Eigen::MatrixXd(DK) << std::endl;
+    Rcpp::Rcout << "MATRIX W:" << '\n' << Eigen::MatrixXd(weights.asDiagonal()) << std::endl;
+    Rcpp::Rcout << "\n Matrix P: " << '\n' << P << '\n';
 }
 
 void
 densityEstimator::print_sol
 () const
 {
-  std::cout << "\n Matrix P: " << '\n' << P << '\n';
-  std::cout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
+  Rcpp::Rcout << "\n Matrix P: " << '\n' << P << '\n';
+  Rcpp::Rcout << "SOLUTION c = P^(-)p:" << '\n' << c << '\n';
 };
