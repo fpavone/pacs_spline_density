@@ -16,7 +16,7 @@ LinkingTo: Rcpp,
 	         RcppEigen
 NeedsCompilation: yes
 SystemRequirements: C++11
-License: What license is it under?
+License: GPL-2
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
