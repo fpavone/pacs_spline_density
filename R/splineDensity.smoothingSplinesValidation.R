@@ -17,23 +17,23 @@
 #' discretized distributional data, using B-spline basis functions, for different \code{alpha}. \cr
 #' Comparing and choosing an appropriate \code{alpha} is the ultimate goal.
 #' @details See \code{\link{smoothSplines}} for the description of the algorithm.
-#' @references J. Machalova, K. Hron & G.S. Monti (2016): 
-#' Preprocessing of centred logratio transformed density functions 
+#' @references J. Machalova, K. Hron & G.S. Monti (2016):
+#' Preprocessing of centred logratio transformed density functions
 #' using smoothing splines. Journal of Applied Statistics, 43:8, 1419-1435.
 #' @examples
 #' SepalLengthCm <- iris$Sepal.Length
 #' Species <- iris$Species
-#' 
+#'
 #' iris1 <- SepalLengthCm[iris$Species==levels(iris$Species)[1]]
-#' h1 <- hist(iris1, nclass = 12, plot = F)
-#' 
+#' h1 <- hist(iris1, nclass = 12, plot = FALSE)
+#'
 #' midx1 <- h1$mids
-#' midy1 <- matrix(h1$density, nrow=1, ncol = length(h1$density), byrow=T)
-#' knots <- 7 
+#' midy1 <- matrix(h1$density, nrow=1, ncol = length(h1$density), byrow=TRUE)
+#' knots <- 7
 #' sol1 <- smoothSplinesVal(k=3,l=2,alpha=10^seq(-4,4,by=1),midy1,midx1,knots,cores=1)
 #' @useDynLib splineDensity
 #' @export
-#' 
+#'
 
 smoothSplinesVal <- function(k,l,alpha,data,xcp,knots, weights = matrix(1, dim(data)[1], dim(data)[2]), prior = "default",cores = 1)
 {
@@ -43,14 +43,14 @@ smoothSplinesVal <- function(k,l,alpha,data,xcp,knots, weights = matrix(1, dim(d
     err <- simpleError("data must be a matrix type.")
     stop(err)
   }
-  
+
   # Check weights
   if ( !is.matrix(weights) )
   {
     err <- simpleError("weights must be a matrix type.")
     stop(err)
   }
-  
+
   if(dim(weights)[1] != dim(data)[1] & dim(weights)[2] != dim(data)[2])
   {
     err <- simpleError("weights size must be equal to data size.")
@@ -62,8 +62,8 @@ smoothSplinesVal <- function(k,l,alpha,data,xcp,knots, weights = matrix(1, dim(d
   else if ( prior == "jeffreys" ) prior_num <- 2
   else if ( prior == "bayes_laplace" ) prior_num <- 3
   else if ( prior == "sq" ) prior_num <- 4
-  
-  
+
+
   # Creating equispaced knots if not given
   if( length(knots) == 1 )
   {
@@ -78,8 +78,7 @@ smoothSplinesVal <- function(k,l,alpha,data,xcp,knots, weights = matrix(1, dim(d
   else
     obj <- .Call("smoothingSplinesValidation_",as.integer(k),as.integer(l),alpha,
                  data,xcp,knots,weights,as.integer(prior_num), as.integer(cores))
-  
+
   class(obj) <- "smoothSplVal"
   return(obj)
 }
-
