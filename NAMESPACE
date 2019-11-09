@@ -3,4 +3,6 @@
 S3method(plot,smoothSpl)
 export(smoothSplines)
 export(smoothSplinesVal)
+import(Rcpp)
+import(RcppEigen)
 useDynLib(splineDensity)

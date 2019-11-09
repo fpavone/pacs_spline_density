@@ -1,5 +1,5 @@
 #' Estimate density from histogram
-#'
+#' @import Rcpp RcppEigen
 #' @param k smoothing splines degree
 #' @param l order of derivative in the penalization term
 #' @param alpha weight for penalization
